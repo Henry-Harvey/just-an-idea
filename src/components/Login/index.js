@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router'
 import axios from 'axios';
+import history from '../../utils/history'
 import { LogIn } from '../../utils'
-
 import LoginView from './view';
 
 export default function Login({ setCurrentUser }) {
-  const history = useHistory();
   const [state, setState] = useState({
     credentials: {
       username: '',

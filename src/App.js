@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core'
 import ResizePanel from 'react-resize-panel';
 // eslint-disable-next-line no-unused-vars
 import style from './App.css';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { createBrowserHistory } from "history"
+import { Router, Switch } from 'react-router-dom';
+import history from './utils/history'
 
 import SidePanel from './components/SidePanel'
 import SearchBar from './components/SearchBar'
@@ -17,8 +17,8 @@ import Logout from './components/Logout'
 import Search from './components/Search'
 import Topic from './components/Topic'
 import Welcome from './components/Welcome'
-import PublicRoute from "./components/Routes/PublicRoute";
-import PrivateRoute from "./components/Routes/PrivateRoute";
+import PublicRoute from './components/Routes/PublicRoute';
+import PrivateRoute from './components/Routes/PrivateRoute';
 
 const useStyles = makeStyles({
   body: {
@@ -114,7 +114,6 @@ export default function App() {
     role: -1,
     username: ''
   });
-  const history = createBrowserHistory()
 
   const toggleSidePanel = () => {
     setDisplaySidePanel(!displaySidePanel);
@@ -122,7 +121,7 @@ export default function App() {
 
   return (
     <div className={styles.body}>
-      <BrowserRouter history={history}>
+      <Router history={history}>
         <div className={styles.container}>
           <ResizePanel
             direction='e'
@@ -158,7 +157,7 @@ export default function App() {
         <div className={styles.footer}>
           Copyright &copy; 2021 Henry Harvey
       </div>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

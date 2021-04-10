@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
+import history from '../../utils/history'
 import { LogOut } from '../../utils'
-import { useHistory } from 'react-router'
-
 import LogoutView from './view';
 
 export default function Logout({ setCurrentUser }) {
-    const history = useHistory();
     const [dialog, setDialog] = useState(true);
 
     const handleClose = () => {
@@ -18,7 +16,6 @@ export default function Logout({ setCurrentUser }) {
         setCurrentUser(null);
         history.push(`/home`)
     };
-
 
     return (
         <LogoutView

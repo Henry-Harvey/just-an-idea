@@ -1,22 +1,11 @@
 import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core'
-
-const useStyles = makeStyles((theme) => ({
-  title: {
-    fontSize: 'calc(1.25rem + 1vmin)',
-    marginBottom: '0.35em'
-  },
-}));
+import PostView from './view';
 
 export default function Post() {
-  const styles = useStyles();
 
   return (
     <React.Fragment>
-      <Typography variant='h5' className={styles.title}>
-        Post a New Product
-      </Typography>
-
+      <PostView />
     </React.Fragment>
   );
 }

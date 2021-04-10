@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     txt: {
         color: 'white'
     },
-    paper:{
+    paper: {
         backgroundColor: '#292929'
     }
 }));
@@ -27,7 +27,7 @@ export default function LogoutView({
                 open={dialog}
                 keepMounted
                 onClose={handleClose}
-                classes={{paper: styles.paper}}
+                classes={{ paper: styles.paper }}
             >
                 <DialogTitle className={styles.txt}>Logout</DialogTitle>
                 <DialogContent>
