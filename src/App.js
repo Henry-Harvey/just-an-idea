@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core'
 import ResizePanel from 'react-resize-panel';
 // eslint-disable-next-line no-unused-vars
 import style from './App.css';
 import { Router, Switch } from 'react-router-dom';
 import history from './utils/history'
+import { IsLoggedIn, getCurrentUser } from "./utils";
 
 import SidePanel from './components/SidePanel'
 import SearchBar from './components/SearchBar'
@@ -13,12 +14,13 @@ import About from './components/About'
 import Profile from './components/Profile'
 import Post from './components/Post'
 import Login from './components/Login'
+import Registration from './components/Registration'
 import Logout from './components/Logout'
 import Search from './components/Search'
 import Topic from './components/Topic'
 import Welcome from './components/Welcome'
-import PublicRoute from './components/Routes/PublicRoute';
-import PrivateRoute from './components/Routes/PrivateRoute';
+import PublicRoute from './utils/Routes/PublicRoute';
+import PrivateRoute from './utils/Routes/PrivateRoute';
 
 const useStyles = makeStyles({
   body: {
@@ -43,8 +45,8 @@ const useStyles = makeStyles({
     width: '10px',
     height: '200px',
     margin: '0px -5px',
-    background: 'rgb(49, 49, 49)',
-    border: '2px solid rgb(41, 41, 41)',
+    background: '#313131',
+    border: '2px solid #292929',
     borderRadius: '2px',
     textAlign: 'center',
     zIndex: 99999,
@@ -55,7 +57,7 @@ const useStyles = makeStyles({
   resizeBorder: {
     cursor: 'ew-resize',
     width: '5px',
-    background: 'rgb(41, 41, 41)',
+    background: '#292929',
     display: 'flex',
     zIndex: 99999,
     alignItems: 'center',
@@ -63,14 +65,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     overflow: 'visible'
   },
-  // panel: {
-  //   alignItems: 'stretch',
-  //   justifyContent: 'flex-start',
-  //   flexDirection: 'column',
-  //   position: 'relative',
-  // },
   sidePanel: {
-    background: 'rgb(112,0,0)',
+    background: '#700000',
     color: 'white',
     width: '100%',
     height: '96%',
@@ -97,8 +93,8 @@ const useStyles = makeStyles({
     textAlign: 'center',
     justifyContent: 'center',
     height: '4%',
-    background: 'rgb(41, 41, 41)',
-    borderTop: '1px solid rgb(0, 0, 0)',
+    background: '#292929',
+    borderTop: '1px solid #000000',
     color: 'white'
   }
 });
@@ -114,6 +110,18 @@ export default function App() {
     role: -1,
     username: ''
   });
+
+  useEffect(() => {
+    if (IsLoggedIn()) {
+      const user = getCurrentUser();
+      setCurrentUser({
+        user_id: user.user_id,
+        credentials_id: user.credentials_id,
+        role: user.role,
+        username: user.username
+      });
+    }
+  }, []);
 
   const toggleSidePanel = () => {
     setDisplaySidePanel(!displaySidePanel);
@@ -141,10 +149,11 @@ export default function App() {
               toggleSidePanel={toggleSidePanel}
             />
             <Switch>
-              <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} />
+              <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser}/>
               <PrivateRoute component={Post} path="/post" />
               <PrivateRoute component={Logout} path="/logout" setCurrentUser={setCurrentUser} />
               <PublicRoute component={Login} path="/login" restricted={true} setCurrentUser={setCurrentUser} />
+              <PublicRoute component={Registration} path="/registration" restricted={true} />
               <PublicRoute component={Home} path="/home" />
               <PublicRoute component={About} path="/about" />
               <PublicRoute component={Search} path="/search/:searchString" />

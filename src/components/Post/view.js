@@ -14,7 +14,7 @@ export default function PostView() {
   return (
     <React.Fragment>
       <Typography variant='h5' className={styles.title}>
-        Post a New Product
+        Post a New Idea
       </Typography>
     </React.Fragment>
   );

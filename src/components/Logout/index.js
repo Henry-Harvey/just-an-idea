@@ -14,7 +14,7 @@ export default function Logout({ setCurrentUser }) {
     const handleSubmit = () => {
         LogOut();
         setCurrentUser(null);
-        history.push(`/home`)
+        history.push(`/login`)
     };
 
     return (

@@ -4,9 +4,13 @@ export function IsLoggedIn() {
   return localStorage.getItem(TOKEN_KEY) !== null;
 };
 
-export function LogIn() {
+export function getCurrentUser() {
+  return JSON.parse(localStorage.getItem(TOKEN_KEY));
+};
+
+export function LogIn(user) {
   console.log('Logged in')
-  localStorage.setItem(TOKEN_KEY, "Login");
+  localStorage.setItem(TOKEN_KEY, JSON.stringify(user));
 };
 
 export function LogOut() {

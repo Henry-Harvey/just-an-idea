@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, makeStyles, Typography, IconButton, Tooltip } from '@material-ui/core'
-import { Home as HomeIcon, Info as InfoIcon, AccountBox as AccountBoxIcon, AddCircle as AddCircleIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons';
+import { Home as HomeIcon, Info as InfoIcon, AccountBox as AccountBoxIcon, AddCircle as AddCircleIcon, ExitToApp as ExitToAppIcon, Assignment as AssignmentIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,7 +62,7 @@ export default function NavBoxView({ currentUser }) {
               </IconButton>
             </Tooltip>
           </Link>
-          {currentUser ?
+          {currentUser?.username ?
             <Link to='/profile' >
               <Tooltip title={currentUser.username + "'s Profile"}>
                 <IconButton
@@ -75,7 +75,7 @@ export default function NavBoxView({ currentUser }) {
             :
             null
           }
-          {currentUser ?
+          {currentUser?.username ?
             <Link to='/post'>
               <Tooltip title='Post'>
                 <IconButton
@@ -88,7 +88,20 @@ export default function NavBoxView({ currentUser }) {
             :
             null
           }
-          {currentUser ?
+          {currentUser?.username ?
+            null
+            :
+            <Link to='/registration'>
+              <Tooltip title='Registration'>
+                <IconButton
+                  className={styles.iconButton}
+                  onClick={null}>
+                  <AssignmentIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          }
+          {currentUser?.username ?
             <Link to='/logout'>
               <Tooltip title='Log out'>
                 <IconButton

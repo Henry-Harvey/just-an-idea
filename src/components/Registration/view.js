@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles, Typography, TextField, FormControl, InputLabel, Input, InputAdornment, IconButton, Tooltip } from '@material-ui/core';
 import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon, ArrowForward as ArrowForwardIcon, ImportExport as ImportExportIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import StateDropdown from './StateDropdown'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -9,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '0.35em'
   },
   form: {
-    background: 'rgb(41, 41, 41)',
+    background: '#292929',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -65,10 +67,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     background: 'black',
     color: 'white'
-  }
+  },
+
 }));
 
-export default function LoginView({
+export default function RegistrationView({
   state,
   handleToggleHidePassword,
   handleChange,
@@ -79,19 +82,19 @@ export default function LoginView({
   return (
     <React.Fragment>
       <Typography className={styles.title}>
-        Login
+        Registration
       </Typography>
       <div className={styles.form}>
         <TextField
           id='username'
-          label='Username'
+          label='Username*'
           value={state?.credentials.username}
           onChange={handleChange('credentials', 'username')}
           className={styles.textField}
         />
         <FormControl className={styles.textField}>
           <InputLabel htmlFor='password'>
-            Password
+            Password*
           </InputLabel>
           <Input
             id='password'
@@ -110,12 +113,64 @@ export default function LoginView({
             }
           />
         </FormControl>
+        <TextField
+          id='firstName'
+          label='First Name*'
+          value={state?.user.firstName}
+          onChange={handleChange('user', 'firstName')}
+          className={styles.textField}
+        />
+        <TextField
+          id='lastName'
+          label='Last Name*'
+          value={state?.user.lastName}
+          onChange={handleChange('user', 'lastName')}
+          className={styles.textField}
+        />
+        <TextField
+          id='email'
+          label='Email'
+          value={state?.user.email}
+          onChange={handleChange('user', 'email')}
+          className={styles.textField}
+        />
+        <TextField
+          id='occupation'
+          label='Occupation'
+          value={state?.user.occupation}
+          onChange={handleChange('user', 'occupation')}
+          className={styles.textField}
+        />
+        <StateDropdown />
+        {/* <TextField
+          id='state'
+          label='State'
+          value={state?.user.state}
+          onChange={handleChange('user', 'state')}
+          className={styles.textField}
+        /> */}
+        <TextField
+          id='age'
+          label='Age'
+          value={state?.user.age}
+          onChange={handleChange('user', 'age')}
+          className={styles.textField}
+        />
+        <TextField
+          id='bio'
+          label='Bio'
+          value={state?.user.bio}
+          onChange={handleChange('user', 'bio')}
+          className={clsx(styles.textField, styles.multiline)}
+          multiline
+          rows={5}
+        />
         <Typography className={styles.message}>
           {state.message}
         </Typography>
         <div className={styles.buttons}>
-          <Link to='/registration'>
-            <Tooltip title='To Registration'>
+          <Link to='/login'>
+            <Tooltip title='To Login'>
               <IconButton
                 className={styles.iconButton}
                 onClick={null}>
@@ -123,7 +178,7 @@ export default function LoginView({
               </IconButton>
             </Tooltip>
           </Link>
-          <Tooltip title='Log in'>
+          <Tooltip title='Register'>
             <IconButton
               className={styles.iconButton}
               onClick={handleSubmit}>

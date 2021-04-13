@@ -1,15 +1,28 @@
 import React from 'react';
-import { makeStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip, IconButton } from '@material-ui/core';
+import { Done as DoneIcon, Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     button: {
         color: 'white'
     },
-    txt: {
+    dialogTitle: {
+        color: 'white'
+    },
+    dialogContent: {
         color: 'white'
     },
     paper: {
         backgroundColor: '#292929'
+    },
+    iconButton: {
+        color: 'white'
+    },
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap'
     }
 }));
 
@@ -29,25 +42,27 @@ export default function LogoutView({
                 onClose={handleClose}
                 classes={{ paper: styles.paper }}
             >
-                <DialogTitle className={styles.txt}>Logout</DialogTitle>
+                <DialogTitle className={styles.dialogTitle}>Logout</DialogTitle>
                 <DialogContent>
-                    <DialogContentText className={styles.txt}>
+                    <DialogContentText className={styles.dialogContent}>
                         Are you sure?
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={handleSubmit}
-                        className={styles.button}
-                    >
-                        Yes
-              </Button>
-                    <Button
-                        onClick={handleClose}
-                        className={styles.button}
-                    >
-                        No
-              </Button>
+                <DialogActions className={styles.buttons}>
+                    <Tooltip title='No'>
+                        <IconButton
+                            className={styles.iconButton}
+                            onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title='Yes'>
+                        <IconButton
+                            className={styles.iconButton}
+                            onClick={handleSubmit}>
+                            <DoneIcon />
+                        </IconButton>
+                    </Tooltip>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
