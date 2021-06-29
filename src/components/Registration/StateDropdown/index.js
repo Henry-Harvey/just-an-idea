@@ -1,8 +1,8 @@
 import React from 'react';
 import StatePickerView from './view';
 
-export default function StatePicker(props) {
-    const { ...other } = props;
+export default function StatePicker({ handleSelectState }) {
+    //const { ...other } = props;
     const stateList = [
         { name: "Alabama", abbreviation: "AL" },
         { name: "Alaska", abbreviation: "AK" },
@@ -56,10 +56,16 @@ export default function StatePicker(props) {
         { name: "Wyoming", abbreviation: "WY" }
     ];
 
+    const handleClick = event => {
+        handleSelectState(event.currentTarget.dataset.value);
+        //console.log('here', event.currentTarget.dataset.value);
+    };
+
     return (
         <StatePickerView
-            other={other}
+            //other={other}
             stateList={stateList}
+            handleClick={handleClick}
         />
     );
 }

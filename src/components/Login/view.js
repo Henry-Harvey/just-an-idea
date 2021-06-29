@@ -9,15 +9,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '0.35em'
   },
   form: {
-    background: 'rgb(41, 41, 41)',
+    background: '#292929',
     display: 'flex',
+    flexWrap: 'wrap',
     flexDirection: 'column',
     alignItems: 'center',
     padding: 10,
     borderRadius: 10,
     overflowY: 'auto',
     marginInline: '10%',
-    marginBottom: '10%'
   },
   textField: {
     width: '75%',
@@ -54,12 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
   message: {
     color: 'red'
-  },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    flexWrap: 'wrap'
   },
   button: {
     marginTop: 10,
@@ -100,12 +94,14 @@ export default function LoginView({
             type={state?.hidePassword ? 'password' : 'text'}
             endAdornment={
               <InputAdornment position='end'>
-                <IconButton
-                  className={styles.iconButton}
-                  onClick={handleToggleHidePassword}
-                >
-                  {state?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
+                <Tooltip title='Show/Hide'>
+                  <IconButton
+                    className={styles.iconButton}
+                    onClick={handleToggleHidePassword}
+                  >
+                    {state?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </Tooltip>
               </InputAdornment>
             }
           />
@@ -113,9 +109,9 @@ export default function LoginView({
         <Typography className={styles.message}>
           {state.message}
         </Typography>
-        <div className={styles.buttons}>
+        <div>
           <Link to='/registration'>
-            <Tooltip title='To Registration'>
+            <Tooltip title='Switch To Registration'>
               <IconButton
                 className={styles.iconButton}
                 onClick={null}>

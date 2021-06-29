@@ -8,6 +8,7 @@ export default function Registration() {
     credentials: {
       username: '',
       password: '',
+      email: '',
       role: 0,
       suspended: 0
     },
@@ -16,7 +17,6 @@ export default function Registration() {
       remainingUpvotes: 3,
       firstName: '',
       lastName: '',
-      email: '',
       occupation: '',
       state: '',
       age: '',
@@ -39,6 +39,16 @@ export default function Registration() {
       }
     });
   };
+
+  const handleSelectState = (stateAbbreviation) => {
+    setState({
+      ...state,
+      user: {
+        ...state?.user,
+        state: stateAbbreviation
+      }
+    });
+  }
 
   const handleSubmit = () => {
     console.log('Register Credentials + User', state?.credentials, state?.user)
@@ -67,6 +77,7 @@ export default function Registration() {
       state={state}
       handleToggleHidePassword={handleToggleHidePassword}
       handleChange={handleChange}
+      handleSelectState={handleSelectState}
       handleSubmit={handleSubmit}
       handleNavigateToLogin={handleNavigateToLogin}
     />

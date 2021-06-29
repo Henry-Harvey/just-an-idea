@@ -9,20 +9,13 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: 'calc(1rem + .5vmin)',
+    overflow: 'hidden',
+    margin: 10
   },
   list: {
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
-      // hidden
       width: '0px'
-    },
-    '&::-webkit-scrollbar-track': {
-      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgb(49, 49, 49)',
-      outline: '1px solid rgb(41, 41, 41)'
     }
   }
 });

@@ -21,6 +21,7 @@ import Topic from './components/Topic'
 import Welcome from './components/Welcome'
 import PublicRoute from './utils/Routes/PublicRoute';
 import PrivateRoute from './utils/Routes/PrivateRoute';
+import Idea from './components/Idea';
 
 const useStyles = makeStyles({
   body: {
@@ -66,23 +67,23 @@ const useStyles = makeStyles({
     overflow: 'visible'
   },
   sidePanel: {
+    flexGrow: 1,
     background: '#700000',
     color: 'white',
     width: '100%',
     height: '96%',
     display: 'flex',
     flexFlow: 'column nowrap',
-    flexGrow: 1,
     textAlign: 'center',
   },
   content: {
     flexGrow: 2,
-    textAlign: 'center',
     color: 'white',
     width: '100%',
     height: '96%',
-    display: 'flex',
+    display: 'block',
     flexFlow: 'column nowrap',
+    textAlign: 'center',
   },
   footer: {
     display: 'flex',
@@ -150,7 +151,7 @@ export default function App() {
             />
             <Switch>
               <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-              <PrivateRoute component={Post} path="/post" />
+              <PrivateRoute component={Post} path="/post" currentUser={currentUser}/>
               <PrivateRoute component={Logout} path="/logout" setCurrentUser={setCurrentUser} />
               <PublicRoute component={Login} path="/login" restricted={true} setCurrentUser={setCurrentUser} />
               <PublicRoute component={Registration} path="/registration" restricted={true} />
@@ -158,6 +159,7 @@ export default function App() {
               <PublicRoute component={About} path="/about" />
               <PublicRoute component={Search} path="/search/:searchString" />
               <PublicRoute component={Topic} path="/topic/:topicId" />
+              <PublicRoute component={Idea} path="/idea/:ideaId" />
               <PublicRoute component={Welcome} path="/" />
             </Switch>
           </div>

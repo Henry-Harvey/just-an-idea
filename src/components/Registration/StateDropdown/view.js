@@ -57,20 +57,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegistrationView({
     other,
-    stateList
+    stateList,
+    handleClick
 }) {
     const styles = useStyles();
 
     return (
         <React.Fragment>
             <FormControl className={styles.formControl}>
-                <InputLabel id='stateLabel'>State</InputLabel>
+                <InputLabel htmlFor='state'>State</InputLabel>
                 <Select
                     id='state'
-                    labelId='stateLabel'
                     MenuProps={{ classes: { paper: styles.muiListPaper } }}
                     className={styles.select}
-                    {...other}
+                    //{...other}
                     defaultValue=''
                 >
                     {stateList.map(state => (
@@ -78,6 +78,7 @@ export default function RegistrationView({
                             key={state.abbreviation}
                             value={state.abbreviation}
                             className={styles.menuItem}
+                            onClick={handleClick}
                         >
                             {`${state.abbreviation} - ${state.name}`}
                         </MenuItem>

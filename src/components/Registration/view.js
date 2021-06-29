@@ -13,13 +13,14 @@ const useStyles = makeStyles((theme) => ({
   form: {
     background: '#292929',
     display: 'flex',
+    flexWrap: 'wrap',
     flexDirection: 'column',
     alignItems: 'center',
     padding: 10,
     borderRadius: 10,
     overflowY: 'auto',
     marginInline: '10%',
-    marginBottom: '10%'
+    maxHeight: '77%',
   },
   textField: {
     width: '75%',
@@ -40,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
       borderBottomColor: 'white',
     },
     '& label.Mui-focused': {
-      color: 'rgb(214, 214, 214)',
+      color: '#D6D6D6',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: 'rgb(214, 214, 214)',
+      borderBottomColor: '#D6D6D6',
     },
   },
   multiline: {
@@ -57,24 +58,18 @@ const useStyles = makeStyles((theme) => ({
   message: {
     color: 'red'
   },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    flexWrap: 'wrap'
-  },
   button: {
     marginTop: 10,
     background: 'black',
     color: 'white'
   },
-
 }));
 
 export default function RegistrationView({
   state,
   handleToggleHidePassword,
   handleChange,
+  handleSelectState,
   handleSubmit
 }) {
   const styles = useStyles();
@@ -114,6 +109,13 @@ export default function RegistrationView({
           />
         </FormControl>
         <TextField
+          id='email'
+          label='Email'
+          value={state?.user.email}
+          onChange={handleChange('credentials', 'email')}
+          className={styles.textField}
+        />
+        <TextField
           id='firstName'
           label='First Name*'
           value={state?.user.firstName}
@@ -128,27 +130,15 @@ export default function RegistrationView({
           className={styles.textField}
         />
         <TextField
-          id='email'
-          label='Email'
-          value={state?.user.email}
-          onChange={handleChange('user', 'email')}
-          className={styles.textField}
-        />
-        <TextField
           id='occupation'
           label='Occupation'
           value={state?.user.occupation}
           onChange={handleChange('user', 'occupation')}
           className={styles.textField}
         />
-        <StateDropdown />
-        {/* <TextField
-          id='state'
-          label='State'
-          value={state?.user.state}
-          onChange={handleChange('user', 'state')}
-          className={styles.textField}
-        /> */}
+        <StateDropdown
+          handleSelectState={handleSelectState}
+        />
         <TextField
           id='age'
           label='Age'
@@ -168,9 +158,9 @@ export default function RegistrationView({
         <Typography className={styles.message}>
           {state.message}
         </Typography>
-        <div className={styles.buttons}>
+        <div>
           <Link to='/login'>
-            <Tooltip title='To Login'>
+            <Tooltip title='Switch To Login'>
               <IconButton
                 className={styles.iconButton}
                 onClick={null}>

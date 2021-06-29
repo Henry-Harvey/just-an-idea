@@ -1,25 +1,16 @@
 import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core'
+import MUIDataTable from 'mui-datatables';
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    textAlign: 'center'
-  },
-  textBody: {
-    margin: 50,
-    letterSpacing: .5,
-    textAlign: 'center'
-  }
-}));
-
-export default function SearchView({ searchString }) {
-  const styles = useStyles();
+export default function SearchView({ searchString, state }) {
 
   return (
     <React.Fragment>
-      <Typography variant='h5' className={styles.title}>
-        Search Results for '{searchString}'
-      </Typography>
+      <MUIDataTable
+        title={`Search Results for '${searchString}'`}
+        data={state.results}
+        columns={state.table.columns}
+        options={state.table.options}
+      />
     </React.Fragment>
   );
 }
