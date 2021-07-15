@@ -70,6 +70,7 @@ export default function RegistrationView({
   handleToggleHidePassword,
   handleChange,
   handleSelectState,
+  handleKeyPress,
   handleSubmit
 }) {
   const styles = useStyles();
@@ -110,21 +111,21 @@ export default function RegistrationView({
         </FormControl>
         <TextField
           id='email'
-          label='Email'
+          label='Email*'
           value={state?.user.email}
           onChange={handleChange('credentials', 'email')}
           className={styles.textField}
         />
         <TextField
           id='firstName'
-          label='First Name*'
+          label='First Name'
           value={state?.user.firstName}
           onChange={handleChange('user', 'firstName')}
           className={styles.textField}
         />
         <TextField
           id='lastName'
-          label='Last Name*'
+          label='Last Name'
           value={state?.user.lastName}
           onChange={handleChange('user', 'lastName')}
           className={styles.textField}
@@ -151,6 +152,7 @@ export default function RegistrationView({
           label='Bio'
           value={state?.user.bio}
           onChange={handleChange('user', 'bio')}
+          onKeyPress={handleKeyPress()}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           rows={5}

@@ -1,24 +1,24 @@
 import React from 'react';
-import ViewToolbarIconView from './view';
+import SearchToolbarView from './view';
 import history from '../../../utils/history'
 
-export default function ViewToolbarIcon(selectedResult) {
+export default function SearchToolbar(selectedResult) {
 
   const handleNavigateToItem = () => {
     if (selectedResult.selectedResult.type === 'Idea') {
-      history.push(`/content/idea/${selectedResult.selectedResult.id}`)
+      history.push(`/idea/${selectedResult.selectedResult.id}`)
     }
     else if (selectedResult.selectedResult.type === 'Topic') {
-      history.push(`/content/topic/${selectedResult.selectedResult.id}`)
+      history.push(`/topic/${selectedResult.selectedResult.id}`)
     }
     else if (selectedResult.selectedResult.type === 'User') {
-      history.push(`/account/user/${selectedResult.selectedResult.id}`)
+      history.push(`/profile/${selectedResult.selectedResult.id}`)
     }
   };
 
   return (
     <React.Fragment>
-      < ViewToolbarIconView
+      < SearchToolbarView
         handleNavigateToItem={handleNavigateToItem}
       />
     </React.Fragment>

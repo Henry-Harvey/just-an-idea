@@ -54,11 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
   message: {
     color: 'red'
-  },
-  button: {
-    marginTop: 10,
-    background: 'black',
-    color: 'white'
   }
 }));
 
@@ -66,6 +61,7 @@ export default function LoginView({
   state,
   handleToggleHidePassword,
   handleChange,
+  handleKeyPress,
   handleSubmit
 }) {
   const styles = useStyles();
@@ -91,6 +87,7 @@ export default function LoginView({
             id='password'
             value={state?.credentials.password}
             onChange={handleChange('credentials', 'password')}
+            onKeyPress={handleKeyPress()}
             type={state?.hidePassword ? 'password' : 'text'}
             endAdornment={
               <InputAdornment position='end'>

@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LogoutView({
-    handleOpen,
     handleClose,
     handleSubmit,
     dialog

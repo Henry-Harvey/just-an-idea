@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
         width: '75%',
-        maxWidth: 500,
+        maxWidth: 600,
         minWidth: 100,
         marginBottom: '2%',
         overflow: 'hidden',
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
             color: 'white',
             fontSize: 'calc(.33rem + 2vmin)'
         }
+
     },
     menuItem: {
         backgroundColor: '#292929',
@@ -57,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegistrationView({
     stateList,
-    handleClick
+    handleClick,
+    value
 }) {
     const styles = useStyles();
 
@@ -69,7 +71,7 @@ export default function RegistrationView({
                     id='state'
                     MenuProps={{ classes: { paper: styles.muiListPaper } }}
                     className={styles.select}
-                    defaultValue=''
+                    value={value}
                 >
                     {stateList.map(state => (
                         <MenuItem

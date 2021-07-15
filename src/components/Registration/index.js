@@ -14,7 +14,6 @@ export default function Registration() {
     },
     user: {
       id: -1,
-      remainingUpvotes: 3,
       firstName: '',
       lastName: '',
       occupation: '',
@@ -27,49 +26,51 @@ export default function Registration() {
   });
 
   const handleToggleHidePassword = () => {
-    setState({ ...state, hidePassword: !state?.hidePassword });
+    setState(state => ({
+      ...state,
+      hidePassword: !state?.hidePassword
+    }));
   };
 
   const handleChange = (object, prop) => (event) => {
-    setState({
+    setState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
         [prop]: event.target.value
       }
-    });
+    }));
   };
 
   const handleSelectState = (stateAbbreviation) => {
-    setState({
+    setState(state => ({
       ...state,
       user: {
         ...state?.user,
         state: stateAbbreviation
       }
-    });
+    }));
   }
 
+  const handleKeyPress = () => (event) => {
+    if (event?.charCode === 13) {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = () => {
-    console.log('Register Credentials + User', state?.credentials, state?.user)
+    console.log('Register with Credentials & User', state?.credentials, state?.user)
     axios.post(`http://localhost:8080/account/register`,
       {
         credentials: { ...state?.credentials },
         user: { ...state?.user }
       }
-    ).then((response) => {
-      console.log('Registration response', response)
-      if (response?.status !== 200) {
-        setState({ ...state, message: 'Registration error' });
-      }
-      else {
-        history.push(`/login`)
-      }
+    ).then((accountResponse) => {
+      console.log('Register response', accountResponse)
+      history.push(`/login`)
+    }).catch(error => {
+      console.log('Register error', error);
     });
-  }
-
-  const handleNavigateToLogin = () => {
-    history.push(`/login`)
   }
 
   return (
@@ -77,9 +78,9 @@ export default function Registration() {
       state={state}
       handleToggleHidePassword={handleToggleHidePassword}
       handleChange={handleChange}
+      handleKeyPress={handleKeyPress}
       handleSelectState={handleSelectState}
       handleSubmit={handleSubmit}
-      handleNavigateToLogin={handleNavigateToLogin}
     />
   )
 }

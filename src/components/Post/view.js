@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, Typography, TextField, IconButton, Tooltip } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon, List as ListIcon } from '@material-ui/icons';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: 10,
-    //borderRadius: 10,
+    borderRadius: 10,
     overflowY: 'auto',
     marginInline: '10%',
     maxHeight: '77%',
@@ -66,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PostView({
   state,
   handleChange,
+  handleKeyPress,
   handleSubmit,
-  handleNavigateToProfile
 }) {
   const styles = useStyles();
 
@@ -96,21 +97,23 @@ export default function PostView({
           label='Description'
           value={state?.idea.description}
           onChange={handleChange('idea', 'description')}
+          onKeyPress={handleKeyPress()}
           className={clsx(styles.textField, styles.multiline)}
           multiline
-          rows={20}
+          rows={10}
         />
         <Typography className={styles.message}>
           {state.message}
         </Typography>
         <div>
-          <Tooltip title='See My Ideas'>
-            <IconButton
-              className={styles.iconButton}
-              onClick={handleNavigateToProfile}>
-              <ListIcon />
-            </IconButton>
-          </Tooltip>
+          <Link to='/profile'>
+            <Tooltip title='See My Ideas'>
+              <IconButton
+                className={styles.iconButton}>
+                <ListIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Tooltip title='Create'>
             <IconButton
               className={styles.iconButton}

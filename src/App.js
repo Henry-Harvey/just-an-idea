@@ -150,16 +150,17 @@ export default function App() {
               toggleSidePanel={toggleSidePanel}
             />
             <Switch>
-              <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-              <PrivateRoute component={Post} path="/post" currentUser={currentUser}/>
+              <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser} />
+              <PrivateRoute component={Post} path="/post" currentUser={currentUser} />
               <PrivateRoute component={Logout} path="/logout" setCurrentUser={setCurrentUser} />
+              <PublicRoute component={Profile} path="/profile/:userId" currentUser={currentUser} setCurrentUser={setCurrentUser} />
               <PublicRoute component={Login} path="/login" restricted={true} setCurrentUser={setCurrentUser} />
               <PublicRoute component={Registration} path="/registration" restricted={true} />
               <PublicRoute component={Home} path="/home" />
               <PublicRoute component={About} path="/about" />
               <PublicRoute component={Search} path="/search/:searchString" />
-              <PublicRoute component={Topic} path="/topic/:topicId" />
-              <PublicRoute component={Idea} path="/idea/:ideaId" />
+              <PublicRoute component={Topic} path="/topic/:topicId" currentUser={currentUser} />
+              <PublicRoute component={Idea} path="/idea/:ideaId" currentUser={currentUser} />
               <PublicRoute component={Welcome} path="/" />
             </Switch>
           </div>
@@ -167,7 +168,7 @@ export default function App() {
 
         <div className={styles.footer}>
           Copyright &copy; 2021 Henry Harvey
-      </div>
+        </div>
       </Router>
     </div>
   );

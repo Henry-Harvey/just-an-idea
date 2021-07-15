@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileView({
-  currentUser,
+  state,
+  userId,
+  isUsersProfile,
   setCurrentUser
 }) {
   const styles = useStyles();
@@ -36,19 +38,24 @@ export default function ProfileView({
   return (
     <React.Fragment>
       <Typography className={styles.title}>
-        My Profile
+        {isUsersProfile ?
+          "My Profile"
+          :
+          state.title + `'s Profile`
+        }
       </Typography>
       <div className={styles.container}>
         <div className={styles.item}>
           <UserInfo
-            currentUser={currentUser}
+            userId={userId}
+            isUsersProfile={isUsersProfile}
             setCurrentUser={setCurrentUser}
           />
         </div>
         <div className={styles.item}>
           <UserIdeas
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
+            userId={userId}
+            isUsersProfile={isUsersProfile}
           />
         </div>
       </div>

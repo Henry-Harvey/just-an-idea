@@ -3,104 +3,58 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import IdeaView from './view';
 
-export default function Idea() {
+export default function Idea({ currentUser }) {
   let ideaId = useParams().ideaId;
 
   const [state, setState] = useState({
-    idea: {
-      id: -1,
-      users_id: -1,
-      topics_id: -1,
-      title: '',
-      description: '',
-      upvotes: -1,
-      timestamp: null
-    },
-    topic: {
-      id: -1,
-      title: '',
-      timestamp: null
-    },
-    user: {
-      id: -1,
-      firstName: '',
-      lastName: '',
+    ideaInfo: {
+      idea: {
+        id: -1,
+        users_id: -1,
+        topics_id: -1,
+        title: '',
+        description: '',
+        timestamp: null
+      },
+      topic: {
+        id: -1,
+        title: ''
+      },
+      author: '',
+      upvotes: -1
     }
   });
 
   useEffect(() => {
-    console.log('Get Idea with ID', ideaId)
-    axios.get(`http://localhost:8080/content/idea/${ideaId}`)
-      .then((response) => {
-        console.log('Get Idea response', response)
-        if (response?.status !== 200) {
-          console.log('Error Getting Idea');
-        }
-        if (response?.data === '') {
-          console.log('No Idea Found');
+    console.log('Retrieve Idea Info with id', ideaId);
+    axios.get(`http://localhost:8080/content/idea/${ideaId}/info`)
+      .then((ideaResponse) => {
+        console.log('Retrieve Idea response', ideaResponse)
+        if (ideaResponse?.data === '') {
+          console.log('Idea not found');
+          return;
         }
         else {
           setState(state => ({
             ...state,
-            idea: {
-              id: response?.data.id,
-              users_id: response?.data.users_id,
-              topics_id: response?.data.topics_id,
-              title: response?.data.title,
-              description: response?.data.description,
-              upvotes: response?.data.upvotes,
-              timestamp: response?.data.timestamp
-            }
+            ideaInfo: ideaResponse?.data
           }));
-          axios.get(`http://localhost:8080/content/topic/${state.idea.topics_id}`)
-            .then((response) => {
-              console.log('Get Topic response', response)
-              if (response?.status !== 200) {
-                console.log('Error Getting Topic');
-              }
-              if (response?.data === '') {
-                console.log('No Topic Found');
-              }
-              else {
-                setState(state => ({
-                  ...state,
-                  topic: {
-                    id: response?.data.id,
-                    title: response?.data.title,
-                    timestamp: response?.data.timestamp
-                  }
-                }));
-              }
-            });
-
-          axios.get(`http://localhost:8080/account/user/${state.idea.users_id}`)
-            .then((response) => {
-              console.log('Get User response', response)
-              if (response?.status !== 200) {
-                console.log('Error Getting User');
-              }
-              if (response?.data === '') {
-                console.log('No User Found');
-              }
-              else {
-                setState(state => ({
-                  ...state,
-                  user: {
-                    id: response?.data.id,
-                    firstName: response?.data.firstName,
-                    lastName: response?.data.lastName,
-                  }
-                }));
-              }
-            });
         }
+      }).catch(error => {
+        console.log('Retrieve Idea error', error)
       });
-  }, [ideaId, state.idea.topics_id, state.idea.users_id]);
+  }, [ideaId]);
+
+  const handleUpvoteIdea = () => {
+
+  };
 
   return (
     <React.Fragment>
       < IdeaView
+        currentUser={currentUser}
         state={state}
+        handleUpvoteIdea={handleUpvoteIdea}
       />
     </React.Fragment>
   );

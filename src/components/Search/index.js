@@ -2,48 +2,32 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import SearchView from './view';
-import ViewToolbarIcon from './ViewToolbarIcon'
+import SearchToolbar from './SearchToolbar'
 
 export default function Search() {
   let searchString = useParams().searchString;
 
   const [state, setState] = useState({
-    results: [
-      /*
-      {
-        type: null,
-        id: -1,
-        name: null
-      }
-      */
-      // {
-      //   type: 'Judge',
-      //   id: -1,
-      //   name: 'Joe'
-      // },
-      // {
-      //   type: 'Cop',
-      //   id: -1,
-      //   name: 'Chris'
-      // },
-      // {
-      //   type: 'Shoe',
-      //   id: -1,
-      //   name: 'Dan'
-      // }
-    ],
+    results: [],
     table: {
       options:
       {
         print: false,
         download: false,
-        pagination: false,
         viewColumns: false,
         selectableRows: 'single',
-        customToolbarSelect: null
+        selectableRowsOnClick: true,
+        selectableRowsHideCheckboxes: true,
+        rowsPerPageOptions: [15],
+        customToolbarSelect: null,
+        pagination: false
       },
       columns:
         [
+          {
+            name: 'id',
+            label: 'ID'
+          },
           {
             name: 'type',
             label: 'Type'
@@ -58,103 +42,108 @@ export default function Search() {
   );
 
   useEffect(() => {
+    setState(state => ({
+      ...state,
+      results: []
+    }));
     var resultsArray = [];
-    console.log('Search Ideas for title:', searchString)
-    axios.post(`http://localhost:8080/content/ideas`,
+    console.log('Search Ideas with title:', searchString);
+    axios.post(`http://localhost:8080/content/search/ideas`,
       {
         title: searchString
       }
     ).then((ideasResponse) => {
-      console.log('Search Ideas response', ideasResponse)
-      if (ideasResponse?.status !== 200) {
-        alert('Search Ideas failed')
+      console.log('Search Ideas response', ideasResponse);
+      if (ideasResponse?.data === '') {
+        console.log('Ideas not found');
+        return;
       }
-      else {
-        ideasResponse.data.map(idea => (
-          resultsArray.push(
-            {
-              type: 'Idea',
-              id: idea.id,
-              name: idea.title
-            }
-          )
-        ));
-      }
+      ideasResponse.data.map(idea => (
+        resultsArray.push(
+          {
+            type: 'Idea',
+            id: idea.id,
+            name: idea.title
+          }
+        )
+      ));
+    }).catch(error => {
+      console.log('Search Idea error', error);
     });
-    console.log('Search Topics for title', searchString)
-    axios.post(`http://localhost:8080/content/topics`,
+
+    console.log('Search Topics with title', searchString);
+    axios.post(`http://localhost:8080/content/search/topics`,
       {
         title: searchString
       }
     ).then((topicsResponse) => {
-      console.log('Search Topics response', topicsResponse)
-      if (topicsResponse?.status !== 200) {
-        alert('Search Topics failed')
+      console.log('Search Topics response', topicsResponse);
+      if (topicsResponse?.data === '') {
+        console.log('Topics not found');
+        return;
       }
-      else {
-        topicsResponse.data.map(topic => (
-          resultsArray.push(
-            {
-              type: 'Topic',
-              id: topic.id,
-              name: topic.title
-            }
-          )
-        ));
-      }
+      topicsResponse.data.map(topic => (
+        resultsArray.push(
+          {
+            type: 'Topic',
+            id: topic.id,
+            name: topic.title
+          }
+        )
+      ));
+    }).catch(error => {
+      console.log('Search Topics error', error);
     });
-    console.log('Search Credentials for username', searchString)
-    axios.post(`http://localhost:8080/account/credentials`,
+
+    console.log('Search Credentials with username', searchString);
+    axios.post(`http://localhost:8080/account/search/credentials`,
       {
         username: searchString
       }
     ).then((credentialsResponse) => {
-      console.log('Search Credentials response', credentialsResponse)
-      if (credentialsResponse?.status !== 200) {
-        alert('Search Credentials failed')
+      console.log('Search Credentials response', credentialsResponse);
+      if (credentialsResponse?.data === '') {
+        console.log('Credentials not found');
+        return;
       }
       else {
-        console.log('Retrieve User', credentialsResponse)
         credentialsResponse.data.map(credentials => (
-          axios.get(`http://localhost:8080/account/user/${credentials.users_id}`
-          ).then((usersResponse) => {
-            console.log('Retrieve User response', usersResponse)
-            if (usersResponse?.status !== 200) {
-              alert('Retrieve User failed')
+          resultsArray.push(
+            {
+              type: 'User',
+              id: credentials.users_id,
+              name: credentials.username
             }
-            else {
-              resultsArray.push(
-                {
-                  type: 'User',
-                  id: usersResponse.data.id,
-                  name: usersResponse.data.firstName + ' ' + usersResponse.data.lastName
-                }
+          )
+        ));
+      }
+    }).catch(error => {
+      console.log('Search Credentials error', error);
+    });
+
+    setTimeout(() => {
+      setState(state => ({
+        ...state,
+        results: resultsArray
+      }));
+
+      setState(state => ({
+        ...state,
+        table: {
+          ...state.table,
+          options: {
+            ...state.table.options,
+            customToolbarSelect: (selectedRows) => {
+              return (
+                <SearchToolbar
+                  selectedResult={resultsArray[selectedRows.data[0].index]}
+                />
               )
             }
-          })
-        ));
-        setState(state => ({
-          ...state,
-          results: resultsArray
-        }));
-      }
-    });
-    setState(state => ({
-      ...state,
-      table: {
-        ...state.table,
-        options: {
-          ...state.table.options,
-          customToolbarSelect: (selectedRows) => {
-            return (
-              <ViewToolbarIcon
-                selectedResult={resultsArray[selectedRows.data[0].index]}
-              />
-            )
           }
         }
-      }
-    }));
+      }));
+    }, 50);
   }, [searchString]);
 
   return (

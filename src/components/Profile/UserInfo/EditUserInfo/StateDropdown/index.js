@@ -1,7 +1,7 @@
 import React from 'react';
 import StatePickerView from './view';
 
-export default function StatePicker({ handleSelectState }) {
+export default function StatePicker({ handleSelectState, value }) {
     const stateList = [
         { name: "Alabama", abbreviation: "AL" },
         { name: "Alaska", abbreviation: "AK" },
@@ -63,6 +63,7 @@ export default function StatePicker({ handleSelectState }) {
         <StatePickerView
             stateList={stateList}
             handleClick={handleClick}
+            value={value}
         />
     );
 }

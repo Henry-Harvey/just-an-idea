@@ -15,45 +15,65 @@ export default function Login({ setCurrentUser }) {
   });
 
   const handleToggleHidePassword = () => {
-    setState({ ...state, hidePassword: !state?.hidePassword });
+    setState(state => ({
+      ...state,
+      hidePassword: !state?.hidePassword
+    }));
   };
 
   const handleChange = (object, prop) => (event) => {
-    setState({
+    setState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
         [prop]: event.target.value
       }
-    });
+    }));
+  };
+
+  const handleKeyPress = () => (event) => {
+    if (event?.charCode === 13) {
+      handleSubmit();
+    }
   };
 
   const handleSubmit = () => {
-    console.log('Log in Credentials', state?.credentials)
+    console.log('Log in with Credentials', state?.credentials)
     axios.post(`http://localhost:8080/account/login`,
       state?.credentials
-    ).then((response) => {
-      console.log('Login response', response)
-      if (response?.status !== 200) {
-        setState({ ...state, message: 'Login error' });
+    ).then((credentialsResponse) => {
+      console.log('Log in response', credentialsResponse)
+      if (credentialsResponse?.data === '') {
+        console.log('Credentials not found');
+        setState(state => ({
+          ...state,
+          message: 'Credentials not found'
+        }));
+        return;
       }
-      if (response?.data === '') {
-        setState({ ...state, message: 'Login failed' });
+      if (credentialsResponse?.data.credentials.suspended !== 0) {
+        console.log('Credentials have been suspended');
+        setState(state => ({
+          ...state,
+          message: 'Credentials have been suspended'
+        }));
+        return;
       }
-      else if (response?.data.credentials.suspended !== 0) {
-        setState({ ...state, message: 'Login suspended' });
-      }
-      else {
-        const currentUser = {
-          user_id: response?.data.user.id,
-          credentials_id: response?.data.credentials.id,
-          role: response?.data.credentials.role,
-          username: response?.data.credentials.username
-        };
-        setCurrentUser(currentUser);
-        LogIn(currentUser);
-        history.push(`/home`)
-      }
+      const currentUser = {
+        user_id: credentialsResponse?.data.user.id,
+        credentials_id: credentialsResponse?.data.credentials.id,
+        role: credentialsResponse?.data.credentials.role,
+        username: credentialsResponse?.data.credentials.username
+      };
+      setCurrentUser(currentUser);
+      LogIn(currentUser);
+      history.push(`/home`)
+    }).catch(error => {
+      console.log('Log in error', error);
+      setState(state => ({
+        ...state,
+        message: 'Log in error'
+      }));
     });
   }
 
@@ -62,6 +82,7 @@ export default function Login({ setCurrentUser }) {
       state={state}
       handleToggleHidePassword={handleToggleHidePassword}
       handleChange={handleChange}
+      handleKeyPress={handleKeyPress}
       handleSubmit={handleSubmit}
     />
   )

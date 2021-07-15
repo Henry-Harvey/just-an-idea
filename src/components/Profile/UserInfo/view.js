@@ -1,12 +1,12 @@
 import React from 'react';
-import { makeStyles, Typography, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip, IconButton } from '@material-ui/core'
-import { Edit as EditIcon, Delete as DeleteIcon, Done as DoneIcon, Close as CloseIcon } from '@material-ui/icons';
+import { makeStyles, TextField, Tooltip, IconButton } from '@material-ui/core'
+import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   textField: {
     width: '75%',
-    maxWidth: 500,
+    maxWidth: 600,
     minWidth: 100,
     marginBottom: '2%',
     overflow: 'hidden',
@@ -32,30 +32,11 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiInput-underline:after': {
       borderBottomColor: '#D6D6D6',
     },
-
   },
   multiline: {
     '& .MuiInputBase-input': {
       fontSize: 'calc(1rem + .5vmin)',
     }
-  },
-  button: {
-    marginTop: 10,
-    background: 'black',
-    color: 'white'
-  },
-  dialogTitle: {
-    color: 'white',
-    textAlign: 'center'
-  },
-  dialogContent: {
-    color: 'white'
-  },
-  dialogPaper: {
-    backgroundColor: '#292929'
-  },
-  message: {
-    color: 'red'
   },
   iconButton: {
     color: 'white'
@@ -63,26 +44,58 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserInfoView({
+  isUsersProfile,
   state,
-  handleChange,
-  handleOpenEdit,
-  handleCloseEdit,
-  handleSubmitEdit,
-  handleOpenDelete,
-  handleCloseDelete,
-  handleSubmitDelete
+  handleToggleEditDialog,
+  handleToggleDeleteDialog
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      <TextField
-        id='name'
-        label='Name'
-        value={state.user?.firstName + ' ' + state.user?.lastName}
-        className={styles.textField}
-        disabled
-      />
+      {!state.user?.firstName && !state.user?.lastName && !state.user?.occupation && !state.user?.state && !state.user?.age && !state.user?.bio ?
+        <TextField
+          id='no user data'
+          value='No User Data'
+          className={styles.textField}
+          disabled
+        />
+        :
+        null
+      }
+      {state.user?.firstName && state.user?.lastName ?
+        <TextField
+          id='name'
+          label='Name'
+          value={state.user?.firstName + ' ' + state.user?.lastName}
+          className={styles.textField}
+          disabled
+        />
+        :
+        null
+      }
+      {state.user?.firstName && !state.user?.lastName ?
+        <TextField
+          id='name'
+          label='First Name'
+          value={state.user?.firstName}
+          className={styles.textField}
+          disabled
+        />
+        :
+        null
+      }
+      {!state.user?.firstName && state.user?.lastName ?
+        <TextField
+          id='name'
+          label='Last Name'
+          value={state.user?.lastName}
+          className={styles.textField}
+          disabled
+        />
+        :
+        null
+      }
       {state.user?.occupation ?
         <TextField
           id='occupation'
@@ -129,124 +142,26 @@ export default function UserInfoView({
         :
         null
       }
-      <div>
-        <Tooltip title='Delete'>
-          <IconButton
-            className={styles.iconButton}
-            onClick={handleOpenDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title='Edit'>
-          <IconButton
-            className={styles.iconButton}
-            onClick={handleOpenEdit}>
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
-      <Dialog
-        open={state.openEdit}
-        keepMounted
-        onClose={handleCloseEdit}
-        classes={{ paper: styles.dialogPaper }}
-      >
-        <DialogTitle className={styles.dialogTitle}>Edit Profile</DialogTitle>
-        <DialogContent className={styles.dialogContent}>
-          <TextField
-            id='editFirstName'
-            label='First Name*'
-            value={state?.editUser.firstName}
-            onChange={handleChange('editUser', 'firstName')}
-            className={styles.textField}
-          />
-          <TextField
-            id='editLastName'
-            label='Last Name*'
-            value={state?.editUser.lastName}
-            onChange={handleChange('editUser', 'lastName')}
-            className={styles.textField}
-          />
-          <TextField
-            id='editOccupation'
-            label='Occupation'
-            value={state?.editUser.occupation}
-            onChange={handleChange('editUser', 'occupation')}
-            className={styles.textField}
-          />
-          <TextField
-            id='editState'
-            label='State'
-            value={state?.editUser.state}
-            onChange={handleChange('editUser', 'state')}
-            className={styles.textField}
-          />
-          <TextField
-            id='editAge'
-            label='Age'
-            value={state?.editUser.age}
-            onChange={handleChange('editUser', 'age')}
-            className={styles.textField}
-          />
-          <TextField
-            id='editBio'
-            label='Bio'
-            value={state?.editUser.bio}
-            onChange={handleChange('editUser', 'bio')}
-            className={clsx(styles.textField, styles.multiline)}
-            multiline
-            maxrows={5}
-          />
-          <Typography className={styles.message}>
-            {state.message}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Tooltip title='Cancel'>
+      {isUsersProfile ?
+        <div>
+          <Tooltip title='Delete'>
             <IconButton
               className={styles.iconButton}
-              onClick={handleCloseEdit}>
-              <CloseIcon />
+              onClick={handleToggleDeleteDialog}>
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Submit'>
+          <Tooltip title='Edit'>
             <IconButton
               className={styles.iconButton}
-              onClick={handleSubmitEdit}>
-              <DoneIcon />
+              onClick={handleToggleEditDialog}>
+              <EditIcon />
             </IconButton>
           </Tooltip>
-        </DialogActions>
-      </Dialog>
-      <Dialog
-        open={state.openDelete}
-        keepMounted
-        onClose={handleCloseDelete}
-        classes={{ paper: styles.dialogPaper }}
-      >
-        <DialogTitle className={styles.dialogTitle}>Delete User</DialogTitle>
-        <DialogContent>
-          <DialogContentText className={styles.dialogContent}>
-            Are you sure?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions className={styles.buttons}>
-          <Tooltip title='No'>
-            <IconButton
-              className={styles.iconButton}
-              onClick={handleCloseDelete}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Yes'>
-            <IconButton
-              className={styles.iconButton}
-              onClick={handleSubmitDelete}>
-              <DoneIcon />
-            </IconButton>
-          </Tooltip>
-        </DialogActions>
-      </Dialog>
+        </div>
+        :
+        null
+      }
     </React.Fragment>
   );
 }

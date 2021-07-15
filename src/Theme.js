@@ -6,7 +6,9 @@ const Theme = responsiveFontSizes(
       MUIDataTable: {
         paper: {
           background: 'none',
-          color: 'white'
+          color: 'white',
+          // Title left
+          textAlign: 'left'
         }
       },
       // Top icons and page arrows
@@ -23,6 +25,10 @@ const Theme = responsiveFontSizes(
       MUIDataTableHeadCell: {
         fixedHeader: {
           backgroundColor: 'transparent',
+          color: 'inherit'
+        },
+        // Soted column
+        sortActive: {
           color: 'inherit'
         }
       },
@@ -60,7 +66,7 @@ const Theme = responsiveFontSizes(
       MuiTableCell: {
         body: {
           color: 'inherit'
-        }
+        },
       },
       MuiCheckbox: {
         root: {
@@ -110,7 +116,29 @@ const Theme = responsiveFontSizes(
         root: {
           backgroundColor: 'inherit'
         }
-      }
+      },
+      // Sorted column icon
+      MuiTableSortLabel: {
+        icon: {
+          color: 'white !important'
+        }
+      },
+      // Row hover
+      MuiTableRow: {
+        root:
+        {
+          '&$hover:hover': {
+            backgroundColor: '#292929'
+          },
+          '&$selected:hover': {
+            backgroundColor: '#504c4c'
+          },
+          '&$selected': {
+            backgroundColor: '#504c4c !important',
+            border: '1px solidrgba(224, 224, 224, 1) !important'
+          },
+        }
+      },
     }
   })
 );

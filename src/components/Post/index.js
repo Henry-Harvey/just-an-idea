@@ -11,7 +11,6 @@ export default function Post({ currentUser }) {
       topics_id: -1,
       title: '',
       description: '',
-      upvotes: 0,
       timestamp: null
     },
     topic: {
@@ -23,35 +22,38 @@ export default function Post({ currentUser }) {
   });
 
   const handleChange = (object, prop) => (event) => {
-    setState({
+    setState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
         [prop]: event.target.value
       }
-    });
+    }));
+  };
+
+  const handleKeyPress = () => (event) => {
+    if (event?.charCode === 13) {
+      handleSubmit();
+    }
   };
 
   const handleSubmit = () => {
-    console.log('Post Idea + Topic', state?.idea, state?.topic)
+    console.log('Post with Idea & Topic', state?.idea, state?.topic)
     axios.post(`http://localhost:8080/content/post`,
       {
         idea: { ...state?.idea },
         topic: { ...state?.topic }
       }
-    ).then((response) => {
-      console.log('Post response', response)
-      if (response?.status !== 200) {
-        setState({ ...state, message: 'The post failed' });
-      }
-      else {
-        history.push(`/profile`)
-      }
+    ).then((ideaResponse) => {
+      console.log('Post response', ideaResponse)
+      history.push(`/profile`)
+    }).catch(error => {
+      console.log('Post error', error)
+      setState(state => ({
+        ...state,
+        message: 'Post error'
+      }));
     });
-  }
-
-  const handleNavigateToProfile = () => {
-    history.push(`/profile`)
   }
 
   return (
@@ -59,8 +61,8 @@ export default function Post({ currentUser }) {
       <PostView
         state={state}
         handleChange={handleChange}
+        handleKeyPress={handleKeyPress}
         handleSubmit={handleSubmit}
-        handleNavigateToProfile={handleNavigateToProfile}
       />
     </React.Fragment>
   );

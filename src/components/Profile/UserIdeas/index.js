@@ -1,52 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import history from '../../../utils/history'
 import axios from 'axios';
 import UserIdeasView from './view';
+import UserIdeasToolbar from './UserIdeasToolbar'
 
-export default function UserIdeas({ currentUser, setCurrentUser }) {
+export default function UserIdeas({ userId, isUsersProfile }) {
 
   const [state, setState] = useState({
-    ideas: [
-      /*
-      {
-        id: -1,
-        users_id: currentUser.user_id,
-        topics_id: -1,
-        title: '',
-        description: '',
-        upvotes: 0,
-        timestamp: null
-      }
-      */
-    ],
+    ideasInfo: {
+      ideas: []
+    },
     table: {
       options:
       {
         print: false,
         download: false,
-        rowsPerPage: 10,
+        viewColumns: false,
+        selectableRows: 'single',
+        selectableRowsOnClick: true,
+        selectableRowsHideCheckboxes: true,
         rowsPerPageOptions: [10],
-        onRowsDelete: null
+        customToolbarSelect: null
       },
       columns:
         [
-          /*
           {
-            name: 'topic title',
-            label: 'Topic'
+            name: 'upvotes',
+            label: 'Upvotes'
           },
-          */
           {
             name: 'title',
             label: 'Title'
           },
           {
-            name: 'description',
-            label: 'Description'
-          },
-          {
-            name: 'upvotes',
-            label: 'Upvotes'
+            name: 'topic',
+            label: 'Topic'
           },
           {
             name: 'timestamp',
@@ -58,60 +45,67 @@ export default function UserIdeas({ currentUser, setCurrentUser }) {
   );
 
   useEffect(() => {
-    console.log('Retrieve Users Ideas', currentUser.user_id)
-    axios.post(`http://localhost:8080/content/ideas`,
+    let ideasArray = [];
+
+    console.log('Retrieve Idea Infos with users_id', userId);
+    axios.post(`http://localhost:8080/content/ideas/info`,
       {
-        users_id: currentUser.user_id
+        users_id: userId
       }
-    ).then((response) => {
-      console.log('Retrieve Users Ideas response', response)
-      if (response?.status !== 200) {
-        alert('Retrieve Users Ideas failed')
+    ).then((ideaResponse) => {
+      console.log('Retrieve Idea Infos response', ideaResponse);
+      if (ideaResponse?.data === '') {
+        console.log('Idea Infos not found');
+        return;
       }
-      else {
-        setState(state => ({
-          ...state,
-          ideas: response.data
-        }));
-        setState(state => ({
-          ...state,
-          table: {
-            ...state.table,
-            options: {
-              ...state.table.options,
-              onRowsDelete: (rowsDeleted) => {
-                handleDelete(rowsDeleted.data.map(dataItem => state.ideas[dataItem.dataIndex]));
-              }
+      for (let i = 0; i < ideaResponse?.data.ideas.length; i++) {
+        ideasArray.push(
+          {
+            id: ideaResponse?.data.ideas[i].id,
+            topics_id: ideaResponse?.data.topics[i].id,
+            upvotes: ideaResponse?.data.upvotes[i],
+            title: ideaResponse?.data.ideas[i].title,
+            topic: ideaResponse?.data.topics[i].title,
+            timestamp: ideaResponse?.data.ideas[i].timestamp
+          }
+        );
+      }
+      setState(state => ({
+        ...state,
+        ideasInfo: {
+          ideas: ideasArray
+        }
+      }));
+    }).catch(error => {
+      console.log('Retrieve Idea Infos error', error);
+    });
+
+    setTimeout(() => {
+      setState(state => ({
+        ...state,
+        table: {
+          ...state.table,
+          options: {
+            ...state.table.options,
+            customToolbarSelect: (selectedRows) => {
+              return (
+                <UserIdeasToolbar
+                  selectedIdea={state.ideasInfo.ideas[selectedRows.data[0].index]}
+                  isUsersProfile={isUsersProfile}
+                />
+              )
             }
           }
-        }));
-      }
-    });
-  }, [currentUser]);
-
-  const handleDelete = (ideasToDelete) => {
-    console.log('Delete Idea', ideasToDelete)
-    ideasToDelete.forEach(idea => {
-      console.log('Delete Idea', idea.id)
-      axios.delete(`http://localhost:8080/content/idea/${idea.id}`)
-        .then((response) => {
-          console.log('Delete response', response)
-          if (response?.status !== 200) {
-            alert('Delete Error')
-          }
-        });
-    });
-  }
-
-  const handleNavigateToPost = () => {
-    history.push(`/post`)
-  }
+        }
+      }));
+    }, 200);
+  }, [userId, isUsersProfile]);
 
   return (
     <React.Fragment>
       <UserIdeasView
+        isUsersProfile={isUsersProfile}
         state={state}
-        handleNavigateToPost={handleNavigateToPost}
       />
     </React.Fragment>
   );

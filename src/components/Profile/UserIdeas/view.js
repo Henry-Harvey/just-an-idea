@@ -1,28 +1,46 @@
 import React from 'react';
 import MUIDataTable from 'mui-datatables';
-import { Tooltip, IconButton } from '@material-ui/core'
+import { makeStyles, Tooltip, IconButton } from '@material-ui/core'
 import { AddCircle as AddCircleIcon } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
+
+const useStyles = makeStyles((theme) => ({
+  table: {
+    width: '75%',
+    maxWidth: 600,
+    minWidth: 100,
+    marginBottom: '2%',
+    overflow: 'hidden',
+  }
+}));
 
 export default function UserIdeasView({
   state,
-  handleNavigateToPost
+  isUsersProfile
 }) {
+  const styles = useStyles();
 
   return (
     <React.Fragment>
       <MUIDataTable
         title={"Ideas"}
-        data={state.ideas}
+        data={state.ideasInfo.ideas}
         columns={state.table.columns}
         options={state.table.options}
+        className={styles.table}
       />
       <div>
-        <Tooltip title='Post a New Idea'>
-          <IconButton
-            onClick={handleNavigateToPost}>
-            <AddCircleIcon />
-          </IconButton>
-        </Tooltip>
+        {isUsersProfile ?
+          <Link to='/post'>
+            <Tooltip title='Post a New Idea'>
+              <IconButton>
+                <AddCircleIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+          :
+          null
+        }
       </div>
     </React.Fragment >
   );
