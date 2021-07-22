@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip, IconButton } from '@material-ui/core'
-import { Done as DoneIcon, Close as CloseIcon } from '@material-ui/icons';
+import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 import StateDropdown from './StateDropdown'
 
@@ -131,7 +131,7 @@ export default function EditUserInfoView({
               <IconButton
                 className={styles.iconButton}
                 onClick={handleSubmitEdit}>
-                <DoneIcon />
+                <CheckIcon />
               </IconButton>
             </Tooltip>
           </DialogActions>

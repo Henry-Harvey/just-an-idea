@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function PinsView({ selectedIndex, pins, handleClick }) {
+export default function PinsView({ state, handleClick }) {
   const styles = useStyles();
 
   return (
@@ -28,20 +28,28 @@ export default function PinsView({ selectedIndex, pins, handleClick }) {
       <Link to='/pins' className={styles.link}>
         <Typography className={styles.title}>
           Pins
-          </Typography>
+        </Typography>
       </Link>
 
       <List component="nav" className={styles.list}>
-        {pins?.map(pin => (
-          <ListItem
-            key={pin.id}
-            button
-            selected={selectedIndex === pin.id}
-            onClick={(event) => handleClick(event, pin.id)}
-          >
-            <ListItemText primary={pin.name} />
+        {state.pinInfos?.length > 0 ?
+          state.pinInfos?.map(pinInfo => (
+            <Link to={'/topic/' + pinInfo.topics_id} className={styles.link}>
+              <ListItem
+                key={pinInfo.id}
+                button
+                selected={state.selectedIndex === pinInfo.id}
+                onClick={(event) => handleClick(event, pinInfo.id)}
+              >
+                <ListItemText primary={pinInfo.topics_title} />
+              </ListItem>
+            </Link>
+          ))
+          :
+          <ListItem>
+            <ListItemText primary={<i>Pin a topic to save it here!</i>} />
           </ListItem>
-        ))}
+        }
       </List>
     </React.Fragment>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { makeStyles, Tooltip, IconButton } from '@material-ui/core'
-import { AddCircle as AddCircleIcon } from '@material-ui/icons';
+import { AddBox as PostIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,7 @@ export default function UserIdeasView({
           <Link to='/post'>
             <Tooltip title='Post a New Idea'>
               <IconButton>
-                <AddCircleIcon />
+                <PostIcon />
               </IconButton>
             </Tooltip>
           </Link>

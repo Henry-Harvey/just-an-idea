@@ -9,7 +9,9 @@ export default function SidePanel({ currentUser }) {
       <NavBox
         currentUser={currentUser}
       />
-      <Pins />
+      <Pins 
+        currentUser={currentUser}
+      />
     </React.Fragment>
   );
 }

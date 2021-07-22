@@ -63,7 +63,7 @@ export default function UserInfo({ userId, isUsersProfile, setCurrentUser }) {
       }).catch(error => {
         console.log('Retrieve User error', error);
       });
-  };
+  }
 
   const handleChange = (object, prop) => (event) => {
     setState(state => ({
@@ -73,7 +73,7 @@ export default function UserInfo({ userId, isUsersProfile, setCurrentUser }) {
         [prop]: event.target.value
       }
     }));
-  };
+  }
 
   const handleToggleEditDialog = () => {
     setState(state => ({
@@ -82,14 +82,14 @@ export default function UserInfo({ userId, isUsersProfile, setCurrentUser }) {
       message: '',
       isEditDialogOpen: !state.isEditDialogOpen,
     }));
-  };
+  }
 
   const handleToggleDeleteDialog = () => {
     setState(state => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen
     }));
-  };
+  }
 
   return (
     <React.Fragment>

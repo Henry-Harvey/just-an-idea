@@ -4,7 +4,7 @@ import { LogOut } from '../../../../utils'
 import history from '../../../../utils/history'
 import DeleteUserView from './view';
 
-export default function DeleteUser({ isUsersProfile, state, setState, setCurrentUser, handleToggleDeleteDialog }) {
+export default function DeleteUser({ isUsersProfile, state, setCurrentUser, handleToggleDeleteDialog }) {
   const handleSubmitDelete = () => {
     console.log('Delete User with id', state?.user.id)
     axios.delete(`http://localhost:8080/account/user/${state?.user.id}`)

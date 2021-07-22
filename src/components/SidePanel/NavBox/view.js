@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, makeStyles, Typography, IconButton, Tooltip } from '@material-ui/core'
-import { Home as HomeIcon, Info as InfoIcon, AccountBox as AccountBoxIcon, AddCircle as AddCircleIcon, ExitToApp as ExitToAppIcon, Assignment as AssignmentIcon } from '@material-ui/icons';
+import { Home as HomeIcon, Info as InfoIcon, AccountBox as AccountIcon, AddBox as PostIcon, ExitToApp as LogInOutIcon, Assignment as RegistrationIcon, ArrowDropDownCircle as UpvotesIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,16 +15,18 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   toolbar: {
-    display: 'flex -moz-flex -ms-flexbox -webkit-flex',
-    flexDirection: 'row',
     justifyContent: 'space-evenly',
     minWidth: 20,
     flexWrap: 'wrap'
   },
   iconButton: {
-    cursor: 'pointer',
-    color: 'white',
-    width: 30
+    width: 33,
+    padding: 8
+  },
+  upsideDownIconButton: {
+    width: 33,
+    padding: 8,
+    transform: 'rotate(180deg)'
   },
   link: {
     textDecoration: 'none',
@@ -68,7 +70,20 @@ export default function NavBoxView({ currentUser }) {
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
-                  <AccountBoxIcon />
+                  <AccountIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            :
+            null
+          }
+          {currentUser?.username ?
+            <Link to='/upvotes' >
+              <Tooltip title={'My Upvotes'}>
+                <IconButton
+                  className={styles.upsideDownIconButton}
+                  onClick={null}>
+                  <UpvotesIcon />
                 </IconButton>
               </Tooltip>
             </Link>
@@ -81,7 +96,7 @@ export default function NavBoxView({ currentUser }) {
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
-                  <AddCircleIcon />
+                  <PostIcon />
                 </IconButton>
               </Tooltip>
             </Link>
@@ -96,7 +111,7 @@ export default function NavBoxView({ currentUser }) {
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
-                  <AssignmentIcon />
+                  <RegistrationIcon />
                 </IconButton>
               </Tooltip>
             </Link>
@@ -107,17 +122,17 @@ export default function NavBoxView({ currentUser }) {
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
-                  <ExitToAppIcon />
+                  <LogInOutIcon />
                 </IconButton>
               </Tooltip>
             </Link>
             :
             <Link to='/login'>
-              <Tooltip title='Log in'>
+              <Tooltip title='Login'>
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
-                  <ExitToAppIcon />
+                  <LogInOutIcon />
                 </IconButton>
               </Tooltip>
             </Link>

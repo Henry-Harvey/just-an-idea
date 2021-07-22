@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import SearchView from './view';
-import SearchToolbar from './SearchToolbar'
+import SearchSelectToolbar from './SearchSelectToolbar'
 
 export default function Search() {
   let searchString = useParams().searchString;
@@ -135,8 +135,8 @@ export default function Search() {
             ...state.table.options,
             customToolbarSelect: (selectedRows) => {
               return (
-                <SearchToolbar
-                  selectedResult={resultsArray[selectedRows.data[0].index]}
+                <SearchSelectToolbar
+                  selectedResult={resultsArray[selectedRows.data[0].dataIndex]}
                 />
               )
             }

@@ -12,6 +12,7 @@ import SearchBar from './components/SearchBar'
 import Home from './components/Home'
 import About from './components/About'
 import Profile from './components/Profile'
+import MyUpvotes from './components/MyUpvotes'
 import Post from './components/Post'
 import Login from './components/Login'
 import Registration from './components/Registration'
@@ -151,6 +152,7 @@ export default function App() {
             />
             <Switch>
               <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser} />
+              <PrivateRoute component={MyUpvotes} path="/upvotes" currentUser={currentUser} />
               <PrivateRoute component={Post} path="/post" currentUser={currentUser} />
               <PrivateRoute component={Logout} path="/logout" setCurrentUser={setCurrentUser} />
               <PublicRoute component={Profile} path="/profile/:userId" currentUser={currentUser} setCurrentUser={setCurrentUser} />

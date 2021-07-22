@@ -54,7 +54,7 @@ export default function Post({ currentUser }) {
         message: 'Post error'
       }));
     });
-  }
+  };
 
   return (
     <React.Fragment>

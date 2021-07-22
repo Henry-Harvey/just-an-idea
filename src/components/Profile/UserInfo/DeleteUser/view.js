@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip, IconButton } from '@material-ui/core'
-import { Done as DoneIcon, Close as CloseIcon } from '@material-ui/icons';
+import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   dialogTitle: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UserInfoView({
+export default function DeleteUserView({
   isUsersProfile,
   state,
   handleToggleDeleteDialog,
@@ -52,7 +52,7 @@ export default function UserInfoView({
               <IconButton
                 className={styles.iconButton}
                 onClick={handleSubmitDelete}>
-                <DoneIcon />
+                <CheckIcon />
               </IconButton>
             </Tooltip>
           </DialogActions>

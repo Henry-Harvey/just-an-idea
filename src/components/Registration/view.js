@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography, TextField, FormControl, InputLabel, Input, InputAdornment, IconButton, Tooltip } from '@material-ui/core';
-import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon, ArrowForward as ArrowForwardIcon, ImportExport as ImportExportIcon } from '@material-ui/icons';
+import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon, ArrowForwardIos as ProceedIcon, ExitToApp as LogInOutIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import StateDropdown from './StateDropdown'
@@ -166,7 +166,7 @@ export default function RegistrationView({
               <IconButton
                 className={styles.iconButton}
                 onClick={null}>
-                <ImportExportIcon />
+                <LogInOutIcon />
               </IconButton>
             </Tooltip>
           </Link>
@@ -174,7 +174,7 @@ export default function RegistrationView({
             <IconButton
               className={styles.iconButton}
               onClick={handleSubmit}>
-              <ArrowForwardIcon />
+              <ProceedIcon />
             </IconButton>
           </Tooltip>
         </div>

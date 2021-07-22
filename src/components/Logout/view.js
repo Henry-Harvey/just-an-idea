@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip, IconButton } from '@material-ui/core';
-import { Done as DoneIcon, Close as CloseIcon } from '@material-ui/icons';
+import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -59,7 +59,7 @@ export default function LogoutView({
                         <IconButton
                             className={styles.iconButton}
                             onClick={handleSubmit}>
-                            <DoneIcon />
+                            <CheckIcon />
                         </IconButton>
                     </Tooltip>
                 </DialogActions>

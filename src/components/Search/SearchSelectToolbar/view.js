@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip, IconButton } from '@material-ui/core'
 import { Visibility as VisibilityIcon } from '@material-ui/icons';
 
-export default function SearchToolbarView({ handleNavigateToItem }) {
+export default function SearchSelectToolbarView({ handleNavigateToItem }) {
 
   return (
     <React.Fragment>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { makeStyles, Typography, TextField } from '@material-ui/core'
 import clsx from 'clsx';
-import { IconButton, Tooltip } from '@material-ui/core';
-import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons';
+import { Tooltip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Upvote from './Upvote';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 export default function IdeaView({
   currentUser,
   state,
-  handleUpvoteIdea
+  setState
 }) {
   const styles = useStyles();
 
@@ -95,16 +95,14 @@ export default function IdeaView({
             {state.ideaInfo?.upvotes}
           </Typography>
         </Tooltip>
-        {currentUser.user_id === state.ideaInfo?.idea.users_id ?
+        {currentUser.user_id === state.ideaInfo?.idea.users_id || currentUser.user_id === -1 ?
           null
           :
-          <Tooltip title={<div>Upvote Idea</div>}>
-            <IconButton
-              className={styles.iconButton}
-              onClick={handleUpvoteIdea}>
-              <ArrowUpwardIcon />
-            </IconButton>
-          </Tooltip>
+          <Upvote
+            currentUser={currentUser}
+            state={state}
+            setState={setState}
+          />
         }
       </div>
       <div className={styles.form}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography, TextField, IconButton, Tooltip } from '@material-ui/core';
-import { ArrowForward as ArrowForwardIcon, List as ListIcon } from '@material-ui/icons';
+import { ArrowForwardIos as ProceedIcon, FormatListBulleted as IdeasIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -110,7 +110,7 @@ export default function PostView({
             <Tooltip title='See My Ideas'>
               <IconButton
                 className={styles.iconButton}>
-                <ListIcon />
+                <IdeasIcon />
               </IconButton>
             </Tooltip>
           </Link>
@@ -118,7 +118,7 @@ export default function PostView({
             <IconButton
               className={styles.iconButton}
               onClick={handleSubmit}>
-              <ArrowForwardIcon />
+              <ProceedIcon />
             </IconButton>
           </Tooltip>
         </div>

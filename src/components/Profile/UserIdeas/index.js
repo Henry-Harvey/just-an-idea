@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UserIdeasView from './view';
-import UserIdeasToolbar from './UserIdeasToolbar'
+import UserIdeasSelectToolbar from './UserIdeasSelectToolbar'
 
 export default function UserIdeas({ userId, isUsersProfile }) {
 
@@ -36,6 +36,7 @@ export default function UserIdeas({ userId, isUsersProfile }) {
             label: 'Topic'
           },
           {
+            options: { sortDirection: 'desc' },
             name: 'timestamp',
             label: 'Created on'
           }
@@ -89,8 +90,8 @@ export default function UserIdeas({ userId, isUsersProfile }) {
             ...state.table.options,
             customToolbarSelect: (selectedRows) => {
               return (
-                <UserIdeasToolbar
-                  selectedIdea={state.ideasInfo.ideas[selectedRows.data[0].index]}
+                <UserIdeasSelectToolbar
+                  selectedIdea={state.ideasInfo.ideas[selectedRows.data[0].dataIndex]}
                   isUsersProfile={isUsersProfile}
                 />
               )
