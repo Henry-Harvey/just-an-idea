@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LoginView({
-  state,
+  loginState,
   handleToggleHidePassword,
   handleChange,
   handleKeyPress,
@@ -75,7 +75,7 @@ export default function LoginView({
         <TextField
           id='username'
           label='Username'
-          value={state?.credentials.username}
+          value={loginState.credentials.username}
           onChange={handleChange('credentials', 'username')}
           className={styles.textField}
         />
@@ -85,10 +85,10 @@ export default function LoginView({
           </InputLabel>
           <Input
             id='password'
-            value={state?.credentials.password}
+            value={loginState.credentials.password}
             onChange={handleChange('credentials', 'password')}
             onKeyPress={handleKeyPress()}
-            type={state?.hidePassword ? 'password' : 'text'}
+            type={loginState.hidePassword ? 'password' : 'text'}
             endAdornment={
               <InputAdornment position='end'>
                 <Tooltip title='Show/Hide'>
@@ -96,7 +96,7 @@ export default function LoginView({
                     className={styles.iconButton}
                     onClick={handleToggleHidePassword}
                   >
-                    {state?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    {loginState?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </IconButton>
                 </Tooltip>
               </InputAdornment>
@@ -104,7 +104,7 @@ export default function LoginView({
           />
         </FormControl>
         <Typography className={styles.message}>
-          {state.message}
+          {loginState.message}
         </Typography>
         <div>
           <Link to='/registration'>

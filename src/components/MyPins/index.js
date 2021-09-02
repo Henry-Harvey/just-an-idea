@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MyUpvotesView from './view';
-import MyUpvotesSelectToolbar from './MyUpvotesSelectToolbar'
+import MyPinsView from './view';
+import MyPinsSelectToolbar from './MyPinsSelectToolbar'
 
-export default function MyUpvotes({
+export default function MyPins({
   currentUser
 }) {
-  const [myUpvotesState, setMyUpvotesState] = useState({
-    upvotes: [],
+  const [myPinsState, setMyPinsState] = useState({
+    pins: [],
     table: {
       options:
       {
@@ -27,54 +27,47 @@ export default function MyUpvotes({
           {
             options: { sortDirection: 'desc' },
             name: 'timestamp',
-            label: 'Upvoted on'
+            label: 'Pinned on'
           },
           {
-            name: 'idea.title',
+            name: 'topic.title',
             label: 'Title',
           },
           {
-            name: 'idea.topic.title',
-            label: 'Topic'
-          },
-          {
-            name: 'idea.user.display_name',
-            label: 'Author'
+            name: 'topic.ideas.length',
+            label: 'No. of Ideas'
           }
         ]
     }
   });
 
   useEffect(() => {
-    if (typeof currentUser.user_id !== 'number') {
+    if (typeof currentUser?.user_id !== 'number') {
       return;
     }
-    if (currentUser.user_id < 0) {
-      return;
-    }
-    console.log('Retrieve Upvotes with user_id', currentUser.user_id);
-    axios.post(`http://localhost:8080/content/upvotes`,
+    console.log('Retrieve Pins with user_id', currentUser.user_id);
+    axios.post(`http://localhost:8080/content/pins`,
       {
-        upvote_id: {
+        pin_id: {
           user_id: currentUser.user_id
         }
       }
-    ).then((upvoteResponse) => {
-      console.log('Retrieve Upvote response', upvoteResponse);
-      if (upvoteResponse?.data === '') {
-        console.log('Upvote not found');
+    ).then((pinResponse) => {
+      console.log('Retrieve Pin response', pinResponse);
+      if (pinResponse?.data === '') {
+        console.log('Pin not found');
         return;
       }
-      setMyUpvotesState(state => ({
+      setMyPinsState(state => ({
         ...state,
-        upvotes: upvoteResponse.data
+        pins: pinResponse.data
       }));
     }).catch(error => {
-      console.log('Retrieve Upvote Info error', error);
+      console.log('Retrieve Pin Info error', error);
     });
 
     setTimeout(() => {
-      setMyUpvotesState(state => ({
+      setMyPinsState(state => ({
         ...state,
         table: {
           ...state.table,
@@ -82,8 +75,8 @@ export default function MyUpvotes({
             ...state.table.options,
             customToolbarSelect: (selectedRows) => {
               return (
-                <MyUpvotesSelectToolbar
-                  selectedUpvote={state.upvotes[selectedRows.data[0].dataIndex]}
+                <MyPinsSelectToolbar
+                  selectedPin={state.pins[selectedRows.data[0].dataIndex]}
                   currentUser={currentUser}
                 />
               )
@@ -96,8 +89,8 @@ export default function MyUpvotes({
 
   return (
     <React.Fragment>
-      <MyUpvotesView
-        myUpvotesState={myUpvotesState}
+      <MyPinsView
+        myPinsState={myPinsState}
       />
     </React.Fragment>
   );

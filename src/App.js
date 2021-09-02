@@ -13,6 +13,7 @@ import Home from './components/Home'
 import About from './components/About'
 import Profile from './components/Profile'
 import MyUpvotes from './components/MyUpvotes'
+import MyPins from './components/MyPins'
 import Post from './components/Post'
 import Login from './components/Login'
 import Registration from './components/Registration'
@@ -26,7 +27,6 @@ import Idea from './components/Idea';
 
 const useStyles = makeStyles({
   body: {
-    width: '100vw',
     height: '100vh',
     display: 'flex',
     flexFlow: 'nowrap column',
@@ -85,6 +85,10 @@ const useStyles = makeStyles({
     display: 'block',
     flexFlow: 'column nowrap',
     textAlign: 'center',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: '0px'
+    }
   },
   footer: {
     display: 'flex',
@@ -106,12 +110,7 @@ document.title = 'Just An Idea';
 export default function App() {
   const styles = useStyles();
   const [displaySidePanel, setDisplaySidePanel] = useState(true);
-  const [currentUser, setCurrentUser] = useState({
-    user_id: -1,
-    credentials_id: -1,
-    role: -1,
-    username: ''
-  });
+  const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
     if (IsLoggedIn()) {
@@ -153,6 +152,7 @@ export default function App() {
             <Switch>
               <PrivateRoute component={Profile} path="/profile" exact currentUser={currentUser} setCurrentUser={setCurrentUser} />
               <PrivateRoute component={MyUpvotes} path="/upvotes" currentUser={currentUser} />
+              <PrivateRoute component={MyPins} path="/pins" currentUser={currentUser} />
               <PrivateRoute component={Post} path="/post" currentUser={currentUser} />
               <PrivateRoute component={Logout} path="/logout" setCurrentUser={setCurrentUser} />
               <PublicRoute component={Profile} path="/profile/:userId" currentUser={currentUser} setCurrentUser={setCurrentUser} />

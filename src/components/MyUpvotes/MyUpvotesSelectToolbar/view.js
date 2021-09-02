@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MyUpvotesSelectToolbarView({
-  selectedIdea,
+  selectedUpvote,
   handleToggleDeleteDialog
 }) {
   const styles = useStyles();
@@ -29,7 +29,7 @@ export default function MyUpvotesSelectToolbarView({
     <React.Fragment>
       <div className={styles.toolbar}>
         <Link
-          to={'/idea/' + selectedIdea.id}
+          to={'/idea/' + selectedUpvote.idea.id}
           className={styles.link}
         >
           <Tooltip title="View Idea">
@@ -39,7 +39,7 @@ export default function MyUpvotesSelectToolbarView({
           </Tooltip>
         </Link>
         <Link
-          to={'/topic/' + selectedIdea.topics_id}
+          to={'/topic/' + selectedUpvote.idea.topic.id}
           className={styles.link}
         >
           <Tooltip title="View Topic">
@@ -49,7 +49,7 @@ export default function MyUpvotesSelectToolbarView({
           </Tooltip>
         </Link>
         <Link
-          to={'/profile/' + selectedIdea.users_id}
+          to={'/profile/' + selectedUpvote.idea.user.id}
           className={styles.link}
         >
           <Tooltip title="View Author">

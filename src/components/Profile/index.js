@@ -4,48 +4,66 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Profile({ currentUser, setCurrentUser }) {
-  const [state, setState] = useState({
-    title: ''
+  const [profileState, setProfileState] = useState({
+    user: {
+      display_name: '',
+      first_name: '',
+      last_name: '',
+      occupation: '',
+      state: '',
+      age: '',
+      bio: '',
+      ideas: []
+    }
   });
 
-  let userId = parseInt(useParams().userId);
+  let id = parseInt(useParams().userId);
   let isUsersProfile = false;
 
-  if (isNaN(userId) || userId === currentUser.user_id) {
-    userId = currentUser.user_id;
-    isUsersProfile = true;
+  if (currentUser) {
+    if (isNaN(id) || id === currentUser.user_id) {
+      id = currentUser.user_id;
+      isUsersProfile = true;
+    }
   }
 
   useEffect(() => {
-    console.log('Retrieve Credentials with users_id', userId)
-    axios.post(`http://localhost:8080/account/credentials`,
-      {
-        users_id: userId
-      }
-    ).then((credentialsResponse) => {
-      console.log('Retrieve Credentials response', credentialsResponse)
-      if (credentialsResponse?.data === '') {
-        console.log('Credentials not found');
+    if (typeof id !== 'number') {
+      return;
+    }
+    console.log('Retrieve User with id', id)
+    axios.get(`http://localhost:8080/account/user/${id}`
+    ).then((userResponse) => {
+      console.log('Retrieve User response', userResponse)
+      if (userResponse.data === '') {
+        console.log('User not found');
         return;
       }
       else {
-        setState(state => ({
+        setProfileState(state => ({
           ...state,
-          title: credentialsResponse.data[0]?.username
+          user: userResponse.data
         }));
       }
     }).catch(error => {
-      console.log('Retrieve Credentials error', error);
+      console.log('Retrieve User error', error);
     });
-  }, [userId]);
+  }, [id]);
+
+  const updateUser = (editUser) => {
+    setProfileState(state => ({
+      ...state,
+      user: editUser
+    }));
+  };
 
   return (
     <React.Fragment>
       <ProfileView
-        state={state}
-        userId={userId}
+        profileState={profileState}
         isUsersProfile={isUsersProfile}
         setCurrentUser={setCurrentUser}
+        updateUser={updateUser}
       />
     </React.Fragment>
   );

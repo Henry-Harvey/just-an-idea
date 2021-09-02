@@ -2,58 +2,45 @@ import React from 'react';
 import axios from 'axios';
 import TopicToolbarView from './view';
 
-export default function TopicToolbar({ currentUser, state, setState }) {
+export default function TopicToolbar({
+  currentUser,
+  topicState,
+}) {
 
-  const handleTogglePin = () => {
-    if (state.isPinned) {
-      console.log('Delete Pin with users_id & topics_id', currentUser.user_id, state.topicInfo.topic.id);
-      axios.delete(`http://localhost:8080/content/pin/`,
-        {
-          data: {
-            users_id: currentUser.user_id,
-            topics_id: state.topicInfo.topic.id
-          }
-        }
+  const togglePin = () => {
+    if (topicState.isPinned) {
+      console.log('Delete Pin with user_id & topic_id', currentUser.user_id, topicState.topic.id);
+      axios.delete(`http://localhost:8080/content/pin/${currentUser.user_id}/${topicState.topic.id}`
       ).then((pinResponse) => {
         console.log('Delete Pin response', pinResponse);
-        setState(state => ({
-          ...state,
-          isPinned: false
-        }));
+        window.location.reload();
       }).catch(error => {
         console.log('Delete Pin error', error);
-      }).then(
-        window.location.reload()
-      );
+      });
     }
     else {
-      console.log('Create Pin with users_id & topics_id', currentUser.user_id, state.topicInfo.topic.id);
+      console.log('Create Pin with user_id & topic_id', currentUser.user_id, topicState.topic.id);
       axios.post(`http://localhost:8080/content/pin`,
         {
-          pins_id: {
-            users_id: currentUser.user_id,
-            topics_id: state.topicInfo.topic.id
+          pin_id: {
+            user_id: currentUser.user_id,
+            topic_id: topicState.topic.id
           }
         }
       ).then((pinResponse) => {
         console.log('Create Pin response', pinResponse);
-        setState(state => ({
-          ...state,
-          isPinned: true
-        }));
+        window.location.reload();
       }).catch(error => {
         console.log('Create Pin error', error);
-      }).then(
-        window.location.reload()
-      );
+      });
     }
   };
 
   return (
     <React.Fragment>
       < TopicToolbarView
-        handleTogglePin={handleTogglePin}
-        state={state}
+        topicState={topicState}
+        togglePin={togglePin}
       />
     </React.Fragment>
   );

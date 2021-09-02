@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DeleteUserView({
+  userInfoState,
   isUsersProfile,
-  state,
   handleToggleDeleteDialog,
   handleSubmitDelete
 }) {
@@ -27,9 +27,10 @@ export default function DeleteUserView({
 
   return (
     <React.Fragment>
-      {isUsersProfile ?
+      {isUsersProfile
+        ?
         <Dialog
-          open={state.isDeleteDialogOpen}
+          open={userInfoState.isDeleteDialogOpen}
           keepMounted
           onClose={handleToggleDeleteDialog}
           classes={{ paper: styles.dialogPaper }}

@@ -1,91 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import UserInfoView from './view';
-import EditUserInfo from './EditUserInfo'
+import EditUser from './EditUser'
 import DeleteUser from './DeleteUser'
 
-export default function UserInfo({ userId, isUsersProfile, setCurrentUser }) {
-  const [state, setState] = useState({
-    user: {
-      id: -1,
-      firstName: '',
-      lastName: '',
-      occupation: '',
-      state: '',
-      age: '',
-      bio: ''
-    },
-    editUser: {
-      id: -1,
-      firstName: '',
-      lastName: '',
-      occupation: '',
-      state: '',
-      age: '',
-      bio: ''
-    },
+export default function UserInfo({ 
+  profileState, 
+  isUsersProfile, 
+  setCurrentUser,
+  updateUser
+}) {
+  const [userInfoState, setUserInfoState] = useState({
     isEditDialogOpen: false,
-    message: '',
-    isDeleteDialogOpen: false
+    isDeleteDialogOpen: false,
+    editUser:{},
+    message: ''
   });
 
-  useEffect(() => {
-    console.log('Retrieve User with id', userId)
-    axios.get(`http://localhost:8080/account/user/${userId}`)
-      .then((userResponse) => {
-        console.log('Retrieve User response', userResponse)
-        if (userResponse?.data === '') {
-          console.log('User not found');
-          return;
-        }
-        setState(state => ({
-          ...state,
-          user: userResponse.data
-        }));
-      }).catch(error => {
-        console.log('Retrieve User error', error);
-      });
-  }, [userId]);
-
-  const handleRetrieveUser = () => {
-    console.log('Retrieve User with id', userId)
-    axios.get(`http://localhost:8080/account/user/${userId}`)
-      .then((userResponse) => {
-        console.log('Retrieve User response', userResponse)
-        if (userResponse?.data === '') {
-          console.log('User not found');
-          return;
-        }
-        setState(state => ({
-          ...state,
-          user: userResponse.data
-        }));
-      }).catch(error => {
-        console.log('Retrieve User error', error);
-      });
+  const handleToggleEditDialog = () => {
+    setUserInfoState(state => ({
+      ...state,
+      isEditDialogOpen: !state.isEditDialogOpen,
+      editUser: profileState.user,
+      message: ''
+    }));
   }
 
   const handleChange = (object, prop) => (event) => {
-    setState(state => ({
+    setUserInfoState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
         [prop]: event.target.value
       }
     }));
-  }
+  };
 
-  const handleToggleEditDialog = () => {
-    setState(state => ({
+  const handleSelectState = (stateAbbreviation) => {
+    setUserInfoState(state => ({
       ...state,
-      editUser: state.user,
-      message: '',
-      isEditDialogOpen: !state.isEditDialogOpen,
+      editUser: {
+        ...state?.editUser,
+        state: stateAbbreviation
+      }
     }));
   }
 
+  const handleEditErrorMessage = () => {
+    setUserInfoState(state => ({
+      ...state,
+      message: 'Edit User error'
+    }));
+  };
+
   const handleToggleDeleteDialog = () => {
-    setState(state => ({
+    setUserInfoState(state => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen
     }));
@@ -94,25 +62,26 @@ export default function UserInfo({ userId, isUsersProfile, setCurrentUser }) {
   return (
     <React.Fragment>
       <UserInfoView
+        profileState={profileState}
         isUsersProfile={isUsersProfile}
-        state={state}
-        handleChange={handleChange}
         handleToggleEditDialog={handleToggleEditDialog}
         handleToggleDeleteDialog={handleToggleDeleteDialog}
       />
-      <EditUserInfo
+      <EditUser
+        profileState={profileState}
+        userInfoState={userInfoState}
         isUsersProfile={isUsersProfile}
-        state={state}
-        setState={setState}
-        handleChange={handleChange}
-        handleRetrieveUser={handleRetrieveUser}
+        updateUser={updateUser}
         handleToggleEditDialog={handleToggleEditDialog}
+        handleChange={handleChange}
+        handleSelectState={handleSelectState}
+        handleEditErrorMessage={handleEditErrorMessage}
       />
       <DeleteUser
-        isUsersProfile={isUsersProfile}
-        state={state}
-        setState={setState}
+        profileState={profileState}
+        userInfoState={userInfoState}
         setCurrentUser={setCurrentUser}
+        isUsersProfile={isUsersProfile}
         handleToggleDeleteDialog={handleToggleDeleteDialog}
       />
     </React.Fragment>

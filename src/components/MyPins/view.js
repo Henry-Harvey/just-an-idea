@@ -14,18 +14,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MyUpvotesView({
-  myUpvotesState
+export default function MyPinsView({
+  myPinsState
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <MUIDataTable
-        title={'My Upvoted Ideas'}
-        data={myUpvotesState.upvotes}
-        columns={myUpvotesState.table.columns}
-        options={myUpvotesState.table.options}
+        title={'My Pinned Topics'}
+        data={myPinsState.pins}
+        columns={myPinsState.table.columns}
+        options={myPinsState.table.options}
         className={styles.table}
       />
     </React.Fragment >

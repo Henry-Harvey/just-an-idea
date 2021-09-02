@@ -79,29 +79,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function IdeaView({
   currentUser,
-  state,
-  setState
+  ideaState,
+  updateUpvotes
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <Typography className={styles.title}>
-        {state.ideaInfo?.idea.title}
+        {ideaState.idea.title}
       </Typography>
       <div className={styles.upvote}>
         <Tooltip title='Upvotes'>
           <Typography className={styles.title}>
-            {state.ideaInfo?.upvotes}
+            {ideaState.idea.upvotes.length}
           </Typography>
         </Tooltip>
-        {currentUser.user_id === state.ideaInfo?.idea.users_id || currentUser.user_id === -1 ?
+        {currentUser?.user_id === ideaState.idea.user.id
+          ?
           null
           :
           <Upvote
             currentUser={currentUser}
-            state={state}
-            setState={setState}
+            ideaState={ideaState}
+            updateUpvotes={updateUpvotes}
           />
         }
       </div>
@@ -109,21 +110,21 @@ export default function IdeaView({
         <TextField
           id='description'
           label='Description'
-          value={state.ideaInfo?.idea.description}
+          value={ideaState.idea.description}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           disabled
-          rowsMax={15}
+          maxRows={15}
         />
         <div className={styles.linkSize}>
           <Link
-            to={'/topic/' + state.ideaInfo?.topic.id}
+            to={'/topic/' + ideaState.idea.topic.id}
             className={styles.link}
           >
             <TextField
               id='topic'
               label='Topic'
-              value={state.ideaInfo?.topic.title}
+              value={ideaState.idea.topic.title}
               className={styles.textField}
               disabled
             />
@@ -131,13 +132,13 @@ export default function IdeaView({
         </div>
         <div className={styles.linkSize}>
           <Link
-            to={'/profile/' + state.ideaInfo?.idea.users_id}
+            to={'/profile/' + ideaState.idea.user.id}
             className={styles.link}
           >
             <TextField
               id='author'
               label='Author'
-              value={state.ideaInfo?.author}
+              value={ideaState.idea.user.display_name}
               className={styles.textField}
               disabled
             />
@@ -146,7 +147,7 @@ export default function IdeaView({
         <TextField
           id='timestamp'
           label='Posted on'
-          value={state.ideaInfo?.idea.timestamp || ''}
+          value={ideaState.idea.timestamp}
           className={styles.textField}
           disabled
         />

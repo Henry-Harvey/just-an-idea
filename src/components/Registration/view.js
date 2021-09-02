@@ -66,9 +66,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RegistrationView({
-  state,
+  registrationState,
   handleToggleHidePassword,
   handleChange,
+  handleChangeNested,
   handleSelectState,
   handleKeyPress,
   handleSubmit
@@ -84,7 +85,7 @@ export default function RegistrationView({
         <TextField
           id='username'
           label='Username*'
-          value={state?.credentials.username}
+          value={registrationState.credentials.username}
           onChange={handleChange('credentials', 'username')}
           className={styles.textField}
         />
@@ -94,16 +95,16 @@ export default function RegistrationView({
           </InputLabel>
           <Input
             id='password'
-            value={state?.credentials.password}
+            value={registrationState.credentials.password}
             onChange={handleChange('credentials', 'password')}
-            type={state?.hidePassword ? 'password' : 'text'}
+            type={registrationState?.hidePassword ? 'password' : 'text'}
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton
                   className={styles.iconButton}
                   onClick={handleToggleHidePassword}
                 >
-                  {state?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  {registrationState?.hidePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </IconButton>
               </InputAdornment>
             }
@@ -112,29 +113,29 @@ export default function RegistrationView({
         <TextField
           id='email'
           label='Email*'
-          value={state?.user.email}
+          value={registrationState.credentials.email}
           onChange={handleChange('credentials', 'email')}
           className={styles.textField}
         />
         <TextField
-          id='firstName'
+          id='first_name'
           label='First Name'
-          value={state?.user.firstName}
-          onChange={handleChange('user', 'firstName')}
+          value={registrationState.credentials.user.first_name}
+          onChange={handleChangeNested('credentials', 'user', 'first_name')}
           className={styles.textField}
         />
         <TextField
-          id='lastName'
+          id='last_name'
           label='Last Name'
-          value={state?.user.lastName}
-          onChange={handleChange('user', 'lastName')}
+          value={registrationState.credentials.user.last_name}
+          onChange={handleChangeNested('credentials', 'user', 'last_name')}
           className={styles.textField}
         />
         <TextField
           id='occupation'
           label='Occupation'
-          value={state?.user.occupation}
-          onChange={handleChange('user', 'occupation')}
+          value={registrationState.credentials.user.occupation}
+          onChange={handleChangeNested('credentials', 'user', 'occupation')}
           className={styles.textField}
         />
         <StateDropdown
@@ -143,22 +144,22 @@ export default function RegistrationView({
         <TextField
           id='age'
           label='Age'
-          value={state?.user.age}
-          onChange={handleChange('user', 'age')}
+          value={registrationState.credentials.user.age}
+          onChange={handleChangeNested('credentials', 'user', 'age')}
           className={styles.textField}
         />
         <TextField
           id='bio'
           label='Bio'
-          value={state?.user.bio}
-          onChange={handleChange('user', 'bio')}
+          value={registrationState.credentials.user.bio}
+          onChange={handleChangeNested('credentials', 'user', 'bio')}
           onKeyPress={handleKeyPress()}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           rows={5}
         />
         <Typography className={styles.message}>
-          {state.message}
+          {registrationState.message}
         </Typography>
         <div>
           <Link to='/login'>

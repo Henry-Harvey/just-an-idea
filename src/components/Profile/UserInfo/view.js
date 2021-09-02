@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    width: '75%',
+    width: '90%',
     maxWidth: 600,
     minWidth: 100,
     marginBottom: '2%',
@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserInfoView({
+  profileState,
   isUsersProfile,
-  state,
   handleToggleEditDialog,
   handleToggleDeleteDialog
 }) {
@@ -53,7 +53,8 @@ export default function UserInfoView({
 
   return (
     <React.Fragment>
-      {!state.user?.firstName && !state.user?.lastName && !state.user?.occupation && !state.user?.state && !state.user?.age && !state.user?.bio ?
+      {!profileState.user
+        ?
         <TextField
           id='no user data'
           value='No User Data'
@@ -63,77 +64,99 @@ export default function UserInfoView({
         :
         null
       }
-      {state.user?.firstName && state.user?.lastName ?
+      {profileState.user?.display_name
+        ?
+        isUsersProfile ?
+          <TextField
+            id='display_name'
+            label='Display Name'
+            value={profileState.user?.display_name}
+            className={styles.textField}
+            disabled
+          />
+          :
+          null
+        :
+        null
+      }
+      {profileState.user?.first_name && profileState.user?.last_name
+        ?
         <TextField
           id='name'
           label='Name'
-          value={state.user?.firstName + ' ' + state.user?.lastName}
+          value={profileState.user?.first_name + ' ' + profileState.user?.last_name}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {state.user?.firstName && !state.user?.lastName ?
+      {profileState.user?.first_name && !profileState.user?.last_name
+        ?
         <TextField
           id='name'
           label='First Name'
-          value={state.user?.firstName}
+          value={profileState.user?.first_name}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {!state.user?.firstName && state.user?.lastName ?
+      {!profileState.user?.first_name && profileState.user?.last_name
+        ?
         <TextField
           id='name'
           label='Last Name'
-          value={state.user?.lastName}
+          value={profileState.user?.last_name}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {state.user?.occupation ?
+      {profileState.user?.occupation
+        ?
         <TextField
           id='occupation'
           label='Occupation'
-          value={state.user?.occupation}
+          value={profileState.user?.occupation}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {state.user?.state ?
+      {profileState.user?.state
+        ?
         <TextField
           id='state'
           label='State'
-          value={state.user?.state}
+          value={profileState.user?.state}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {state.user?.age ?
+      {profileState.user?.age
+        ?
         <TextField
           id='age'
           label='Age'
-          value={state.user?.age}
+          value={profileState.user?.age}
           className={styles.textField}
           disabled
         />
         :
         null
       }
-      {state.user?.bio ?
+      {profileState.user?.bio
+        ?
         <TextField
           id='bio'
           label='Bio'
-          value={state.user?.bio}
+          value={profileState.user?.bio}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           disabled
@@ -142,7 +165,8 @@ export default function UserInfoView({
         :
         null
       }
-      {isUsersProfile ?
+      {isUsersProfile
+        ?
         <div>
           <Tooltip title='Delete'>
             <IconButton

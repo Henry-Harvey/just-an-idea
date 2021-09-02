@@ -2,22 +2,22 @@ import React from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { KeyboardArrowUp as NotUpvotedIcon, ArrowDropUp as UpvotedIcon } from '@material-ui/icons';
 
-export default function IdeaView({
-  state,
-  handleToggleUpvote
+export default function UpvoteView({
+  ideaState,
+  toggleUpvote
 }) {
 
   return (
     <React.Fragment>
       <Tooltip title={
-        state.isUpvoted ?
+        ideaState.isUpvoted ?
           'Upvoted'
           :
           'Upvote'
       }>
         <IconButton
-          onClick={handleToggleUpvote}>
-          {state.isUpvoted ?
+          onClick={toggleUpvote}>
+          {ideaState.isUpvoted ?
             <UpvotedIcon />
             :
             <NotUpvotedIcon />

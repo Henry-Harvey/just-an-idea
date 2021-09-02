@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import UserIdeasView from './view';
 import UserIdeasSelectToolbar from './UserIdeasSelectToolbar'
 
-export default function UserIdeas({ userId, isUsersProfile }) {
-
-  const [state, setState] = useState({
-    ideasInfo: {
-      ideas: []
-    },
+export default function UserIdeas({
+  profileState,
+  isUsersProfile
+}) {
+  const [userIdeasState, setUserIdeasState] = useState({
     table: {
       options:
       {
@@ -18,13 +16,15 @@ export default function UserIdeas({ userId, isUsersProfile }) {
         selectableRows: 'single',
         selectableRowsOnClick: true,
         selectableRowsHideCheckboxes: true,
-        rowsPerPageOptions: [10],
-        customToolbarSelect: null
+        rowsPerPageOptions: [6],
+        rowsPerPage: 6,
+        customToolbarSelect: null,
+        enableNestedDataAccess: '.'
       },
       columns:
         [
           {
-            name: 'upvotes',
+            name: 'upvotes.length',
             label: 'Upvotes'
           },
           {
@@ -32,7 +32,7 @@ export default function UserIdeas({ userId, isUsersProfile }) {
             label: 'Title'
           },
           {
-            name: 'topic',
+            name: 'topic.title',
             label: 'Topic'
           },
           {
@@ -46,43 +46,8 @@ export default function UserIdeas({ userId, isUsersProfile }) {
   );
 
   useEffect(() => {
-    let ideasArray = [];
-
-    console.log('Retrieve Idea Infos with users_id', userId);
-    axios.post(`http://localhost:8080/content/ideas/info`,
-      {
-        users_id: userId
-      }
-    ).then((ideaResponse) => {
-      console.log('Retrieve Idea Infos response', ideaResponse);
-      if (ideaResponse?.data === '') {
-        console.log('Idea Infos not found');
-        return;
-      }
-      for (let i = 0; i < ideaResponse?.data.ideas.length; i++) {
-        ideasArray.push(
-          {
-            id: ideaResponse?.data.ideas[i].id,
-            topics_id: ideaResponse?.data.topics[i].id,
-            upvotes: ideaResponse?.data.upvotes[i],
-            title: ideaResponse?.data.ideas[i].title,
-            topic: ideaResponse?.data.topics[i].title,
-            timestamp: ideaResponse?.data.ideas[i].timestamp
-          }
-        );
-      }
-      setState(state => ({
-        ...state,
-        ideasInfo: {
-          ideas: ideasArray
-        }
-      }));
-    }).catch(error => {
-      console.log('Retrieve Idea Infos error', error);
-    });
-
     setTimeout(() => {
-      setState(state => ({
+      setUserIdeasState(state => ({
         ...state,
         table: {
           ...state.table,
@@ -91,7 +56,7 @@ export default function UserIdeas({ userId, isUsersProfile }) {
             customToolbarSelect: (selectedRows) => {
               return (
                 <UserIdeasSelectToolbar
-                  selectedIdea={state.ideasInfo.ideas[selectedRows.data[0].dataIndex]}
+                  selectedIdea={profileState.user.ideas[selectedRows.data[0].dataIndex]}
                   isUsersProfile={isUsersProfile}
                 />
               )
@@ -100,13 +65,14 @@ export default function UserIdeas({ userId, isUsersProfile }) {
         }
       }));
     }, 200);
-  }, [userId, isUsersProfile]);
+  }, [isUsersProfile, profileState.user]);
 
   return (
     <React.Fragment>
       <UserIdeasView
+        profileState={profileState}
+        userIdeasState={userIdeasState}
         isUsersProfile={isUsersProfile}
-        state={state}
       />
     </React.Fragment>
   );

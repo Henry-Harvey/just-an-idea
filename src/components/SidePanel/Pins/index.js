@@ -3,55 +3,43 @@ import axios from 'axios';
 import PinsView from './view';
 
 export default function Pins({ currentUser }) {
-  const [state, setState] = useState({
-    pinInfos: [],
+  const [pinsState, setPinsState] = useState({
+    pins: [],
     selectedIndex: -1
   });
 
   useEffect(() => {
-    setState(state => ({
-      ...state,
-      pinInfos: []
-    }));
-    if (currentUser === null) {
-      console.log('No pins to find');
+    if (typeof currentUser?.user_id !== 'number') {
+      setPinsState(state => ({
+        ...state,
+        pins: []
+      }));
       return;
     }
-    let pinInfosArray = [];
-    console.log('Retrieve Pin Info with users_id', currentUser?.user_id);
-    axios.post(`http://localhost:8080/content/pins/info`,
+    console.log('Retrieve All Pins with user_id', currentUser.user_id);
+    axios.post(`http://localhost:8080/content/pins`,
       {
-        pins_id: {
-          users_id: currentUser.user_id
+        pin_id: {
+          user_id: currentUser.user_id
         }
       }
     ).then((pinResponse) => {
-      console.log('Retrieve Pin Info response', pinResponse);
+      console.log('Retrieve All Pins response', pinResponse);
       if (pinResponse?.data === '') {
-        console.log('Pin Info not found');
+        console.log('Pins not found');
         return;
       }
-      for (let i = 0; i < pinResponse?.data.pins.length; i++) {
-        pinInfosArray.push(
-          {
-            id: i,
-            topics_id: pinResponse?.data.pins[i].pins_id.topics_id,
-            topics_title: pinResponse?.data.topics_titles[i],
-            pins_timestamp: pinResponse?.data.pins[i].timestamp
-          }
-        );
-      }
-      setState(state => ({
+      setPinsState(state => ({
         ...state,
-        pinInfos: pinInfosArray
+        pins: pinResponse?.data
       }));
     }).catch(error => {
-      console.log('Retrieve Pin Info error', error);
+      console.log('Retrieve All Pins error', error);
     });
-  }, [currentUser]);
+  }, [currentUser?.user_id]);
 
   const handleClick = (event, index) => {
-    setState(state => ({
+    setPinsState(state => ({
       ...state,
       selectedIndex: index
     }));
@@ -60,7 +48,7 @@ export default function Pins({ currentUser }) {
   return (
     <React.Fragment>
       <PinsView
-        state={state}
+        pinsState={pinsState}
         handleClick={handleClick}
       />
     </React.Fragment>

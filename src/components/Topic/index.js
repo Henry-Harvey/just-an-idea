@@ -8,14 +8,12 @@ import TopicToolbar from './TopicToolbar'
 export default function Topic({ currentUser }) {
   let topicId = useParams().topicId;
 
-  const [state, setState] = useState({
-    topicInfo: {
-      topic: {
-        id: -1,
-        title: '',
-        timestamp: '',
-        ideas: []
-      },
+  const [topicState, setTopicState] = useState({
+    topic: {
+      id: topicId,
+      title: '',
+      timestamp: '',
+      ideas: [],
     },
     table: {
       options:
@@ -26,17 +24,16 @@ export default function Topic({ currentUser }) {
         selectableRows: 'single',
         selectableRowsOnClick: true,
         selectableRowsHideCheckboxes: true,
-        sortOrder: {
-          name: 'upvotes',
-          direction: 'desc'
-        },
-        rowsPerPageOptions: [15],
-        customToolbarSelect: null
+        rowsPerPageOptions: [8],
+        rowsPerPage: 8,
+        customToolbarSelect: null,
+        enableNestedDataAccess: '.'
       },
       columns:
         [
           {
-            name: 'upvotes',
+            options: { sortDirection: 'desc' },
+            name: 'upvotes.length',
             label: 'Upvotes'
           },
           {
@@ -44,7 +41,7 @@ export default function Topic({ currentUser }) {
             label: 'Title'
           },
           {
-            name: 'author',
+            name: 'user.display_name',
             label: 'Author'
           },
           {
@@ -57,59 +54,50 @@ export default function Topic({ currentUser }) {
   });
 
   useEffect(() => {
-    let ideaArray = [];
-    console.log('Retrieve Topic Info with id', topicId);
-    axios.get(`http://localhost:8080/content/topic/${topicId}/info`
+    if (typeof parseInt(topicId) !== 'number') {
+      return;
+    }
+    console.log('Retrieve Topic with id', topicId);
+    axios.get(`http://localhost:8080/content/topic/${topicId}`
     ).then((topicResponse) => {
-      console.log('Retrieve Topic Info response', topicResponse);
+      console.log('Retrieve Topic response', topicResponse);
       if (topicResponse?.data === '') {
-        console.log('Topic Info not found');
+        console.log('Topic not found');
         return;
       }
-      for (let i = 0; i < topicResponse?.data.ideas.length; i++) {
-        ideaArray.push(
-          {
-            id: topicResponse?.data.ideas[i].id,
-            users_id: topicResponse?.data.ideas[i].users_id,
-            upvotes: topicResponse?.data.upvotes[i],
-            title: topicResponse?.data.ideas[i].title,
-            author: topicResponse?.data.authors[i],
-            timestamp: topicResponse?.data.ideas[i].timestamp,
-          }
-        );
-      }
-      setState(state => ({
+      setTopicState(state => ({
         ...state,
-        topicInfo: {
-          topic: topicResponse?.data.topic,
-          ideas: ideaArray
-        }
+        topic: topicResponse.data
       }));
-      console.log('Retrieve Pin with users_id & topics_id', currentUser.user_id, topicResponse?.data.topic.id);
-        axios.post(`http://localhost:8080/content/pin/`,
-          {
-              users_id: currentUser.user_id,
-              topics_id: topicResponse?.data.topic.id
-          }
-        ).then((pinResponse) => {
-          console.log('Retrieve Pin response', pinResponse);
-          if (pinResponse?.data === '') {
-            console.log('Pin not found');
-            return;
-          }
-          setState(state => ({
-            ...state,
-            isPinned: true
-          }));
-        }).catch(error => {
-          console.log('Retrieve Pin error', error);
-        });
     }).catch(error => {
       console.log('Retrieve Topic Info error', error);
     });
 
+    if (typeof currentUser?.user_id !== 'number') {
+      return;
+    }
+    console.log('Retrieve Pin with user_id & topic_id', currentUser.user_id, topicId);
+    axios.get(`http://localhost:8080/content/pin/${currentUser.user_id}/${topicId}`
+    ).then((pinResponse) => {
+      console.log('Retrieve Pin response', pinResponse);
+      if (pinResponse?.data === '') {
+        console.log('Pin not found');
+        setTopicState(state => ({
+          ...state,
+          isPinned: false
+        }));
+        return;
+      }
+      setTopicState(state => ({
+        ...state,
+        isPinned: true
+      }));
+    }).catch(error => {
+      console.log('Retrieve Pin error', error);
+    });
+
     setTimeout(() => {
-      setState(state => ({
+      setTopicState(state => ({
         ...state,
         table: {
           ...state.table,
@@ -118,7 +106,7 @@ export default function Topic({ currentUser }) {
             customToolbarSelect: (selectedRows) => {
               return (
                 <TopicSelectToolbar
-                  selectedIdea={state.topicInfo?.ideas[selectedRows.data[0].dataIndex]}
+                  selectedIdea={state.topic.ideas[selectedRows.data[0].dataIndex]}
                 />
               )
             },
@@ -126,8 +114,7 @@ export default function Topic({ currentUser }) {
               return (
                 <TopicToolbar
                   currentUser={currentUser}
-                  state={state}
-                  setState={setState}
+                  topicState={state}
                 />
               )
             }
@@ -140,7 +127,7 @@ export default function Topic({ currentUser }) {
   return (
     <React.Fragment>
       <TopicView
-        state={state}
+        topicState={topicState}
       />
     </React.Fragment>
   );

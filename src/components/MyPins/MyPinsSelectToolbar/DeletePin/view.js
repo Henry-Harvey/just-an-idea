@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function DeleteUpvoteView({
-  selectedUpvote,
-  myUpvotesSelectToolbarState,
+export default function DeletePinView({
+  selectedPin,
+  myPinsSelectToolbarState,
   handleToggleDeleteDialog,
   handleSubmitDelete
 }) {
@@ -28,15 +28,15 @@ export default function DeleteUpvoteView({
   return (
     <React.Fragment>
       <Dialog
-        open={myUpvotesSelectToolbarState.isDeleteDialogOpen}
+        open={myPinsSelectToolbarState.isDeleteDialogOpen}
         keepMounted
         onClose={handleToggleDeleteDialog}
         classes={{ paper: styles.dialogPaper }}
       >
-        <DialogTitle className={styles.dialogTitle}>Delete Upvote</DialogTitle>
+        <DialogTitle className={styles.dialogTitle}>Delete Pin</DialogTitle>
         <DialogContent>
           <DialogContentText className={styles.dialogContent}>
-            For the idea titled, "{selectedUpvote.idea.title}"?
+            For the topic titled, "{selectedPin.topic.title}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions className={styles.buttons}>

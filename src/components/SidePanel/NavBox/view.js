@@ -43,7 +43,7 @@ export default function NavBoxView({ currentUser }) {
         <Link to='/' className={styles.link}>
           <Typography className={styles.title}>
             Just An Idea
-            </Typography>
+          </Typography>
         </Link>
         <Toolbar className={styles.toolbar}>
           <Link to='/home'>
@@ -64,9 +64,10 @@ export default function NavBoxView({ currentUser }) {
               </IconButton>
             </Tooltip>
           </Link>
-          {currentUser?.username ?
+          {currentUser
+            ?
             <Link to='/profile' >
-              <Tooltip title={currentUser.username + "'s Profile"}>
+              <Tooltip title='My Profile'>
                 <IconButton
                   className={styles.iconButton}
                   onClick={null}>
@@ -77,7 +78,8 @@ export default function NavBoxView({ currentUser }) {
             :
             null
           }
-          {currentUser?.username ?
+          {currentUser
+            ?
             <Link to='/upvotes' >
               <Tooltip title={'My Upvotes'}>
                 <IconButton
@@ -90,7 +92,8 @@ export default function NavBoxView({ currentUser }) {
             :
             null
           }
-          {currentUser?.username ?
+          {currentUser
+            ?
             <Link to='/post'>
               <Tooltip title='Post'>
                 <IconButton
@@ -103,7 +106,8 @@ export default function NavBoxView({ currentUser }) {
             :
             null
           }
-          {currentUser?.username ?
+          {currentUser
+            ?
             null
             :
             <Link to='/registration'>
@@ -116,7 +120,8 @@ export default function NavBoxView({ currentUser }) {
               </Tooltip>
             </Link>
           }
-          {currentUser?.username ?
+          {currentUser
+            ?
             <Link to='/logout'>
               <Tooltip title='Log out'>
                 <IconButton

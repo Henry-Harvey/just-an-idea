@@ -4,29 +4,39 @@ import history from '../../utils/history'
 import PostView from './view';
 
 export default function Post({ currentUser }) {
-  const [state, setState] = useState({
+  const [postState, setPostState] = useState({
     idea: {
-      id: -1,
-      users_id: currentUser.user_id,
-      topics_id: -1,
       title: '',
       description: '',
-      timestamp: null
+      user: {
+        id: currentUser.user_id
+      },
+      topic: {
+        title: ''
+      }
     },
-    topic: {
-      id: -1,
-      title: '',
-      timestamp: null
-    },
-    message: null
+    message: ''
   });
 
   const handleChange = (object, prop) => (event) => {
-    setState(state => ({
+    setPostState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
         [prop]: event.target.value
+      }
+    }));
+  };
+
+  const handleChangeNested = (parent, child, prop) => (event) => {
+    setPostState(state => ({
+      ...state,
+      [parent]: {
+        ...state?.[parent],
+        [child]: {
+          ...state?.[parent].[child],
+          [prop]: event.target.value
+        }
       }
     }));
   };
@@ -38,18 +48,15 @@ export default function Post({ currentUser }) {
   };
 
   const handleSubmit = () => {
-    console.log('Post with Idea & Topic', state?.idea, state?.topic)
-    axios.post(`http://localhost:8080/content/post`,
-      {
-        idea: { ...state?.idea },
-        topic: { ...state?.topic }
-      }
+    console.log('Post with Idea', postState.idea)
+    axios.post(`http://localhost:8080/content/post`, 
+      postState.idea
     ).then((ideaResponse) => {
       console.log('Post response', ideaResponse)
-      history.push(`/profile`)
+      history.push(`/idea/${ideaResponse.data.id}`)
     }).catch(error => {
       console.log('Post error', error)
-      setState(state => ({
+      setPostState(state => ({
         ...state,
         message: 'Post error'
       }));
@@ -59,8 +66,9 @@ export default function Post({ currentUser }) {
   return (
     <React.Fragment>
       <PostView
-        state={state}
+        postState={postState}
         handleChange={handleChange}
+        handleChangeNested={handleChangeNested}
         handleKeyPress={handleKeyPress}
         handleSubmit={handleSubmit}
       />

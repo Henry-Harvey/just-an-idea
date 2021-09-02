@@ -65,8 +65,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PostView({
-  state,
+  postState,
   handleChange,
+  handleChangeNested,
   handleKeyPress,
   handleSubmit,
 }) {
@@ -81,21 +82,21 @@ export default function PostView({
         <TextField
           id='topic'
           label='Topic'
-          value={state?.topic.title}
-          onChange={handleChange('topic', 'title')}
+          value={postState?.idea.topic.title}
+          onChange={handleChangeNested('idea', 'topic', 'title')}
           className={styles.textField}
         />
         <TextField
           id='title'
           label='Title'
-          value={state?.idea.title}
+          value={postState?.idea.title}
           onChange={handleChange('idea', 'title')}
           className={styles.textField}
         />
         <TextField
           id='description'
           label='Description'
-          value={state?.idea.description}
+          value={postState?.idea.description}
           onChange={handleChange('idea', 'description')}
           onKeyPress={handleKeyPress()}
           className={clsx(styles.textField, styles.multiline)}
@@ -103,11 +104,11 @@ export default function PostView({
           rows={10}
         />
         <Typography className={styles.message}>
-          {state.message}
+          {postState.message}
         </Typography>
         <div>
           <Link to='/profile'>
-            <Tooltip title='See My Ideas'>
+            <Tooltip title='View My Ideas'>
               <IconButton
                 className={styles.iconButton}>
                 <IdeasIcon />

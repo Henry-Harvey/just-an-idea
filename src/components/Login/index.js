@@ -5,7 +5,7 @@ import { LogIn } from '../../utils'
 import LoginView from './view';
 
 export default function Login({ setCurrentUser }) {
-  const [state, setState] = useState({
+  const [loginState, setLoginState] = useState({
     credentials: {
       username: '',
       password: ''
@@ -15,14 +15,14 @@ export default function Login({ setCurrentUser }) {
   });
 
   const handleToggleHidePassword = () => {
-    setState(state => ({
+    setLoginState(state => ({
       ...state,
       hidePassword: !state?.hidePassword
     }));
   };
 
   const handleChange = (object, prop) => (event) => {
-    setState(state => ({
+    setLoginState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
@@ -38,39 +38,37 @@ export default function Login({ setCurrentUser }) {
   };
 
   const handleSubmit = () => {
-    console.log('Log in with Credentials', state?.credentials)
-    axios.post(`http://localhost:8080/account/login`,
-      state?.credentials
+    console.log('Retrieve Credentials', loginState?.credentials)
+    axios.post(`http://localhost:8080/account/credentials`,
+      loginState?.credentials
     ).then((credentialsResponse) => {
-      console.log('Log in response', credentialsResponse)
+      console.log('Retrieve Credentials response', credentialsResponse)
       if (credentialsResponse?.data === '') {
         console.log('Credentials not found');
-        setState(state => ({
+        setLoginState(state => ({
           ...state,
           message: 'Credentials not found'
         }));
         return;
       }
-      if (credentialsResponse?.data.credentials.suspended !== 0) {
+      if (credentialsResponse?.data[0].suspended !== 0) {
         console.log('Credentials have been suspended');
-        setState(state => ({
+        setLoginState(state => ({
           ...state,
           message: 'Credentials have been suspended'
         }));
         return;
       }
       const currentUser = {
-        user_id: credentialsResponse?.data.user.id,
-        credentials_id: credentialsResponse?.data.credentials.id,
-        role: credentialsResponse?.data.credentials.role,
-        username: credentialsResponse?.data.credentials.username
+        user_id: credentialsResponse?.data[0].user.id,
+        role: credentialsResponse?.data[0].role
       };
       setCurrentUser(currentUser);
       LogIn(currentUser);
       history.push(`/home`)
     }).catch(error => {
       console.log('Log in error', error);
-      setState(state => ({
+      setLoginState(state => ({
         ...state,
         message: 'Log in error'
       }));
@@ -79,7 +77,7 @@ export default function Login({ setCurrentUser }) {
 
   return (
     <LoginView
-      state={state}
+      loginState={loginState}
       handleToggleHidePassword={handleToggleHidePassword}
       handleChange={handleChange}
       handleKeyPress={handleKeyPress}

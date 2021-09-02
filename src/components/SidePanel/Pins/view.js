@@ -20,7 +20,10 @@ const useStyles = makeStyles({
   }
 });
 
-export default function PinsView({ state, handleClick }) {
+export default function PinsView({ 
+  pinsState, 
+  handleClick 
+}) {
   const styles = useStyles();
 
   return (
@@ -32,16 +35,17 @@ export default function PinsView({ state, handleClick }) {
       </Link>
 
       <List component="nav" className={styles.list}>
-        {state.pinInfos?.length > 0 ?
-          state.pinInfos?.map(pinInfo => (
-            <Link to={'/topic/' + pinInfo.topics_id} className={styles.link}>
+        {pinsState.pins?.length > 0
+          ?
+          pinsState.pins?.map((pin, index) => (
+            <Link to={'/topic/' + pin.topic.id} className={styles.link}>
               <ListItem
-                key={pinInfo.id}
+                key={pin.pin_id}
                 button
-                selected={state.selectedIndex === pinInfo.id}
-                onClick={(event) => handleClick(event, pinInfo.id)}
+                selected={pinsState.selectedIndex === index}
+                onClick={(event) => handleClick(event, index)}
               >
-                <ListItemText primary={pinInfo.topics_title} />
+                <ListItemText primary={pin.topic.title} />
               </ListItem>
             </Link>
           ))

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeleteIdeaView({
   selectedIdea,
-  state,
+  userIdeasSelectToolbarState,
   handleToggleDeleteDialog,
   handleSubmitDelete
 }) {
@@ -28,7 +28,7 @@ export default function DeleteIdeaView({
   return (
     <React.Fragment>
       <Dialog
-        open={state.isDeleteDialogOpen}
+        open={userIdeasSelectToolbarState.isDeleteDialogOpen}
         keepMounted
         onClose={handleToggleDeleteDialog}
         classes={{ paper: styles.dialogPaper }}

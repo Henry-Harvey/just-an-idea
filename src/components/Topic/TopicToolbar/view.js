@@ -3,21 +3,21 @@ import { Tooltip, IconButton } from '@material-ui/core'
 import { Room as PinnedIcon, RoomOutlined as PinIcon } from '@material-ui/icons';
 
 export default function TopicToolbarView({
-  handleTogglePin,
-  state
+  topicState,
+  togglePin
 }) {
 
   return (
     <React.Fragment>
       <Tooltip title={
-        state.isPinned ?
+        topicState.isPinned ?
           'Pinned Topic'
           :
           'Pin Topic'
       }>
         <IconButton
-          onClick={handleTogglePin}>
-          {state.isPinned ?
+          onClick={togglePin}>
+          {topicState.isPinned ?
             <PinnedIcon />
             :
             <PinIcon />

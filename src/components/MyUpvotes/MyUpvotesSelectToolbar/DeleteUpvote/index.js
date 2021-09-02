@@ -2,19 +2,18 @@ import React from 'react';
 import axios from 'axios';
 import DeleteUpvoteView from './view';
 
-export default function DeleteUpvote({ selectedIdea, handleToggleDeleteDialog, state, currentUser }) {
+export default function DeleteUpvote({ 
+  selectedUpvote, 
+  handleToggleDeleteDialog, 
+  myUpvotesSelectToolbarState, 
+  currentUser 
+}) {
   const handleSubmitDelete = () => {
-    console.log('Delete Upvote with users_id & ideas_id', currentUser.user_id, selectedIdea.id);
-    axios.delete(`http://localhost:8080/content/upvote/`,
-      {
-        data: {
-          users_id: currentUser.user_id,
-          ideas_id: selectedIdea.id
-        }
-      }
+    console.log('Delete Upvote with user_id & idea_id', currentUser.user_id, selectedUpvote.idea.id);
+    axios.delete(`http://localhost:8080/content/upvote/${currentUser.user_id}/${selectedUpvote.idea.id}`
     ).then((upvoteResponse) => {
       console.log('Delete Upvote response', upvoteResponse);
-      //handleToggleDeleteDialog();
+      handleToggleDeleteDialog();
       window.location.reload();
     }).catch(error => {
       console.log('Delete Upvote error', error);
@@ -24,8 +23,8 @@ export default function DeleteUpvote({ selectedIdea, handleToggleDeleteDialog, s
   return (
     <React.Fragment>
       <DeleteUpvoteView
-        selectedIdea={selectedIdea}
-        state={state}
+        selectedUpvote={selectedUpvote}
+        myUpvotesSelectToolbarState={myUpvotesSelectToolbarState}
         handleToggleDeleteDialog={handleToggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />

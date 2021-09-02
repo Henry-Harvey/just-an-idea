@@ -2,7 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import DeleteIdeaView from './view';
 
-export default function DeleteIdea({ selectedIdea, handleToggleDeleteDialog, state, currentUser }) {
+export default function DeleteIdea({
+  selectedIdea,
+  userIdeasSelectToolbarState,
+  handleToggleDeleteDialog
+}) {
   const handleSubmitDelete = () => {
     console.log('Delete Idea with id', selectedIdea.id)
     axios.delete(`http://localhost:8080/content/idea/${selectedIdea.id}`)
@@ -19,7 +23,7 @@ export default function DeleteIdea({ selectedIdea, handleToggleDeleteDialog, sta
     <React.Fragment>
       <DeleteIdeaView
         selectedIdea={selectedIdea}
-        state={state}
+        userIdeasSelectToolbarState={userIdeasSelectToolbarState}
         handleToggleDeleteDialog={handleToggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />

@@ -7,7 +7,7 @@ import SearchSelectToolbar from './SearchSelectToolbar'
 export default function Search() {
   let searchString = useParams().searchString;
 
-  const [state, setState] = useState({
+  const [searchState, setSearchState] = useState({
     results: [],
     table: {
       options:
@@ -18,9 +18,9 @@ export default function Search() {
         selectableRows: 'single',
         selectableRowsOnClick: true,
         selectableRowsHideCheckboxes: true,
-        rowsPerPageOptions: [15],
-        customToolbarSelect: null,
-        pagination: false
+        rowsPerPageOptions: [8],
+        rowsPerPage: 8,
+        customToolbarSelect: null
       },
       columns:
         [
@@ -42,13 +42,19 @@ export default function Search() {
   );
 
   useEffect(() => {
-    setState(state => ({
+    setSearchState(state => ({
       ...state,
       results: []
     }));
+    if (typeof searchString !== 'string') {
+      return;
+    }
+    if (searchString === '') {
+      return;
+    }
     var resultsArray = [];
     console.log('Search Ideas with title:', searchString);
-    axios.post(`http://localhost:8080/content/search/ideas`,
+    axios.post(`http://localhost:8080/content/ideas/search`,
       {
         title: searchString
       }
@@ -72,7 +78,7 @@ export default function Search() {
     });
 
     console.log('Search Topics with title', searchString);
-    axios.post(`http://localhost:8080/content/search/topics`,
+    axios.post(`http://localhost:8080/content/topics/search`,
       {
         title: searchString
       }
@@ -95,39 +101,37 @@ export default function Search() {
       console.log('Search Topics error', error);
     });
 
-    console.log('Search Credentials with username', searchString);
-    axios.post(`http://localhost:8080/account/search/credentials`,
+    console.log('Search Users with display_name', searchString);
+    axios.post(`http://localhost:8080/account/users/search`,
       {
-        username: searchString
+        display_name: searchString
       }
-    ).then((credentialsResponse) => {
-      console.log('Search Credentials response', credentialsResponse);
-      if (credentialsResponse?.data === '') {
-        console.log('Credentials not found');
+    ).then((usersResponse) => {
+      console.log('Search Users response', usersResponse);
+      if (usersResponse?.data === '') {
+        console.log('Users not found');
         return;
       }
-      else {
-        credentialsResponse.data.map(credentials => (
-          resultsArray.push(
-            {
-              type: 'User',
-              id: credentials.users_id,
-              name: credentials.username
-            }
-          )
-        ));
-      }
+      usersResponse.data.map(user => (
+        resultsArray.push(
+          {
+            type: 'User',
+            id: user.id,
+            name: user.display_name
+          }
+        )
+      ));
     }).catch(error => {
       console.log('Search Credentials error', error);
     });
 
     setTimeout(() => {
-      setState(state => ({
+      setSearchState(state => ({
         ...state,
         results: resultsArray
       }));
 
-      setState(state => ({
+      setSearchState(state => ({
         ...state,
         table: {
           ...state.table,
@@ -143,14 +147,14 @@ export default function Search() {
           }
         }
       }));
-    }, 50);
+    }, 200);
   }, [searchString]);
 
   return (
     <React.Fragment>
       < SearchView
         searchString={searchString}
-        state={state}
+        searchState={searchState}
       />
     </React.Fragment>
   );

@@ -50,15 +50,18 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     color: 'white'
+  },
+  message: {
+    color: 'red'
   }
 }));
 
-export default function EditUserInfoView({
+export default function EditUserView({
+  userInfoState,
   isUsersProfile,
-  state,
+  handleToggleEditDialog,
   handleChange,
   handleSelectState,
-  handleToggleEditDialog,
   handleSubmitEdit
 }) {
   const styles = useStyles();
@@ -67,7 +70,7 @@ export default function EditUserInfoView({
     <React.Fragment>
       {isUsersProfile ?
         <Dialog
-          open={state.isEditDialogOpen}
+          open={userInfoState.isEditDialogOpen}
           keepMounted
           onClose={handleToggleEditDialog}
           classes={{ paper: styles.dialogPaper }}
@@ -75,48 +78,55 @@ export default function EditUserInfoView({
           <DialogTitle className={styles.dialogTitle}>Edit Profile</DialogTitle>
           <DialogContent className={styles.dialogContent}>
             <TextField
+              id='editDisplayName'
+              label='Display Name'
+              value={userInfoState?.editUser.display_name || ''}
+              onChange={handleChange('editUser', 'display_name')}
+              className={styles.textField}
+            />
+            <TextField
               id='editFirstName'
               label='First Name'
-              value={state?.editUser.firstName}
-              onChange={handleChange('editUser', 'firstName')}
+              value={userInfoState?.editUser.first_name || ''}
+              onChange={handleChange('editUser', 'first_name')}
               className={styles.textField}
             />
             <TextField
               id='editLastName'
               label='Last Name'
-              value={state?.editUser.lastName}
-              onChange={handleChange('editUser', 'lastName')}
+              value={userInfoState?.editUser.last_name || ''}
+              onChange={handleChange('editUser', 'last_name')}
               className={styles.textField}
             />
             <TextField
               id='editOccupation'
               label='Occupation'
-              value={state?.editUser.occupation}
+              value={userInfoState?.editUser.occupation || ''}
               onChange={handleChange('editUser', 'occupation')}
               className={styles.textField}
             />
             <StateDropdown
               handleSelectState={handleSelectState}
-              value={state?.editUser.state}
+              value={userInfoState?.editUser.state || ''}
             />
             <TextField
               id='editAge'
               label='Age'
-              value={state?.editUser.age}
+              value={userInfoState?.editUser.age || ''}
               onChange={handleChange('editUser', 'age')}
               className={styles.textField}
             />
             <TextField
               id='editBio'
               label='Bio'
-              value={state?.editUser.bio}
+              value={userInfoState?.editUser.bio || ''}
               onChange={handleChange('editUser', 'bio')}
               className={clsx(styles.textField, styles.multiline)}
               multiline
               maxrows={5}
             />
             <Typography className={styles.message}>
-              {state.message}
+              {userInfoState.message}
             </Typography>
           </DialogContent>
           <DialogActions>

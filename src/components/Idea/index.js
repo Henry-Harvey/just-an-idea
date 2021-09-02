@@ -3,55 +3,58 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import IdeaView from './view';
 
-export default function Idea({ currentUser }) {
+export default function Idea({
+  currentUser
+}) {
   let ideaId = useParams().ideaId;
 
-  const [state, setState] = useState({
-    ideaInfo: {
-      idea: {
+  const [ideaState, setIdeaState] = useState({
+    idea: {
+      title: '',
+      description: '',
+      timestamp: '',
+      user: {
         id: -1,
-        users_id: -1,
-        topics_id: -1,
-        title: '',
-        description: '',
-        timestamp: null
+        display_name: ''
       },
       topic: {
         id: -1,
         title: ''
       },
-      author: '',
-      upvotes: -1
+      upvotes: []
     },
     isUpvoted: false
   });
 
   useEffect(() => {
-    console.log('Retrieve Idea Info with id', ideaId);
-    axios.get(`http://localhost:8080/content/idea/${ideaId}/info`)
+    console.log('Retrieve Idea with id', ideaId);
+    axios.get(`http://localhost:8080/content/idea/${ideaId}`)
       .then((ideaResponse) => {
-        console.log('Retrieve Idea Info response', ideaResponse);
+        console.log('Retrieve Idea response', ideaResponse);
         if (ideaResponse?.data === '') {
           console.log('Idea not found');
           return;
         }
-        setState(state => ({
+        setIdeaState(state => ({
           ...state,
-          ideaInfo: ideaResponse?.data
+          idea: ideaResponse?.data
         }));
-        console.log('Retrieve Upvote with users_id & ideas_id', currentUser.user_id, ideaResponse?.data.idea.id);
-        axios.post(`http://localhost:8080/content/upvote/`,
-          {
-              users_id: currentUser.user_id,
-              ideas_id: ideaResponse?.data.idea.id
-          }
+        if (currentUser === null) {
+          return;
+        }
+        console.log('Retrieve Upvote with user_id & idea_id', currentUser.user_id, ideaResponse.data.id);
+        axios.get(`http://localhost:8080/content/upvote/${currentUser.user_id}/${ideaResponse.data.id}`
         ).then((upvoteResponse) => {
           console.log('Retrieve Upvote response', upvoteResponse);
-          if (upvoteResponse?.data === '') {
+          if (upvoteResponse.data === '') {
             console.log('Upvote not found');
+            setIdeaState(state => ({
+              ...state,
+              isUpvoted: false
+            }));
             return;
           }
-          setState(state => ({
+          setIdeaState(state => ({
             ...state,
             isUpvoted: true
           }));
@@ -61,14 +64,44 @@ export default function Idea({ currentUser }) {
       }).catch(error => {
         console.log('Retrieve Idea error', error);
       });
-  }, [currentUser.user_id, ideaId]);
+  }, [currentUser, currentUser.user_id, ideaId]);
+
+  const updateUpvotes = () => {
+    setIdeaState(state => ({
+      ...state,
+      isUpvoted: !state.isUpvoted
+    }));
+    console.log('Retrieve All Upvotes with idea_id', ideaId);
+    axios.post(`http://localhost:8080/content/upvotes`,
+      {
+        upvote_id:{
+          idea_id: ideaId
+        }
+      }
+    ).then((upvoteResponse) => {
+      console.log('Retrieve Upvote response', upvoteResponse);
+      if (upvoteResponse.data === '') {
+        console.log('Upvotes not found');
+        return;
+      }
+      setIdeaState(state => ({
+        ...state,
+        idea: {
+          ...state.idea,
+          upvotes: upvoteResponse.data
+        }
+      }));
+    }).catch(error => {
+      console.log('Retrieve Upvote error', error);
+    });
+  };
 
   return (
     <React.Fragment>
       < IdeaView
         currentUser={currentUser}
-        state={state}
-        setState={setState}
+        ideaState={ideaState}
+        updateUpvotes={updateUpvotes}
       />
     </React.Fragment>
   );

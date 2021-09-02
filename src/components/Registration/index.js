@@ -4,36 +4,33 @@ import history from '../../utils/history'
 import RegistrationView from './view';
 
 export default function Registration() {
-  const [state, setState] = useState({
+  const [registrationState, setRegistrationState] = useState({
     credentials: {
       username: '',
       password: '',
       email: '',
-      role: 0,
-      suspended: 0
-    },
-    user: {
-      id: -1,
-      firstName: '',
-      lastName: '',
-      occupation: '',
-      state: '',
-      age: '',
-      bio: ''
+      user: {
+        first_name: '',
+        last_name: '',
+        occupation: '',
+        state: '',
+        age: '',
+        bio: ''
+      }
     },
     hidePassword: true,
     message: ''
   });
 
   const handleToggleHidePassword = () => {
-    setState(state => ({
+    setRegistrationState(state => ({
       ...state,
       hidePassword: !state?.hidePassword
     }));
   };
 
   const handleChange = (object, prop) => (event) => {
-    setState(state => ({
+    setRegistrationState(state => ({
       ...state,
       [object]: {
         ...state?.[object],
@@ -42,8 +39,21 @@ export default function Registration() {
     }));
   };
 
+  const handleChangeNested = (parent, child, prop) => (event) => {
+    setRegistrationState(state => ({
+      ...state,
+      [parent]: {
+        ...state?.[parent],
+        [child]: {
+          ...state?.[parent].[child],
+          [prop]: event.target.value
+        }
+      }
+    }));
+  };
+
   const handleSelectState = (stateAbbreviation) => {
-    setState(state => ({
+    setRegistrationState(state => ({
       ...state,
       user: {
         ...state?.user,
@@ -59,14 +69,19 @@ export default function Registration() {
   };
 
   const handleSubmit = () => {
-    console.log('Register with Credentials & User', state?.credentials, state?.user)
+    console.log('Register Credentials with User', registrationState?.credentials)
     axios.post(`http://localhost:8080/account/register`,
-      {
-        credentials: { ...state?.credentials },
-        user: { ...state?.user }
+      registrationState?.credentials
+    ).then((credentialsResponse) => {
+      console.log('Register response', credentialsResponse)
+      if (credentialsResponse?.data === '') {
+        console.log('Account not registered');
+        setRegistrationState(state => ({
+          ...state,
+          message: 'Account not registered'
+        }));
+        return;
       }
-    ).then((accountResponse) => {
-      console.log('Register response', accountResponse)
       history.push(`/login`)
     }).catch(error => {
       console.log('Register error', error);
@@ -75,9 +90,10 @@ export default function Registration() {
 
   return (
     <RegistrationView
-      state={state}
+      registrationState={registrationState}
       handleToggleHidePassword={handleToggleHidePassword}
       handleChange={handleChange}
+      handleChangeNested={handleChangeNested}
       handleKeyPress={handleKeyPress}
       handleSelectState={handleSelectState}
       handleSubmit={handleSubmit}

@@ -1,11 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, makeStyles, fade, IconButton, InputBase } from '@material-ui/core'
+import { AppBar, Toolbar, makeStyles, alpha, IconButton, InputBase } from '@material-ui/core'
 import { Search as SearchIcon, Menu as MenuIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     width: 'auto',
-    height: 64,
     margin: 10,
     backgroundColor: 'rgb(41, 41, 41);',
     position: 'relative',
@@ -30,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     textAlign: 'left',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,

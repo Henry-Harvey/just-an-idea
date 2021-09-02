@@ -15,46 +15,46 @@ const useStyles = makeStyles((theme) => ({
   item: {
     background: '#292929',
     display: 'flex',
-    flexWrap: 'wrap',
-    overflow: 'auto',
     flexDirection: 'column',
     alignItems: 'center',
     padding: 10,
     borderRadius: 10,
-    marginInline: '2%',
+    marginInline: '1%',
     width: '50%',
     justifyContent: 'space-between'
   }
 }));
 
 export default function ProfileView({
-  state,
-  userId,
+  profileState,
   isUsersProfile,
-  setCurrentUser
+  setCurrentUser,
+  updateUser
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <Typography className={styles.title}>
-        {isUsersProfile ?
+        {isUsersProfile
+          ?
           "My Profile"
           :
-          state.title + `'s Profile`
+          profileState.user.display_name + `'s Profile`
         }
       </Typography>
       <div className={styles.container}>
         <div className={styles.item}>
           <UserInfo
-            userId={userId}
+            profileState={profileState}
             isUsersProfile={isUsersProfile}
             setCurrentUser={setCurrentUser}
+            updateUser={updateUser}
           />
         </div>
         <div className={styles.item}>
           <UserIdeas
-            userId={userId}
+            profileState={profileState}
             isUsersProfile={isUsersProfile}
           />
         </div>
