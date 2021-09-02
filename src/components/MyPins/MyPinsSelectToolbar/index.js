@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
-import MyPinsSelectToolbarView from './view';
-import DeletePin from './DeletePin'
+import React, { useState } from "react";
+import MyPinsSelectToolbarView from "./view";
+import DeletePin from "./DeletePin";
 
-export default function MyPinsSelectToolbar({
-  selectedPin,
-  currentUser
-}) {
+export default function MyPinsSelectToolbar({ selectedPin, currentUser }) {
   const [myPinsSelectToolbarState, setMyPinsSelectToolbarState] = useState({
-    isDeleteDialogOpen: false
+    isDeleteDialogOpen: false,
   });
 
   const handleToggleDeleteDialog = () => {
-    setMyPinsSelectToolbarState(state => ({
+    setMyPinsSelectToolbarState((state) => ({
       ...state,
-      isDeleteDialogOpen: !state.isDeleteDialogOpen
+      isDeleteDialogOpen: !state.isDeleteDialogOpen,
     }));
   };
 
   return (
     <React.Fragment>
-      < MyPinsSelectToolbarView
+      <MyPinsSelectToolbarView
         selectedPin={selectedPin}
         handleToggleDeleteDialog={handleToggleDeleteDialog}
       />

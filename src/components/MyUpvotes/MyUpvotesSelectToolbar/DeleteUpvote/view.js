@@ -1,27 +1,36 @@
-import React from 'react';
-import { makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip, IconButton } from '@material-ui/core'
-import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
+import React from "react";
+import {
+  makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Tooltip,
+  IconButton,
+} from "@material-ui/core";
+import { Check as CheckIcon, Close as CloseIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   dialogTitle: {
-    color: 'white'
+    color: "white",
   },
   dialogContent: {
-    color: 'white'
+    color: "white",
   },
   dialogPaper: {
-    backgroundColor: '#292929'
+    backgroundColor: "#292929",
   },
   iconButton: {
-    color: 'white'
-  }
+    color: "white",
+  },
 }));
 
 export default function DeleteUpvoteView({
   selectedUpvote,
   myUpvotesSelectToolbarState,
   handleToggleDeleteDialog,
-  handleSubmitDelete
+  handleSubmitDelete,
 }) {
   const styles = useStyles();
 
@@ -40,17 +49,19 @@ export default function DeleteUpvoteView({
           </DialogContentText>
         </DialogContent>
         <DialogActions className={styles.buttons}>
-          <Tooltip title='No'>
+          <Tooltip title="No">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}>
+              onClick={handleToggleDeleteDialog}
+            >
               <CloseIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Yes'>
+          <Tooltip title="Yes">
             <IconButton
               className={styles.iconButton}
-              onClick={handleSubmitDelete}>
+              onClick={handleSubmitDelete}
+            >
               <CheckIcon />
             </IconButton>
           </Tooltip>

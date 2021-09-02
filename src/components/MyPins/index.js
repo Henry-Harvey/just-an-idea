@@ -1,73 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import MyPinsView from './view';
-import MyPinsSelectToolbar from './MyPinsSelectToolbar'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import MyPinsView from "./view";
+import MyPinsSelectToolbar from "./MyPinsSelectToolbar";
 
-export default function MyPins({
-  currentUser
-}) {
+export default function MyPins({ currentUser }) {
   const [myPinsState, setMyPinsState] = useState({
     pins: [],
     table: {
-      options:
-      {
+      options: {
         print: false,
         download: false,
         viewColumns: false,
-        selectableRows: 'single',
+        selectableRows: "single",
         selectableRowsOnClick: true,
         selectableRowsHideCheckboxes: true,
-        rowsPerPageOptions: [8],
+        rowsPerPageOptions: [8, 12, 16, 20],
         rowsPerPage: 8,
         customToolbarSelect: null,
-        enableNestedDataAccess: '.'
+        enableNestedDataAccess: ".",
       },
-      columns:
-        [
-          {
-            options: { sortDirection: 'desc' },
-            name: 'timestamp',
-            label: 'Pinned on'
-          },
-          {
-            name: 'topic.title',
-            label: 'Title',
-          },
-          {
-            name: 'topic.ideas.length',
-            label: 'No. of Ideas'
-          }
-        ]
-    }
+      columns: [
+        {
+          options: { sortDirection: "desc" },
+          name: "timestamp",
+          label: "Pinned on",
+        },
+        {
+          name: "topic.title",
+          label: "Title",
+        },
+        {
+          name: "topic.ideas.length",
+          label: "No. of Ideas",
+        },
+      ],
+    },
   });
 
   useEffect(() => {
-    if (typeof currentUser?.user_id !== 'number') {
+    if (typeof currentUser?.user_id !== "number") {
       return;
     }
-    console.log('Retrieve Pins with user_id', currentUser.user_id);
-    axios.post(`http://localhost:8080/content/pins`,
-      {
+    console.log("Retrieve Pins with user_id", currentUser.user_id);
+    axios
+      .post(`http://localhost:8080/content/pins`, {
         pin_id: {
-          user_id: currentUser.user_id
+          user_id: currentUser.user_id,
+        },
+      })
+      .then((pinResponse) => {
+        console.log("Retrieve Pin response", pinResponse);
+        if (pinResponse?.data === "") {
+          console.log("Pin not found");
+          return;
         }
-      }
-    ).then((pinResponse) => {
-      console.log('Retrieve Pin response', pinResponse);
-      if (pinResponse?.data === '') {
-        console.log('Pin not found');
-        return;
-      }
-      setMyPinsState(state => ({
-        ...state,
-        pins: pinResponse.data
-      }));
-    }).catch(error => {
-      console.log('Retrieve Pin Info error', error);
-    });
+        setMyPinsState((state) => ({
+          ...state,
+          pins: pinResponse.data,
+        }));
+      })
+      .catch((error) => {
+        console.log("Retrieve Pin Info error", error);
+      });
 
     setTimeout(() => {
-      setMyPinsState(state => ({
+      setMyPinsState((state) => ({
         ...state,
         table: {
           ...state.table,
@@ -79,19 +76,17 @@ export default function MyPins({
                   selectedPin={state.pins[selectedRows.data[0].dataIndex]}
                   currentUser={currentUser}
                 />
-              )
-            }
-          }
-        }
+              );
+            },
+          },
+        },
       }));
     }, 200);
   }, [currentUser]);
 
   return (
     <React.Fragment>
-      <MyPinsView
-        myPinsState={myPinsState}
-      />
+      <MyPinsView myPinsState={myPinsState} />
     </React.Fragment>
   );
 }

@@ -1,37 +1,37 @@
-import React from 'react';
-import { Tooltip, IconButton } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core'
-import { Visibility as VisibilityIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Tooltip, IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import {
+  Visibility as VisibilityIcon,
+  Delete as DeleteIcon,
+} from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    marginRight: 24
+    marginRight: 24,
   },
   dialogTitle: {
-    color: 'white'
+    color: "white",
   },
   dialogContent: {
-    color: 'white'
+    color: "white",
   },
   dialogPaper: {
-    backgroundColor: '#292929'
-  }
+    backgroundColor: "#292929",
+  },
 }));
 
 export default function MyPinsSelectToolbarView({
   selectedPin,
-  handleToggleDeleteDialog
+  handleToggleDeleteDialog,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <div className={styles.toolbar}>
-        <Link
-          to={'/topic/' + selectedPin.topic.id}
-          className={styles.link}
-        >
+        <Link to={"/topic/" + selectedPin.topic.id} className={styles.link}>
           <Tooltip title="View Topic">
             <IconButton>
               <VisibilityIcon />
@@ -39,12 +39,10 @@ export default function MyPinsSelectToolbarView({
           </Tooltip>
         </Link>
         <Tooltip title="Delete">
-            <IconButton
-              onClick={handleToggleDeleteDialog}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={handleToggleDeleteDialog}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </div>
     </React.Fragment>
   );

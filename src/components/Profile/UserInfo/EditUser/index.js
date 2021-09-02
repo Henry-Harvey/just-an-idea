@@ -1,6 +1,6 @@
-import React from 'react';
-import axios from 'axios';
-import EditUserView from './view';
+import React from "react";
+import axios from "axios";
+import EditUserView from "./view";
 
 export default function EditUser({
   profileState,
@@ -10,23 +10,23 @@ export default function EditUser({
   handleToggleEditDialog,
   handleChange,
   handleSelectState,
-  handleEditErrorMessage
+  handleEditErrorMessage,
 }) {
-
   const handleSubmitEdit = () => {
-    console.log('Edit with User', userInfoState?.editUser)
-    axios.patch(`http://localhost:8080/account/user`,
-      userInfoState?.editUser
-    ).then((userResponse) => {
-      console.log('Edit User response', userResponse)
-      updateUser(userInfoState?.editUser);
-      handleToggleEditDialog();
-    }).catch(error => {
-      console.log('Edit User error', error);
-      handleChange('message', 'first_name')
-      handleEditErrorMessage();
-    });
-  }
+    console.log("Edit with User", userInfoState?.editUser);
+    axios
+      .patch(`http://localhost:8080/account/user`, userInfoState?.editUser)
+      .then((userResponse) => {
+        console.log("Edit User response", userResponse);
+        updateUser(userInfoState?.editUser);
+        handleToggleEditDialog();
+      })
+      .catch((error) => {
+        console.log("Edit User error", error);
+        handleChange("message", "first_name");
+        handleEditErrorMessage();
+      });
+  };
 
   return (
     <React.Fragment>

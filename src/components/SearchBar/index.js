@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import history from '../../utils/history'
-import SeachBarView from './view';
+import React, { useEffect, useState } from "react";
+import history from "../../utils/history";
+import SeachBarView from "./view";
 
 export default function SearchBar({ toggleSidePanel }) {
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
 
   useEffect(() => {
-    setUserInput('');
-  }, [])
+    setUserInput("");
+  }, []);
 
   const onChange = (event) => {
     setUserInput(event.target.value);
@@ -16,12 +16,12 @@ export default function SearchBar({ toggleSidePanel }) {
   const onSubmit = (event) => {
     event.preventDefault();
     history.push(`/search/${userInput}`);
-    setUserInput('');
+    setUserInput("");
   };
 
   return (
     <React.Fragment>
-      < SeachBarView
+      <SeachBarView
         toggleSidePanel={toggleSidePanel}
         userInput={userInput}
         onChange={onChange}

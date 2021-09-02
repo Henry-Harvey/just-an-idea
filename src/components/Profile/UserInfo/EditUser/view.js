@@ -1,59 +1,69 @@
-import React from 'react';
-import { makeStyles, Typography, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip, IconButton } from '@material-ui/core'
-import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
-import clsx from 'clsx';
-import StateDropdown from './StateDropdown'
+import React from "react";
+import {
+  makeStyles,
+  Typography,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Tooltip,
+  IconButton,
+} from "@material-ui/core";
+import { Check as CheckIcon, Close as CloseIcon } from "@material-ui/icons";
+import clsx from "clsx";
+import StateDropdown from "./StateDropdown";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    width: '75%',
+    width: "75%",
     maxWidth: 600,
     minWidth: 100,
-    marginBottom: '2%',
-    overflow: 'hidden',
-    color: 'white',
-    '& .MuiInputBase-input': {
-      color: 'white',
-      fontSize: 'calc(.33rem + 2vmin)',
+    marginBottom: "2%",
+    overflow: "hidden",
+    color: "white",
+    "& .MuiInputBase-input": {
+      color: "white",
+      fontSize: "calc(.33rem + 2vmin)",
     },
-    '& label': {
-      color: 'white',
-      fontSize: 'calc(1rem + .5vmin)',
+    "& label": {
+      color: "white",
+      fontSize: "calc(1rem + .5vmin)",
     },
-    '& .MuiFormLabel-root.Mui-disabled': {
-      color: 'white',
-      fontSize: 'calc(1rem + .5vmin)',
+    "& .MuiFormLabel-root.Mui-disabled": {
+      color: "white",
+      fontSize: "calc(1rem + .5vmin)",
     },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'white',
+    "& .MuiInput-underline:before": {
+      borderBottomColor: "white",
     },
-    '& label.Mui-focused': {
-      color: '#D6D6D6',
+    "& label.Mui-focused": {
+      color: "#D6D6D6",
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: '#D6D6D6',
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#D6D6D6",
     },
   },
   multiline: {
-    '& .MuiInputBase-input': {
-      fontSize: 'calc(1rem + .5vmin)',
-    }
+    "& .MuiInputBase-input": {
+      fontSize: "calc(1rem + .5vmin)",
+    },
   },
   dialogTitle: {
-    color: 'white'
+    color: "white",
   },
   dialogContent: {
-    color: 'white'
+    color: "white",
   },
   dialogPaper: {
-    backgroundColor: '#292929'
+    backgroundColor: "#292929",
   },
   iconButton: {
-    color: 'white'
+    color: "white",
   },
   message: {
-    color: 'red'
-  }
+    color: "red",
+  },
 }));
 
 export default function EditUserView({
@@ -62,13 +72,13 @@ export default function EditUserView({
   handleToggleEditDialog,
   handleChange,
   handleSelectState,
-  handleSubmitEdit
+  handleSubmitEdit,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      {isUsersProfile ?
+      {isUsersProfile ? (
         <Dialog
           open={userInfoState.isEditDialogOpen}
           keepMounted
@@ -78,49 +88,49 @@ export default function EditUserView({
           <DialogTitle className={styles.dialogTitle}>Edit Profile</DialogTitle>
           <DialogContent className={styles.dialogContent}>
             <TextField
-              id='editDisplayName'
-              label='Display Name'
-              value={userInfoState?.editUser.display_name || ''}
-              onChange={handleChange('editUser', 'display_name')}
+              id="editDisplayName"
+              label="Display Name"
+              value={userInfoState?.editUser.display_name || ""}
+              onChange={handleChange("editUser", "display_name")}
               className={styles.textField}
             />
             <TextField
-              id='editFirstName'
-              label='First Name'
-              value={userInfoState?.editUser.first_name || ''}
-              onChange={handleChange('editUser', 'first_name')}
+              id="editFirstName"
+              label="First Name"
+              value={userInfoState?.editUser.first_name || ""}
+              onChange={handleChange("editUser", "first_name")}
               className={styles.textField}
             />
             <TextField
-              id='editLastName'
-              label='Last Name'
-              value={userInfoState?.editUser.last_name || ''}
-              onChange={handleChange('editUser', 'last_name')}
+              id="editLastName"
+              label="Last Name"
+              value={userInfoState?.editUser.last_name || ""}
+              onChange={handleChange("editUser", "last_name")}
               className={styles.textField}
             />
             <TextField
-              id='editOccupation'
-              label='Occupation'
-              value={userInfoState?.editUser.occupation || ''}
-              onChange={handleChange('editUser', 'occupation')}
+              id="editOccupation"
+              label="Occupation"
+              value={userInfoState?.editUser.occupation || ""}
+              onChange={handleChange("editUser", "occupation")}
               className={styles.textField}
             />
             <StateDropdown
               handleSelectState={handleSelectState}
-              value={userInfoState?.editUser.state || ''}
+              value={userInfoState?.editUser.state || ""}
             />
             <TextField
-              id='editAge'
-              label='Age'
-              value={userInfoState?.editUser.age || ''}
-              onChange={handleChange('editUser', 'age')}
+              id="editAge"
+              label="Age"
+              value={userInfoState?.editUser.age || ""}
+              onChange={handleChange("editUser", "age")}
               className={styles.textField}
             />
             <TextField
-              id='editBio'
-              label='Bio'
-              value={userInfoState?.editUser.bio || ''}
-              onChange={handleChange('editUser', 'bio')}
+              id="editBio"
+              label="Bio"
+              value={userInfoState?.editUser.bio || ""}
+              onChange={handleChange("editUser", "bio")}
               className={clsx(styles.textField, styles.multiline)}
               multiline
               maxrows={5}
@@ -130,25 +140,25 @@ export default function EditUserView({
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Tooltip title='Cancel'>
+            <Tooltip title="Cancel">
               <IconButton
                 className={styles.iconButton}
-                onClick={handleToggleEditDialog}>
+                onClick={handleToggleEditDialog}
+              >
                 <CloseIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title='Submit'>
+            <Tooltip title="Submit">
               <IconButton
                 className={styles.iconButton}
-                onClick={handleSubmitEdit}>
+                onClick={handleSubmitEdit}
+              >
                 <CheckIcon />
               </IconButton>
             </Tooltip>
           </DialogActions>
         </Dialog>
-        :
-        null
-      }
+      ) : null}
     </React.Fragment>
   );
 }

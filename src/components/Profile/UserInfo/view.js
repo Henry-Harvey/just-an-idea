@@ -1,191 +1,164 @@
-import React from 'react';
-import { makeStyles, TextField, Tooltip, IconButton } from '@material-ui/core'
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import clsx from 'clsx';
+import React from "react";
+import { makeStyles, TextField, Tooltip, IconButton } from "@material-ui/core";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    width: '90%',
+    width: "90%",
     maxWidth: 600,
     minWidth: 100,
-    marginBottom: '2%',
-    overflow: 'hidden',
-    color: 'white',
-    '& .MuiInputBase-input': {
-      color: 'white',
-      fontSize: 'calc(.33rem + 2vmin)',
+    marginBottom: "2%",
+    overflow: "hidden",
+    color: "white",
+    "& .MuiInputBase-input": {
+      color: "white",
+      fontSize: "calc(.33rem + 2vmin)",
     },
-    '& label': {
-      color: 'white',
-      fontSize: 'calc(1rem + .5vmin)',
+    "& label": {
+      color: "white",
+      fontSize: "calc(1rem + .5vmin)",
     },
-    '& .MuiFormLabel-root.Mui-disabled': {
-      color: 'white',
-      fontSize: 'calc(1rem + .5vmin)',
+    "& .MuiFormLabel-root.Mui-disabled": {
+      color: "white",
+      fontSize: "calc(1rem + .5vmin)",
     },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'white',
+    "& .MuiInput-underline:before": {
+      borderBottomColor: "white",
     },
-    '& label.Mui-focused': {
-      color: '#D6D6D6',
+    "& label.Mui-focused": {
+      color: "#D6D6D6",
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: '#D6D6D6',
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#D6D6D6",
     },
   },
   multiline: {
-    '& .MuiInputBase-input': {
-      fontSize: 'calc(1rem + .5vmin)',
-    }
+    "& .MuiInputBase-input": {
+      fontSize: "calc(1rem + .5vmin)",
+    },
   },
   iconButton: {
-    color: 'white'
-  }
+    color: "white",
+  },
 }));
 
 export default function UserInfoView({
   profileState,
   isUsersProfile,
   handleToggleEditDialog,
-  handleToggleDeleteDialog
+  handleToggleDeleteDialog,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      {!profileState.user
-        ?
+      {!profileState.user ? (
         <TextField
-          id='no user data'
-          value='No User Data'
+          id="no user data"
+          value="No User Data"
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.display_name
-        ?
-        isUsersProfile ?
+      ) : null}
+      {profileState.user?.display_name ? (
+        isUsersProfile ? (
           <TextField
-            id='display_name'
-            label='Display Name'
+            id="display_name"
+            label="Display Name"
             value={profileState.user?.display_name}
             className={styles.textField}
             disabled
           />
-          :
-          null
-        :
-        null
-      }
-      {profileState.user?.first_name && profileState.user?.last_name
-        ?
+        ) : null
+      ) : null}
+      {profileState.user?.first_name && profileState.user?.last_name ? (
         <TextField
-          id='name'
-          label='Name'
-          value={profileState.user?.first_name + ' ' + profileState.user?.last_name}
+          id="name"
+          label="Name"
+          value={
+            profileState.user?.first_name + " " + profileState.user?.last_name
+          }
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.first_name && !profileState.user?.last_name
-        ?
+      ) : null}
+      {profileState.user?.first_name && !profileState.user?.last_name ? (
         <TextField
-          id='name'
-          label='First Name'
+          id="name"
+          label="First Name"
           value={profileState.user?.first_name}
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {!profileState.user?.first_name && profileState.user?.last_name
-        ?
+      ) : null}
+      {!profileState.user?.first_name && profileState.user?.last_name ? (
         <TextField
-          id='name'
-          label='Last Name'
+          id="name"
+          label="Last Name"
           value={profileState.user?.last_name}
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.occupation
-        ?
+      ) : null}
+      {profileState.user?.occupation ? (
         <TextField
-          id='occupation'
-          label='Occupation'
+          id="occupation"
+          label="Occupation"
           value={profileState.user?.occupation}
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.state
-        ?
+      ) : null}
+      {profileState.user?.state ? (
         <TextField
-          id='state'
-          label='State'
+          id="state"
+          label="State"
           value={profileState.user?.state}
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.age
-        ?
+      ) : null}
+      {profileState.user?.age ? (
         <TextField
-          id='age'
-          label='Age'
+          id="age"
+          label="Age"
           value={profileState.user?.age}
           className={styles.textField}
           disabled
         />
-        :
-        null
-      }
-      {profileState.user?.bio
-        ?
+      ) : null}
+      {profileState.user?.bio ? (
         <TextField
-          id='bio'
-          label='Bio'
+          id="bio"
+          label="Bio"
           value={profileState.user?.bio}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           disabled
           maxrows={5}
         />
-        :
-        null
-      }
-      {isUsersProfile
-        ?
+      ) : null}
+      {isUsersProfile ? (
         <div>
-          <Tooltip title='Delete'>
+          <Tooltip title="Delete">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}>
+              onClick={handleToggleDeleteDialog}
+            >
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Edit'>
+          <Tooltip title="Edit">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleEditDialog}>
+              onClick={handleToggleEditDialog}
+            >
               <EditIcon />
             </IconButton>
           </Tooltip>
         </div>
-        :
-        null
-      }
+      ) : null}
     </React.Fragment>
   );
 }

@@ -1,53 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import UserIdeasView from './view';
-import UserIdeasSelectToolbar from './UserIdeasSelectToolbar'
+import React, { useState, useEffect } from "react";
+import UserIdeasView from "./view";
+import UserIdeasSelectToolbar from "./UserIdeasSelectToolbar";
 
-export default function UserIdeas({
-  profileState,
-  isUsersProfile
-}) {
+export default function UserIdeas({ profileState, isUsersProfile }) {
   const [userIdeasState, setUserIdeasState] = useState({
     table: {
-      options:
-      {
+      options: {
         print: false,
         download: false,
         viewColumns: false,
-        selectableRows: 'single',
+        selectableRows: "single",
         selectableRowsOnClick: true,
         selectableRowsHideCheckboxes: true,
         rowsPerPageOptions: [6],
         rowsPerPage: 6,
         customToolbarSelect: null,
-        enableNestedDataAccess: '.'
+        enableNestedDataAccess: ".",
       },
-      columns:
-        [
-          {
-            name: 'upvotes.length',
-            label: 'Upvotes'
-          },
-          {
-            name: 'title',
-            label: 'Title'
-          },
-          {
-            name: 'topic.title',
-            label: 'Topic'
-          },
-          {
-            options: { sortDirection: 'desc' },
-            name: 'timestamp',
-            label: 'Created on'
-          }
-        ]
-    }
-  }
-  );
+      columns: [
+        {
+          name: "upvotes.length",
+          label: "Upvotes",
+        },
+        {
+          name: "title",
+          label: "Title",
+        },
+        {
+          name: "topic.title",
+          label: "Topic",
+        },
+        {
+          options: { sortDirection: "desc" },
+          name: "timestamp",
+          label: "Created on",
+        },
+      ],
+    },
+  });
 
   useEffect(() => {
     setTimeout(() => {
-      setUserIdeasState(state => ({
+      setUserIdeasState((state) => ({
         ...state,
         table: {
           ...state.table,
@@ -56,13 +50,15 @@ export default function UserIdeas({
             customToolbarSelect: (selectedRows) => {
               return (
                 <UserIdeasSelectToolbar
-                  selectedIdea={profileState.user.ideas[selectedRows.data[0].dataIndex]}
+                  selectedIdea={
+                    profileState.user.ideas[selectedRows.data[0].dataIndex]
+                  }
                   isUsersProfile={isUsersProfile}
                 />
-              )
-            }
-          }
-        }
+              );
+            },
+          },
+        },
       }));
     }, 200);
   }, [isUsersProfile, profileState.user]);

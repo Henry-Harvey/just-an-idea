@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 // import axios from 'axios';
 // import { LogOut } from '../../../../utils'
 // import history from '../../../../utils/history'
-import DeleteUserView from './view';
+import DeleteUserView from "./view";
 
 export default function DeleteUser({
   profileState,
   userInfoState,
   setCurrentUser,
   isUsersProfile,
-  handleToggleDeleteDialog
+  handleToggleDeleteDialog,
 }) {
   const handleSubmitDelete = () => {
-    console.log('Delete User with id', profileState?.user.id)
+    console.log("Delete User with id", profileState?.user.id);
     // axios.delete(`http://localhost:8080/account/user/${state?.user.id}`)
     //   .then((userResponse) => {
     //     console.log('Delete response', userResponse)
@@ -23,7 +23,7 @@ export default function DeleteUser({
     //   }).catch(error => {
     //     console.log('Delete User error', error);
     //   });
-  }
+  };
 
   return (
     <React.Fragment>

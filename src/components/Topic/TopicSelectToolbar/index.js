@@ -1,13 +1,10 @@
-import React from 'react';
-import TopicSelectToolbarView from './view';
+import React from "react";
+import TopicSelectToolbarView from "./view";
 
-export default function TopicSelectToolbar({selectedIdea}) {
-
+export default function TopicSelectToolbar({ selectedIdea }) {
   return (
     <React.Fragment>
-      < TopicSelectToolbarView
-        selectedIdea={selectedIdea}
-      />
+      <TopicSelectToolbarView selectedIdea={selectedIdea} />
     </React.Fragment>
   );
 }

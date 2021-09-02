@@ -1,17 +1,14 @@
-import React from 'react';
-import MUIDataTable from 'mui-datatables';
-import { makeStyles } from '@material-ui/core'
+import React from "react";
+import MUIDataTable from "mui-datatables";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    margin: 10
-  }
+    margin: 10,
+  },
 }));
 
-export default function SearchView({ 
-  searchString, 
-  searchState 
-}) {
+export default function SearchView({ searchString, searchState }) {
   const styles = useStyles();
 
   return (
