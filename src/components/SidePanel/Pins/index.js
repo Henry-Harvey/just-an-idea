@@ -16,11 +16,11 @@ export default function Pins({ currentUser }) {
       }));
       return;
     }
-    console.log("Retrieve All Pins with user_id", currentUser.user_id);
+    console.log("Retrieve All Pins with user_id", currentUser?.user_id);
     axios
       .post(`http://localhost:8080/content/pins`, {
         pin_id: {
-          user_id: currentUser.user_id,
+          user_id: currentUser?.user_id,
         },
       })
       .then((pinResponse) => {

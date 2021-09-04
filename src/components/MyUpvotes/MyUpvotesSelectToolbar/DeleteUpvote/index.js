@@ -11,12 +11,12 @@ export default function DeleteUpvote({
   const handleSubmitDelete = () => {
     console.log(
       "Delete Upvote with user_id & idea_id",
-      currentUser.user_id,
+      currentUser?.user_id,
       selectedUpvote.idea.id
     );
     axios
       .delete(
-        `http://localhost:8080/content/upvote/${currentUser.user_id}/${selectedUpvote.idea.id}`
+        `http://localhost:8080/content/upvote/${currentUser?.user_id}/${selectedUpvote.idea.id}`
       )
       .then((upvoteResponse) => {
         console.log("Delete Upvote response", upvoteResponse);

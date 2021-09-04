@@ -42,17 +42,14 @@ export default function MyUpvotes({ currentUser }) {
   });
 
   useEffect(() => {
-    if (typeof currentUser.user_id !== "number") {
+    if (typeof currentUser?.user_id !== "number") {
       return;
     }
-    if (currentUser.user_id < 0) {
-      return;
-    }
-    console.log("Retrieve Upvotes with user_id", currentUser.user_id);
+    console.log("Retrieve Upvotes with user_id", currentUser?.user_id);
     axios
       .post(`http://localhost:8080/content/upvotes`, {
         upvote_id: {
-          user_id: currentUser.user_id,
+          user_id: currentUser?.user_id,
         },
       })
       .then((upvoteResponse) => {

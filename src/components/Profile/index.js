@@ -21,8 +21,8 @@ export default function Profile({ currentUser, setCurrentUser }) {
   let isUsersProfile = false;
 
   if (currentUser) {
-    if (isNaN(id) || id === currentUser.user_id) {
-      id = currentUser.user_id;
+    if (isNaN(id) || id === currentUser?.user_id) {
+      id = currentUser?.user_id;
       isUsersProfile = true;
     }
   }

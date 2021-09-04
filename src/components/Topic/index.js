@@ -78,12 +78,12 @@ export default function Topic({ currentUser }) {
     }
     console.log(
       "Retrieve Pin with user_id & topic_id",
-      currentUser.user_id,
+      currentUser?.user_id,
       topicId
     );
     axios
       .get(
-        `http://localhost:8080/content/pin/${currentUser.user_id}/${topicId}`
+        `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicId}`
       )
       .then((pinResponse) => {
         console.log("Retrieve Pin response", pinResponse);

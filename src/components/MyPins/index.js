@@ -41,11 +41,11 @@ export default function MyPins({ currentUser }) {
     if (typeof currentUser?.user_id !== "number") {
       return;
     }
-    console.log("Retrieve Pins with user_id", currentUser.user_id);
+    console.log("Retrieve Pins with user_id", currentUser?.user_id);
     axios
       .post(`http://localhost:8080/content/pins`, {
         pin_id: {
-          user_id: currentUser.user_id,
+          user_id: currentUser?.user_id,
         },
       })
       .then((pinResponse) => {

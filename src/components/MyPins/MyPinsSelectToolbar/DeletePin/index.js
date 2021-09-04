@@ -11,12 +11,12 @@ export default function DeletePin({
   const handleSubmitDelete = () => {
     console.log(
       "Delete Pin with user_id & topic_id",
-      currentUser.user_id,
+      currentUser?.user_id,
       selectedPin.topic.id
     );
     axios
       .delete(
-        `http://localhost:8080/content/pin/${currentUser.user_id}/${selectedPin.topic.id}`
+        `http://localhost:8080/content/pin/${currentUser?.user_id}/${selectedPin.topic.id}`
       )
       .then((pinResponse) => {
         console.log("Delete Pin response", pinResponse);

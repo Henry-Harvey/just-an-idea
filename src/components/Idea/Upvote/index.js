@@ -2,21 +2,26 @@ import React from "react";
 import axios from "axios";
 import UpvoteView from "./view";
 
-export default function Upvote({ currentUser, ideaState, updateUpvotes }) {
+export default function Upvote({
+  currentUser,
+  ideaState,
+  updateUpvotes,
+  retreieveIdea,
+}) {
   const toggleUpvote = () => {
     if (ideaState.isUpvoted) {
       console.log(
         "Delete Upvote with user_id & idea_id",
-        currentUser.user_id,
+        currentUser?.user_id,
         ideaState.idea.id
       );
       axios
         .delete(
-          `http://localhost:8080/content/upvote/${currentUser.user_id}/${ideaState.idea.id}`
+          `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaState.idea.id}`
         )
         .then((upvoteResponse) => {
           console.log("Delete Upvote response", upvoteResponse);
-          updateUpvotes();
+          retreieveIdea();
         })
         .catch((error) => {
           console.log("Delete Upvote error", error);
@@ -24,19 +29,19 @@ export default function Upvote({ currentUser, ideaState, updateUpvotes }) {
     } else {
       console.log(
         "Create Upvote with users_id & ideas_id",
-        currentUser.user_id,
+        currentUser?.user_id,
         ideaState.idea.id
       );
       axios
         .post(`http://localhost:8080/content/upvote`, {
           upvote_id: {
-            user_id: currentUser.user_id,
+            user_id: currentUser?.user_id,
             idea_id: ideaState.idea.id,
           },
         })
         .then((upvoteResponse) => {
           console.log("Create Upvote response", upvoteResponse);
-          updateUpvotes();
+          retreieveIdea();
         })
         .catch((error) => {
           console.log("Create Upvote error", error);

@@ -9,7 +9,7 @@ export default function Post({ currentUser }) {
       title: "",
       description: "",
       user: {
-        id: currentUser.user_id,
+        id: currentUser?.user_id,
       },
       topic: {
         title: "",

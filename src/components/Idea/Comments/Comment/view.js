@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles, Typography, TextField, Tooltip } from "@material-ui/core";
+import { makeStyles, TextField, Tooltip, IconButton } from "@material-ui/core";
+import { Delete as DeleteIcon } from "@material-ui/icons";
 import clsx from "clsx";
-import Upvote from "./Upvote";
-import Comments from "./Comments";
+import { Link } from "react-router-dom";
+import DeleteComment from "./DeleteComment";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     overflowY: "auto",
     marginInline: "10%",
-    marginBottom: "2em",
+    marginBottom: "1em",
   },
   linkSize: {
     width: "100%",
@@ -78,59 +78,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function IdeaView({ currentUser, ideaState, retreieveIdea }) {
+export default function CommentView({
+  retreieveIdea,
+  comment,
+  commentState,
+  isUsersComment,
+  toggleDeleteDialog,
+}) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      <Typography className={styles.title}>{ideaState.idea.title}</Typography>
-      <div className={styles.upvote}>
-        <Tooltip title="Upvotes">
-          <Typography className={styles.title}>
-            {ideaState.idea.upvotes.length}
-          </Typography>
-        </Tooltip>
-        {currentUser?.user_id === ideaState.idea.user.id ? null : (
-          <Upvote
-            currentUser={currentUser}
-            ideaState={ideaState}
-            retreieveIdea={retreieveIdea}
-          />
-        )}
-      </div>
       <div className={styles.form}>
         <TextField
-          id="description"
-          label="Description"
-          value={ideaState.idea.description}
+          id="content"
+          value={comment.content}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           disabled
           maxRows={15}
         />
         <div className={styles.linkSize}>
-          <Link
-            to={"/topic/" + ideaState.idea.topic.id}
-            className={styles.link}
-          >
-            <TextField
-              id="topic"
-              label="Topic"
-              value={ideaState.idea.topic.title}
-              className={styles.textField}
-              disabled
-            />
-          </Link>
-        </div>
-        <div className={styles.linkSize}>
-          <Link
-            to={"/profile/" + ideaState.idea.user.id}
-            className={styles.link}
-          >
+          <Link to={"/profile/" + comment.user.id} className={styles.link}>
             <TextField
               id="author"
-              label="Author"
-              value={ideaState.idea.user.display_name}
+              value={comment.user.display_name}
               className={styles.textField}
               disabled
             />
@@ -138,19 +110,29 @@ export default function IdeaView({ currentUser, ideaState, retreieveIdea }) {
         </div>
         <TextField
           id="timestamp"
-          label="Posted on"
-          value={ideaState.idea.timestamp}
+          value={comment.timestamp}
           className={styles.textField}
           disabled
         />
+        {isUsersComment ? (
+          <div>
+            <Tooltip title="Delete">
+              <IconButton
+                className={styles.iconButton}
+                onClick={toggleDeleteDialog}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        ) : null}
       </div>
-      <div className={styles.comments}>
-        <Comments
-          currentUser={currentUser}
-          ideaState={ideaState}
-          retreieveIdea={retreieveIdea}
-        />
-      </div>
+      <DeleteComment
+        retreieveIdea={retreieveIdea}
+        comment={comment}
+        commentState={commentState}
+        toggleDeleteDialog={toggleDeleteDialog}
+      />
     </React.Fragment>
   );
 }

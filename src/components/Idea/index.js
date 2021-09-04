@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import IdeaView from "./view";
 
 export default function Idea({ currentUser }) {
@@ -20,11 +20,12 @@ export default function Idea({ currentUser }) {
         title: "",
       },
       upvotes: [],
+      comments: [],
     },
     isUpvoted: false,
   });
 
-  useEffect(() => {
+  const retreieveIdea = React.useCallback(async () => {
     console.log("Retrieve Idea with id", ideaId);
     axios
       .get(`http://localhost:8080/content/idea/${ideaId}`)
@@ -43,12 +44,12 @@ export default function Idea({ currentUser }) {
         }
         console.log(
           "Retrieve Upvote with user_id & idea_id",
-          currentUser.user_id,
+          currentUser?.user_id,
           ideaResponse.data.id
         );
         axios
           .get(
-            `http://localhost:8080/content/upvote/${currentUser.user_id}/${ideaResponse.data.id}`
+            `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaResponse.data.id}`
           )
           .then((upvoteResponse) => {
             console.log("Retrieve Upvote response", upvoteResponse);
@@ -72,45 +73,18 @@ export default function Idea({ currentUser }) {
       .catch((error) => {
         console.log("Retrieve Idea error", error);
       });
-  }, [currentUser, currentUser.user_id, ideaId]);
+  }, [currentUser, ideaId]);
 
-  const updateUpvotes = () => {
-    setIdeaState((state) => ({
-      ...state,
-      isUpvoted: !state.isUpvoted,
-    }));
-    console.log("Retrieve All Upvotes with idea_id", ideaId);
-    axios
-      .post(`http://localhost:8080/content/upvotes`, {
-        upvote_id: {
-          idea_id: ideaId,
-        },
-      })
-      .then((upvoteResponse) => {
-        console.log("Retrieve Upvote response", upvoteResponse);
-        if (upvoteResponse.data === "") {
-          console.log("Upvotes not found");
-          return;
-        }
-        setIdeaState((state) => ({
-          ...state,
-          idea: {
-            ...state.idea,
-            upvotes: upvoteResponse.data,
-          },
-        }));
-      })
-      .catch((error) => {
-        console.log("Retrieve Upvote error", error);
-      });
-  };
+  useEffect(() => {
+    retreieveIdea();
+  }, [retreieveIdea]);
 
   return (
     <React.Fragment>
       <IdeaView
         currentUser={currentUser}
         ideaState={ideaState}
-        updateUpvotes={updateUpvotes}
+        retreieveIdea={retreieveIdea}
       />
     </React.Fragment>
   );
