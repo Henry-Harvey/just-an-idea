@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     width: "auto",
     margin: 10,
-    backgroundColor: "rgb(41, 41, 41);",
+    backgroundColor: "#292929",
     position: "relative",
     overflow: "hidden",
     color: "white",

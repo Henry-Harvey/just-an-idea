@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function UserInfoView({
   profileState,
   isUsersProfile,
-  handleToggleEditDialog,
-  handleToggleDeleteDialog,
+  toggleEditDialog,
+  toggleDeleteDialog,
 }) {
   const styles = useStyles();
 
@@ -144,7 +144,7 @@ export default function UserInfoView({
           <Tooltip title="Delete">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}
+              onClick={toggleDeleteDialog}
             >
               <DeleteIcon />
             </IconButton>
@@ -152,7 +152,7 @@ export default function UserInfoView({
           <Tooltip title="Edit">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleEditDialog}
+              onClick={toggleEditDialog}
             >
               <EditIcon />
             </IconButton>

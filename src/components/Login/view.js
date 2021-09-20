@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginView({
   loginState,
-  handleToggleHidePassword,
+  toggleHidePassword,
   handleChange,
   handleKeyPress,
   handleSubmit,
@@ -105,7 +105,7 @@ export default function LoginView({
                 <Tooltip title="Show/Hide">
                   <IconButton
                     className={styles.iconButton}
-                    onClick={handleToggleHidePassword}
+                    onClick={toggleHidePassword}
                   >
                     {loginState?.hidePassword ? (
                       <VisibilityOffIcon />

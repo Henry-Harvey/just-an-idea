@@ -4,9 +4,10 @@ import DeleteUpvoteView from "./view";
 
 export default function DeleteUpvote({
   selectedUpvote,
-  handleToggleDeleteDialog,
-  myUpvotesSelectToolbarState,
   currentUser,
+  retreieveMyUpvotes,
+  toggleDeleteDialog,
+  myUpvotesSelectToolbarState,
 }) {
   const handleSubmitDelete = () => {
     console.log(
@@ -20,8 +21,8 @@ export default function DeleteUpvote({
       )
       .then((upvoteResponse) => {
         console.log("Delete Upvote response", upvoteResponse);
-        handleToggleDeleteDialog();
-        window.location.reload();
+        toggleDeleteDialog();
+        retreieveMyUpvotes();
       })
       .catch((error) => {
         console.log("Delete Upvote error", error);
@@ -33,7 +34,7 @@ export default function DeleteUpvote({
       <DeleteUpvoteView
         selectedUpvote={selectedUpvote}
         myUpvotesSelectToolbarState={myUpvotesSelectToolbarState}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />
     </React.Fragment>

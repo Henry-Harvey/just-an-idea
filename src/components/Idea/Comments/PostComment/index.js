@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import PostCommentView from "./view";
 
@@ -17,7 +16,7 @@ export default function PostComment({
         id: user_id,
       },
       idea: {
-        id: useParams().ideaId,
+        id: idea_id,
       },
     },
     message: "",

@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EditUserView({
   userInfoState,
   isUsersProfile,
-  handleToggleEditDialog,
+  toggleEditDialog,
   handleChange,
   handleSelectState,
   handleSubmitEdit,
@@ -82,14 +82,14 @@ export default function EditUserView({
         <Dialog
           open={userInfoState.isEditDialogOpen}
           keepMounted
-          onClose={handleToggleEditDialog}
+          onClose={toggleEditDialog}
           classes={{ paper: styles.dialogPaper }}
         >
           <DialogTitle className={styles.dialogTitle}>Edit Profile</DialogTitle>
           <DialogContent className={styles.dialogContent}>
             <TextField
               id="editDisplayName"
-              label="Display Name"
+              label="Display Name*"
               value={userInfoState?.editUser.display_name || ""}
               onChange={handleChange("editUser", "display_name")}
               className={styles.textField}
@@ -143,7 +143,7 @@ export default function EditUserView({
             <Tooltip title="Cancel">
               <IconButton
                 className={styles.iconButton}
-                onClick={handleToggleEditDialog}
+                onClick={toggleEditDialog}
               >
                 <CloseIcon />
               </IconButton>

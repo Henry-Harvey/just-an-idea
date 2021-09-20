@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import MyPinsView from "./view";
 import MyPinsSelectToolbar from "./MyPinsSelectToolbar";
 
-export default function MyPins({ currentUser }) {
+export default function MyPins({ currentUser, reloadPinsRef }) {
   const [myPinsState, setMyPinsState] = useState({
     pins: [],
     table: {
@@ -21,11 +21,6 @@ export default function MyPins({ currentUser }) {
       },
       columns: [
         {
-          options: { sortDirection: "desc" },
-          name: "timestamp",
-          label: "Pinned on",
-        },
-        {
           name: "topic.title",
           label: "Title",
         },
@@ -33,11 +28,16 @@ export default function MyPins({ currentUser }) {
           name: "topic.ideas.length",
           label: "No. of Ideas",
         },
+        {
+          options: { sortDirection: "desc" },
+          name: "timestamp",
+          label: "Pinned on",
+        },
       ],
     },
   });
 
-  useEffect(() => {
+  const retreieveMyPins = useCallback(async () => {
     if (typeof currentUser?.user_id !== "number") {
       return;
     }
@@ -60,7 +60,7 @@ export default function MyPins({ currentUser }) {
         }));
       })
       .catch((error) => {
-        console.log("Retrieve Pin Info error", error);
+        console.log("Retrieve Pin error", error);
       });
 
     setTimeout(() => {
@@ -73,8 +73,10 @@ export default function MyPins({ currentUser }) {
             customToolbarSelect: (selectedRows) => {
               return (
                 <MyPinsSelectToolbar
-                  selectedPin={state.pins[selectedRows.data[0].dataIndex]}
                   currentUser={currentUser}
+                  reloadPinsRef={reloadPinsRef}
+                  retreieveMyPins={retreieveMyPins}
+                  selectedPin={state.pins[selectedRows.data[0].dataIndex]}
                 />
               );
             },
@@ -82,7 +84,11 @@ export default function MyPins({ currentUser }) {
         },
       }));
     }, 200);
-  }, [currentUser]);
+  }, [currentUser, reloadPinsRef]);
+
+  useEffect(() => {
+    retreieveMyPins();
+  }, [retreieveMyPins]);
 
   return (
     <React.Fragment>

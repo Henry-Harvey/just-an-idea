@@ -14,7 +14,7 @@ export default function Login({ setCurrentUser }) {
     message: "",
   });
 
-  const handleToggleHidePassword = () => {
+  const toggleHidePassword = () => {
     setLoginState((state) => ({
       ...state,
       hidePassword: !state?.hidePassword,
@@ -82,7 +82,7 @@ export default function Login({ setCurrentUser }) {
   return (
     <LoginView
       loginState={loginState}
-      handleToggleHidePassword={handleToggleHidePassword}
+      toggleHidePassword={toggleHidePassword}
       handleChange={handleChange}
       handleKeyPress={handleKeyPress}
       handleSubmit={handleSubmit}

@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserIdeasView({
   profileState,
-  userIdeasState,
   isUsersProfile,
+  userIdeasState,
 }) {
   const styles = useStyles();
 

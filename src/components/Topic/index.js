@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import TopicView from "./view";
-import TopicSelectToolbar from "./TopicSelectToolbar";
 import TopicToolbar from "./TopicToolbar";
 
-export default function Topic({ currentUser }) {
+export default function Topic({ currentUser, reloadPinsRef }) {
   let topicId = useParams().topicId;
 
   const [topicState, setTopicState] = useState({
@@ -49,9 +48,11 @@ export default function Topic({ currentUser }) {
       ],
     },
     isPinned: false,
+    isIdeaDisplayed: false,
+    selectedIdea: null,
   });
 
-  useEffect(() => {
+  const retreieveTopic = useCallback(async () => {
     if (typeof parseInt(topicId) !== "number") {
       return;
     }
@@ -70,7 +71,7 @@ export default function Topic({ currentUser }) {
         }));
       })
       .catch((error) => {
-        console.log("Retrieve Topic Info error", error);
+        console.log("Retrieve Topic error", error);
       });
 
     if (typeof currentUser?.user_id !== "number") {
@@ -113,27 +114,50 @@ export default function Topic({ currentUser }) {
             ...state.table.options,
             customToolbarSelect: (selectedRows) => {
               return (
-                <TopicSelectToolbar
-                  selectedIdea={
-                    state.topic.ideas[selectedRows.data[0].dataIndex]
-                  }
+                <TopicToolbar
+                  currentUser={currentUser}
+                  reloadPinsRef={reloadPinsRef}
+                  topicState={state}
+                  retreieveTopic={retreieveTopic}
                 />
               );
             },
             customToolbar: () => {
               return (
-                <TopicToolbar currentUser={currentUser} topicState={state} />
+                <TopicToolbar
+                  currentUser={currentUser}
+                  reloadPinsRef={reloadPinsRef}
+                  topicState={state}
+                  retreieveTopic={retreieveTopic}
+                />
               );
+            },
+            onRowSelectionChange: (currentRowsSelected, allRowsSelected) => {
+              allRowsSelected.length > 0
+                ? setTopicState((state) => ({
+                    ...state,
+                    isIdeaDisplayed: true,
+                    selectedIdea:
+                      state.topic.ideas[allRowsSelected[0].dataIndex],
+                  }))
+                : setTopicState((state) => ({
+                    ...state,
+                    isIdeaDisplayed: false,
+                  }));
             },
           },
         },
       }));
     }, 200);
-  }, [currentUser, topicId]);
+  }, [currentUser, reloadPinsRef, topicId]);
+
+  useEffect(() => {
+    retreieveTopic();
+  }, [retreieveTopic]);
 
   return (
     <React.Fragment>
-      <TopicView topicState={topicState} />
+      <TopicView currentUser={currentUser} topicState={topicState} />
     </React.Fragment>
   );
 }

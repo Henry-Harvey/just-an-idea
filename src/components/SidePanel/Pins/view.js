@@ -38,9 +38,12 @@ export default function PinsView({ pinsState, handleClick }) {
       <List component="nav" className={styles.list}>
         {pinsState.pins?.length > 0 ? (
           pinsState.pins?.map((pin, index) => (
-            <Link to={"/topic/" + pin.topic.id} className={styles.link}>
+            <Link
+              to={"/topic/" + pin.topic.id}
+              className={styles.link}
+              key={pin.pin_id.topic_id}
+            >
               <ListItem
-                key={pin.pin_id}
                 button
                 selected={pinsState.selectedIndex === index}
                 onClick={(event) => handleClick(event, index)}

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DeleteIdeaView({
   selectedIdea,
   userIdeasSelectToolbarState,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
   handleSubmitDelete,
 }) {
   const styles = useStyles();
@@ -39,20 +39,20 @@ export default function DeleteIdeaView({
       <Dialog
         open={userIdeasSelectToolbarState.isDeleteDialogOpen}
         keepMounted
-        onClose={handleToggleDeleteDialog}
+        onClose={toggleDeleteDialog}
         classes={{ paper: styles.dialogPaper }}
       >
         <DialogTitle className={styles.dialogTitle}>Delete Idea</DialogTitle>
         <DialogContent>
           <DialogContentText className={styles.dialogContent}>
-            Are you sure you want to delete '{selectedIdea.title}'?
+            Are you sure you want to delete '{selectedIdea?.title}'?
           </DialogContentText>
         </DialogContent>
         <DialogActions className={styles.buttons}>
           <Tooltip title="No">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}
+              onClick={toggleDeleteDialog}
             >
               <CloseIcon />
             </IconButton>

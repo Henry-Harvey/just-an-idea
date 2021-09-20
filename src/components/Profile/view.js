@@ -29,6 +29,7 @@ export default function ProfileView({
   profileState,
   isUsersProfile,
   setCurrentUser,
+  retreieveProfile,
   updateUser,
 }) {
   const styles = useStyles();
@@ -53,6 +54,7 @@ export default function ProfileView({
           <UserIdeas
             profileState={profileState}
             isUsersProfile={isUsersProfile}
+            retreieveProfile={retreieveProfile}
           />
         </div>
       </div>

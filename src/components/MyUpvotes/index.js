@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import MyUpvotesView from "./view";
 import MyUpvotesSelectToolbar from "./MyUpvotesSelectToolbar";
@@ -21,11 +21,6 @@ export default function MyUpvotes({ currentUser }) {
       },
       columns: [
         {
-          options: { sortDirection: "desc" },
-          name: "timestamp",
-          label: "Upvoted on",
-        },
-        {
           name: "idea.title",
           label: "Title",
         },
@@ -37,11 +32,16 @@ export default function MyUpvotes({ currentUser }) {
           name: "idea.user.display_name",
           label: "Author",
         },
+        {
+          options: { sortDirection: "desc" },
+          name: "timestamp",
+          label: "Upvoted on",
+        },
       ],
     },
   });
 
-  useEffect(() => {
+  const retreieveMyUpvotes = useCallback(async () => {
     if (typeof currentUser?.user_id !== "number") {
       return;
     }
@@ -64,7 +64,7 @@ export default function MyUpvotes({ currentUser }) {
         }));
       })
       .catch((error) => {
-        console.log("Retrieve Upvote Info error", error);
+        console.log("Retrieve Upvote error", error);
       });
 
     setTimeout(() => {
@@ -77,8 +77,9 @@ export default function MyUpvotes({ currentUser }) {
             customToolbarSelect: (selectedRows) => {
               return (
                 <MyUpvotesSelectToolbar
-                  selectedUpvote={state.upvotes[selectedRows.data[0].dataIndex]}
                   currentUser={currentUser}
+                  selectedUpvote={state.upvotes[selectedRows.data[0].dataIndex]}
+                  retreieveMyUpvotes={retreieveMyUpvotes}
                 />
               );
             },
@@ -87,6 +88,10 @@ export default function MyUpvotes({ currentUser }) {
       }));
     }, 200);
   }, [currentUser]);
+
+  useEffect(() => {
+    retreieveMyUpvotes();
+  }, [retreieveMyUpvotes]);
 
   return (
     <React.Fragment>

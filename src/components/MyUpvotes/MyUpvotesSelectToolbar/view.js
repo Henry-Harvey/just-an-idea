@@ -8,6 +8,7 @@ import {
   Delete as DeleteIcon,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import DeleteUpvote from "./DeleteUpvote";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -25,15 +26,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MyUpvotesSelectToolbarView({
+  currentUser,
   selectedUpvote,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
+  myUpvotesSelectToolbarState,
+  retreieveMyUpvotes,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <div className={styles.toolbar}>
-        <Link to={"/idea/" + selectedUpvote.idea.id} className={styles.link}>
+        <Link to={"/idea/" + selectedUpvote?.idea.id} className={styles.link}>
           <Tooltip title="View Idea">
             <IconButton>
               <VisibilityIcon />
@@ -41,7 +45,7 @@ export default function MyUpvotesSelectToolbarView({
           </Tooltip>
         </Link>
         <Link
-          to={"/topic/" + selectedUpvote.idea.topic.id}
+          to={"/topic/" + selectedUpvote?.idea.topic.id}
           className={styles.link}
         >
           <Tooltip title="View Topic">
@@ -51,7 +55,7 @@ export default function MyUpvotesSelectToolbarView({
           </Tooltip>
         </Link>
         <Link
-          to={"/profile/" + selectedUpvote.idea.user.id}
+          to={"/profile/" + selectedUpvote?.idea.user.id}
           className={styles.link}
         >
           <Tooltip title="View Author">
@@ -61,11 +65,18 @@ export default function MyUpvotesSelectToolbarView({
           </Tooltip>
         </Link>
         <Tooltip title="Delete">
-          <IconButton onClick={handleToggleDeleteDialog}>
+          <IconButton onClick={toggleDeleteDialog}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       </div>
+      <DeleteUpvote
+        currentUser={currentUser}
+        selectedUpvote={selectedUpvote}
+        toggleDeleteDialog={toggleDeleteDialog}
+        myUpvotesSelectToolbarState={myUpvotesSelectToolbarState}
+        retreieveMyUpvotes={retreieveMyUpvotes}
+      />
     </React.Fragment>
   );
 }

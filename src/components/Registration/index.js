@@ -22,7 +22,7 @@ export default function Registration() {
     message: "",
   });
 
-  const handleToggleHidePassword = () => {
+  const toggleHidePassword = () => {
     setRegistrationState((state) => ({
       ...state,
       hidePassword: !state?.hidePassword,
@@ -92,13 +92,17 @@ export default function Registration() {
       })
       .catch((error) => {
         console.log("Register error", error);
+        setRegistrationState((state) => ({
+          ...state,
+          message: "Register error",
+        }));
       });
   };
 
   return (
     <RegistrationView
       registrationState={registrationState}
-      handleToggleHidePassword={handleToggleHidePassword}
+      toggleHidePassword={toggleHidePassword}
       handleChange={handleChange}
       handleChangeNested={handleChangeNested}
       handleKeyPress={handleKeyPress}

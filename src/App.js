@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import ResizePanel from "react-resize-panel";
 // eslint-disable-next-line no-unused-vars
@@ -112,6 +112,8 @@ export default function App() {
   const [displaySidePanel, setDisplaySidePanel] = useState(true);
   const [currentUser, setCurrentUser] = useState();
 
+  const reloadPinsRef = useRef();
+
   useEffect(() => {
     if (IsLoggedIn()) {
       const user = getCurrentUser();
@@ -138,12 +140,15 @@ export default function App() {
             borderClass={styles.resizeBorder}
             style={{
               display: displaySidePanel ? "flex" : "none",
-              width: "10%",
+              width: "13%",
               height: "100%",
             }}
           >
             <div className={styles.sidePanel}>
-              <SidePanel currentUser={currentUser} />
+              <SidePanel
+                currentUser={currentUser}
+                reloadPinsRef={reloadPinsRef}
+              />
             </div>
           </ResizePanel>
 
@@ -166,6 +171,7 @@ export default function App() {
                 component={MyPins}
                 path="/pins"
                 currentUser={currentUser}
+                reloadPinsRef={reloadPinsRef}
               />
               <PrivateRoute
                 component={Post}
@@ -201,6 +207,7 @@ export default function App() {
                 component={Topic}
                 path="/topic/:topicId"
                 currentUser={currentUser}
+                reloadPinsRef={reloadPinsRef}
               />
               <PublicRoute
                 component={Idea}

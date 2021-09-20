@@ -12,14 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     background: "#292929",
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "column",
-    alignItems: "center",
     padding: 10,
     borderRadius: 10,
-    overflowY: "auto",
-    marginInline: "10%",
+    marginInline: "1.5%",
     marginBottom: "1em",
   },
   linkSize: {
@@ -31,9 +26,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   textField: {
-    width: "75%",
-    maxWidth: 500,
-    minWidth: 100,
+    width: "85%",
+    maxWidth: 1200,
     marginBottom: "2%",
     overflow: "hidden",
     color: "white",
@@ -101,7 +95,7 @@ export default function CommentView({
         <div className={styles.linkSize}>
           <Link to={"/profile/" + comment.user.id} className={styles.link}>
             <TextField
-              id="author"
+              id="comment_author"
               value={comment.user.display_name}
               className={styles.textField}
               disabled
@@ -109,14 +103,14 @@ export default function CommentView({
           </Link>
         </div>
         <TextField
-          id="timestamp"
+          id="comment_timestamp"
           value={comment.timestamp}
           className={styles.textField}
           disabled
         />
         {isUsersComment ? (
           <div>
-            <Tooltip title="Delete">
+            <Tooltip title="Delete Comment">
               <IconButton
                 className={styles.iconButton}
                 onClick={toggleDeleteDialog}

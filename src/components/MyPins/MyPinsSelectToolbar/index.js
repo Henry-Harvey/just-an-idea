@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import MyPinsSelectToolbarView from "./view";
-import DeletePin from "./DeletePin";
 
-export default function MyPinsSelectToolbar({ selectedPin, currentUser }) {
+export default function MyPinsSelectToolbar({
+  currentUser,
+  reloadPinsRef,
+  retreieveMyPins,
+  selectedPin,
+}) {
   const [myPinsSelectToolbarState, setMyPinsSelectToolbarState] = useState({
     isDeleteDialogOpen: false,
   });
 
-  const handleToggleDeleteDialog = () => {
+  const toggleDeleteDialog = () => {
     setMyPinsSelectToolbarState((state) => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen,
@@ -17,14 +21,12 @@ export default function MyPinsSelectToolbar({ selectedPin, currentUser }) {
   return (
     <React.Fragment>
       <MyPinsSelectToolbarView
-        selectedPin={selectedPin}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
-      />
-      <DeletePin
-        selectedPin={selectedPin}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
-        myPinsSelectToolbarState={myPinsSelectToolbarState}
         currentUser={currentUser}
+        reloadPinsRef={reloadPinsRef}
+        retreieveMyPins={retreieveMyPins}
+        selectedPin={selectedPin}
+        toggleDeleteDialog={toggleDeleteDialog}
+        myPinsSelectToolbarState={myPinsSelectToolbarState}
       />
     </React.Fragment>
   );

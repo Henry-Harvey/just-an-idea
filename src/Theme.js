@@ -1,145 +1,155 @@
-import { createTheme, responsiveFontSizes } from '@material-ui/core';
+import { createTheme, responsiveFontSizes } from "@material-ui/core";
 
 const Theme = responsiveFontSizes(
   createTheme({
     overrides: {
       MUIDataTable: {
         paper: {
-          background: 'none',
-          color: 'white',
+          background: "none",
+          color: "white",
           // Title left
-          textAlign: 'left'
-        }
+          textAlign: "left",
+        },
       },
       // Top icons and page arrows
       MuiIconButton: {
         root: {
-          color: 'white !important'
-        }
+          color: "white !important",
+        },
       },
       MUIDataTableSelectCell: {
         headerCell: {
-          backgroundColor: 'transparent'
-        }
+          backgroundColor: "transparent",
+        },
       },
       MUIDataTableHeadCell: {
         fixedHeader: {
-          backgroundColor: 'transparent',
-          color: 'inherit'
+          backgroundColor: "transparent",
+          color: "inherit",
         },
         // Soted column
         sortActive: {
-          color: 'inherit'
-        }
+          color: "inherit",
+        },
       },
       // Search Icon
       MUIDataTableSearch: {
         searchIcon: {
-          color: 'white'
-        }
+          color: "white",
+        },
       },
       // Search field
       MuiInputBase: {
         root: {
-          color: 'white'
-        }
+          color: "white",
+        },
       },
       // Search base
       MuiInput: {
         underline: {
-          '&:before': {
-            borderBottomColor: 'white'
+          "&:before": {
+            borderBottomColor: "white",
           },
-          '&:after': {
-            borderBottomColor: 'gray'
-          }
-        }
+          "&:after": {
+            borderBottomColor: "gray",
+          },
+        },
       },
       MuiButton: {
         root: {
-          color: 'inherit'
+          color: "inherit",
         },
         textPrimary: {
-          color: 'gray'
-        }
+          color: "gray",
+        },
       },
       MuiTableCell: {
         body: {
-          color: 'inherit'
+          color: "inherit",
         },
       },
       MuiCheckbox: {
         root: {
-          color: 'white !important'
-        }
+          color: "white !important",
+        },
       },
       MuiTablePagination: {
         root: {
-          color: 'white'
-        }
+          color: "white",
+        },
       },
       MuiPaper: {
         // Columns box
         root: {
-          backgroundColor: '#292929',
-          color: 'white !important'
+          backgroundColor: "#292929",
+          color: "white !important",
         },
         // Border around table
         elevation4: {
-          boxShadow: 'none'
-        }
+          boxShadow: "none",
+        },
       },
       MUIDataTableViewCol: {
         title: {
-          color: 'inherit'
+          color: "inherit",
         },
         label: {
-          color: 'inherit'
-        }
+          color: "inherit",
+        },
       },
       // Filter Box
       MUIDataTableFilter: {
         root: {
-          backgroundColor: 'inherit'
+          backgroundColor: "inherit",
         },
         title: {
-          color: 'inherit'
-        }
+          color: "inherit",
+        },
       },
       MuiFormLabel: {
         root: {
-          color: 'inherit !important'
-        }
+          color: "inherit !important",
+        },
       },
       // Selected top
       MUIDataTableToolbarSelect: {
         root: {
-          backgroundColor: 'inherit'
-        }
+          backgroundColor: "inherit",
+        },
       },
       // Sorted column icon
       MuiTableSortLabel: {
         icon: {
-          color: 'white !important'
-        }
+          color: "white !important",
+        },
       },
       // Row hover
       MuiTableRow: {
-        root:
-        {
-          '&$hover:hover': {
-            backgroundColor: '#292929'
+        root: {
+          "&$hover:hover": {
+            backgroundColor: "#292929",
           },
-          '&$selected:hover': {
-            backgroundColor: '#504c4c'
+          "&$selected:hover": {
+            backgroundColor: "#504c4c",
           },
-          '&$selected': {
-            backgroundColor: '#504c4c !important',
-            border: '1px solidrgba(224, 224, 224, 1) !important'
+          "&$selected": {
+            backgroundColor: "#504c4c !important",
+            border: "1px solidrgba(224, 224, 224, 1) !important",
           },
-        }
+        },
       },
-    }
+      MuiTypography: {
+        colorTextSecondary: {
+          color: "#dedede",
+        },
+      },
+      MuiCardHeader: {
+        root: {
+          padding: 10,
+          paddingBottom: 0,
+        },
+      },
+    },
   })
 );
 

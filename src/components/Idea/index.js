@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import IdeaView from "./view";
 
-export default function Idea({ currentUser }) {
-  let ideaId = useParams().ideaId;
+export default function Idea({ currentUser, ideaId }) {
+  let paramsIdeaId = useParams().ideaId;
+  if (!isNaN(paramsIdeaId)) {
+    ideaId = paramsIdeaId;
+  }
 
   const [ideaState, setIdeaState] = useState({
     idea: {
@@ -23,9 +26,17 @@ export default function Idea({ currentUser }) {
       comments: [],
     },
     isUpvoted: false,
+    isDeleteDialogOpen: false,
   });
 
-  const retreieveIdea = React.useCallback(async () => {
+  const toggleDeleteDialog = () => {
+    setIdeaState((state) => ({
+      ...state,
+      isDeleteDialogOpen: !state.isDeleteDialogOpen,
+    }));
+  };
+
+  const retreieveIdea = useCallback(async () => {
     console.log("Retrieve Idea with id", ideaId);
     axios
       .get(`http://localhost:8080/content/idea/${ideaId}`)
@@ -35,9 +46,13 @@ export default function Idea({ currentUser }) {
           console.log("Idea not found");
           return;
         }
+        let i = ideaResponse?.data;
+        i.comments = i.comments.sort((a, b) =>
+          a.timestamp > b.timestamp ? -1 : 1
+        );
         setIdeaState((state) => ({
           ...state,
-          idea: ideaResponse?.data,
+          idea: i,
         }));
         if (currentUser === null) {
           return;
@@ -85,6 +100,7 @@ export default function Idea({ currentUser }) {
         currentUser={currentUser}
         ideaState={ideaState}
         retreieveIdea={retreieveIdea}
+        toggleDeleteDialog={toggleDeleteDialog}
       />
     </React.Fragment>
   );

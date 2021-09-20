@@ -16,21 +16,21 @@ const useStyles = makeStyles((theme) => ({
 export default function UserIdeasSelectToolbarView({
   selectedIdea,
   isUsersProfile,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       <div className={styles.toolbar}>
-        <Link to={"/idea/" + selectedIdea.id} className={styles.link}>
+        <Link to={"/idea/" + selectedIdea?.id} className={styles.link}>
           <Tooltip title="View Idea">
             <IconButton>
               <VisibilityIcon />
             </IconButton>
           </Tooltip>
         </Link>
-        <Link to={"/topic/" + selectedIdea.topic.id} className={styles.link}>
+        <Link to={"/topic/" + selectedIdea?.topic.id} className={styles.link}>
           <Tooltip title="View Topic">
             <IconButton>
               <TopicIcon />
@@ -39,7 +39,7 @@ export default function UserIdeasSelectToolbarView({
         </Link>
         {isUsersProfile ? (
           <Tooltip title="Delete">
-            <IconButton onClick={handleToggleDeleteDialog}>
+            <IconButton onClick={toggleDeleteDialog}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>

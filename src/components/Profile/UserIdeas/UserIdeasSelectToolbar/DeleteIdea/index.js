@@ -3,9 +3,11 @@ import axios from "axios";
 import DeleteIdeaView from "./view";
 
 export default function DeleteIdea({
+  retreieveProfile,
+  setUserIdeasSelectToolbar,
   selectedIdea,
   userIdeasSelectToolbarState,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete Idea with id", selectedIdea.id);
@@ -13,8 +15,9 @@ export default function DeleteIdea({
       .delete(`http://localhost:8080/content/idea/${selectedIdea.id}`)
       .then((ideaResponse) => {
         console.log("Delete Idea response", ideaResponse);
-        //handleToggleDeleteDialog();
-        window.location.reload();
+        toggleDeleteDialog();
+        retreieveProfile();
+        setUserIdeasSelectToolbar();
       })
       .catch((error) => {
         console.log("Delete Idea error", error);
@@ -26,7 +29,7 @@ export default function DeleteIdea({
       <DeleteIdeaView
         selectedIdea={selectedIdea}
         userIdeasSelectToolbarState={userIdeasSelectToolbarState}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />
     </React.Fragment>

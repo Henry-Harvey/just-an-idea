@@ -3,6 +3,7 @@ import StatePickerView from "./view";
 
 export default function StatePicker({ handleSelectState, value }) {
   const stateList = [
+    { name: "", abbreviation: "" },
     { name: "Alabama", abbreviation: "AL" },
     { name: "Alaska", abbreviation: "AK" },
     { name: "Arizona", abbreviation: "AZ" },

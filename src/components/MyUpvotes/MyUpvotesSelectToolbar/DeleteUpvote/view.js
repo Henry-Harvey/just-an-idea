@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DeleteUpvoteView({
   selectedUpvote,
   myUpvotesSelectToolbarState,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
   handleSubmitDelete,
 }) {
   const styles = useStyles();
@@ -39,20 +39,20 @@ export default function DeleteUpvoteView({
       <Dialog
         open={myUpvotesSelectToolbarState.isDeleteDialogOpen}
         keepMounted
-        onClose={handleToggleDeleteDialog}
+        onClose={toggleDeleteDialog}
         classes={{ paper: styles.dialogPaper }}
       >
         <DialogTitle className={styles.dialogTitle}>Delete Upvote</DialogTitle>
         <DialogContent>
           <DialogContentText className={styles.dialogContent}>
-            For the idea titled, "{selectedUpvote.idea.title}"?
+            For the idea titled, "{selectedUpvote?.idea.title}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions className={styles.buttons}>
           <Tooltip title="No">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}
+              onClick={toggleDeleteDialog}
             >
               <CloseIcon />
             </IconButton>

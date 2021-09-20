@@ -2,7 +2,12 @@ import React from "react";
 import axios from "axios";
 import TopicToolbarView from "./view";
 
-export default function TopicToolbar({ currentUser, topicState }) {
+export default function TopicToolbar({
+  currentUser,
+  reloadPinsRef,
+  topicState,
+  retreieveTopic,
+}) {
   const togglePin = () => {
     if (topicState.isPinned) {
       console.log(
@@ -16,7 +21,9 @@ export default function TopicToolbar({ currentUser, topicState }) {
         )
         .then((pinResponse) => {
           console.log("Delete Pin response", pinResponse);
-          window.location.reload();
+          // window.location.reload();
+          retreieveTopic();
+          reloadPinsRef.current();
         })
         .catch((error) => {
           console.log("Delete Pin error", error);
@@ -36,7 +43,9 @@ export default function TopicToolbar({ currentUser, topicState }) {
         })
         .then((pinResponse) => {
           console.log("Create Pin response", pinResponse);
-          window.location.reload();
+          // window.location.reload();
+          retreieveTopic();
+          reloadPinsRef.current();
         })
         .catch((error) => {
           console.log("Create Pin error", error);

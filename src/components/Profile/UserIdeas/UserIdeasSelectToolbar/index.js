@@ -3,15 +3,17 @@ import UserIdeasSelectToolbarView from "./view";
 import DeleteIdea from "./DeleteIdea";
 
 export default function UserIdeasSelectToolbar({
-  selectedIdea,
   isUsersProfile,
+  retreieveProfile,
+  setUserIdeasSelectToolbar,
+  selectedIdea,
 }) {
   const [userIdeasSelectToolbarState, setUserIdeasSelectToolbarState] =
     useState({
       isDeleteDialogOpen: false,
     });
 
-  const handleToggleDeleteDialog = () => {
+  const toggleDeleteDialog = () => {
     setUserIdeasSelectToolbarState((state) => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen,
@@ -23,12 +25,14 @@ export default function UserIdeasSelectToolbar({
       <UserIdeasSelectToolbarView
         selectedIdea={selectedIdea}
         isUsersProfile={isUsersProfile}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
       />
       <DeleteIdea
+        retreieveProfile={retreieveProfile}
+        setUserIdeasSelectToolbar={setUserIdeasSelectToolbar}
         selectedIdea={selectedIdea}
         userIdeasSelectToolbarState={userIdeasSelectToolbarState}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
       />
     </React.Fragment>
   );

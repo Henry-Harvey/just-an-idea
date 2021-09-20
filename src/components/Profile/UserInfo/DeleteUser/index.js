@@ -9,7 +9,7 @@ export default function DeleteUser({
   userInfoState,
   setCurrentUser,
   isUsersProfile,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete User with id", profileState?.user.id);
@@ -17,7 +17,7 @@ export default function DeleteUser({
       .delete(`http://localhost:8080/account/user/${profileState?.user.id}`)
       .then((userResponse) => {
         console.log("Delete response", userResponse);
-        handleToggleDeleteDialog();
+        toggleDeleteDialog();
         LogOut();
         setCurrentUser(null);
         history.push(`/login`);
@@ -32,7 +32,7 @@ export default function DeleteUser({
       <DeleteUserView
         userInfoState={userInfoState}
         isUsersProfile={isUsersProfile}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />
     </React.Fragment>

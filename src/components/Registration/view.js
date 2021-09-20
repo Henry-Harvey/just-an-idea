@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegistrationView({
   registrationState,
-  handleToggleHidePassword,
+  toggleHidePassword,
   handleChange,
   handleChangeNested,
   handleSelectState,
@@ -113,7 +113,7 @@ export default function RegistrationView({
               <InputAdornment position="end">
                 <IconButton
                   className={styles.iconButton}
-                  onClick={handleToggleHidePassword}
+                  onClick={toggleHidePassword}
                 >
                   {registrationState?.hidePassword ? (
                     <VisibilityOffIcon />

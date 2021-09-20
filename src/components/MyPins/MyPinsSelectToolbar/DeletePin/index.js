@@ -3,10 +3,12 @@ import axios from "axios";
 import DeletePinView from "./view";
 
 export default function DeletePin({
-  selectedPin,
-  handleToggleDeleteDialog,
-  myPinsSelectToolbarState,
   currentUser,
+  reloadPinsRef,
+  retreieveMyPins,
+  selectedPin,
+  toggleDeleteDialog,
+  myPinsSelectToolbarState,
 }) {
   const handleSubmitDelete = () => {
     console.log(
@@ -20,8 +22,9 @@ export default function DeletePin({
       )
       .then((pinResponse) => {
         console.log("Delete Pin response", pinResponse);
-        handleToggleDeleteDialog();
-        window.location.reload();
+        toggleDeleteDialog();
+        retreieveMyPins();
+        reloadPinsRef.current();
       })
       .catch((error) => {
         console.log("Delete Pin error", error);
@@ -33,7 +36,7 @@ export default function DeletePin({
       <DeletePinView
         selectedPin={selectedPin}
         myPinsSelectToolbarState={myPinsSelectToolbarState}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
         handleSubmitDelete={handleSubmitDelete}
       />
     </React.Fragment>

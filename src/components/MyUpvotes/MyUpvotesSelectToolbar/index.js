@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import MyUpvotesSelectToolbarView from "./view";
-import DeleteUpvote from "./DeleteUpvote";
 
 export default function MyUpvotesSelectToolbar({
   selectedUpvote,
   currentUser,
+  retreieveMyUpvotes,
 }) {
   const [myUpvotesSelectToolbarState, setMyUpvotesSelectToolbarState] =
     useState({
       isDeleteDialogOpen: false,
     });
 
-  const handleToggleDeleteDialog = () => {
+  const toggleDeleteDialog = () => {
     setMyUpvotesSelectToolbarState((state) => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen,
@@ -22,13 +22,10 @@ export default function MyUpvotesSelectToolbar({
     <React.Fragment>
       <MyUpvotesSelectToolbarView
         selectedUpvote={selectedUpvote}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
-      />
-      <DeleteUpvote
-        selectedUpvote={selectedUpvote}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
         myUpvotesSelectToolbarState={myUpvotesSelectToolbarState}
         currentUser={currentUser}
+        retreieveMyUpvotes={retreieveMyUpvotes}
       />
     </React.Fragment>
   );

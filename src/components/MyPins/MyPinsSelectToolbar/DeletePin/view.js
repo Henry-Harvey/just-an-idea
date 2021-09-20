@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DeletePinView({
   selectedPin,
   myPinsSelectToolbarState,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
   handleSubmitDelete,
 }) {
   const styles = useStyles();
@@ -39,20 +39,20 @@ export default function DeletePinView({
       <Dialog
         open={myPinsSelectToolbarState.isDeleteDialogOpen}
         keepMounted
-        onClose={handleToggleDeleteDialog}
+        onClose={toggleDeleteDialog}
         classes={{ paper: styles.dialogPaper }}
       >
         <DialogTitle className={styles.dialogTitle}>Delete Pin</DialogTitle>
         <DialogContent>
           <DialogContentText className={styles.dialogContent}>
-            For the topic titled, "{selectedPin.topic.title}"?
+            For the topic titled, "{selectedPin?.topic.title}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions className={styles.buttons}>
           <Tooltip title="No">
             <IconButton
               className={styles.iconButton}
-              onClick={handleToggleDeleteDialog}
+              onClick={toggleDeleteDialog}
             >
               <CloseIcon />
             </IconButton>

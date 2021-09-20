@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import UserIdeasView from "./view";
 import UserIdeasSelectToolbar from "./UserIdeasSelectToolbar";
 
-export default function UserIdeas({ profileState, isUsersProfile }) {
+export default function UserIdeas({
+  profileState,
+  isUsersProfile,
+  retreieveProfile,
+}) {
   const [userIdeasState, setUserIdeasState] = useState({
     table: {
       options: {
@@ -39,7 +43,7 @@ export default function UserIdeas({ profileState, isUsersProfile }) {
     },
   });
 
-  useEffect(() => {
+  const setUserIdeasSelectToolbar = useCallback(async () => {
     setTimeout(() => {
       setUserIdeasState((state) => ({
         ...state,
@@ -50,10 +54,12 @@ export default function UserIdeas({ profileState, isUsersProfile }) {
             customToolbarSelect: (selectedRows) => {
               return (
                 <UserIdeasSelectToolbar
+                  isUsersProfile={isUsersProfile}
+                  retreieveProfile={retreieveProfile}
+                  setUserIdeasSelectToolbar={setUserIdeasSelectToolbar}
                   selectedIdea={
                     profileState.user.ideas[selectedRows.data[0].dataIndex]
                   }
-                  isUsersProfile={isUsersProfile}
                 />
               );
             },
@@ -61,14 +67,18 @@ export default function UserIdeas({ profileState, isUsersProfile }) {
         },
       }));
     }, 200);
-  }, [isUsersProfile, profileState.user]);
+  }, [isUsersProfile, profileState.user, retreieveProfile]);
+
+  useEffect(() => {
+    setUserIdeasSelectToolbar();
+  }, [setUserIdeasSelectToolbar]);
 
   return (
     <React.Fragment>
       <UserIdeasView
         profileState={profileState}
-        userIdeasState={userIdeasState}
         isUsersProfile={isUsersProfile}
+        userIdeasState={userIdeasState}
       />
     </React.Fragment>
   );

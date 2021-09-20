@@ -16,7 +16,7 @@ export default function UserInfo({
     message: "",
   });
 
-  const handleToggleEditDialog = () => {
+  const toggleEditDialog = () => {
     setUserInfoState((state) => ({
       ...state,
       isEditDialogOpen: !state.isEditDialogOpen,
@@ -52,7 +52,7 @@ export default function UserInfo({
     }));
   };
 
-  const handleToggleDeleteDialog = () => {
+  const toggleDeleteDialog = () => {
     setUserInfoState((state) => ({
       ...state,
       isDeleteDialogOpen: !state.isDeleteDialogOpen,
@@ -64,15 +64,15 @@ export default function UserInfo({
       <UserInfoView
         profileState={profileState}
         isUsersProfile={isUsersProfile}
-        handleToggleEditDialog={handleToggleEditDialog}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleEditDialog={toggleEditDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
       />
       <EditUser
         profileState={profileState}
         userInfoState={userInfoState}
         isUsersProfile={isUsersProfile}
         updateUser={updateUser}
-        handleToggleEditDialog={handleToggleEditDialog}
+        toggleEditDialog={toggleEditDialog}
         handleChange={handleChange}
         handleSelectState={handleSelectState}
         handleEditErrorMessage={handleEditErrorMessage}
@@ -82,7 +82,7 @@ export default function UserInfo({
         userInfoState={userInfoState}
         setCurrentUser={setCurrentUser}
         isUsersProfile={isUsersProfile}
-        handleToggleDeleteDialog={handleToggleDeleteDialog}
+        toggleDeleteDialog={toggleDeleteDialog}
       />
     </React.Fragment>
   );

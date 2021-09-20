@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DeleteUserView({
   userInfoState,
   isUsersProfile,
-  handleToggleDeleteDialog,
+  toggleDeleteDialog,
   handleSubmitDelete,
 }) {
   const styles = useStyles();
@@ -40,7 +40,7 @@ export default function DeleteUserView({
         <Dialog
           open={userInfoState.isDeleteDialogOpen}
           keepMounted
-          onClose={handleToggleDeleteDialog}
+          onClose={toggleDeleteDialog}
           classes={{ paper: styles.dialogPaper }}
         >
           <DialogTitle className={styles.dialogTitle}>
@@ -55,7 +55,7 @@ export default function DeleteUserView({
             <Tooltip title="No">
               <IconButton
                 className={styles.iconButton}
-                onClick={handleToggleDeleteDialog}
+                onClick={toggleDeleteDialog}
               >
                 <CloseIcon />
               </IconButton>

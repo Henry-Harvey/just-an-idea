@@ -4,7 +4,13 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    margin: 10,
+    background: "#292929",
+    display: "flex",
+    flexDirection: "column",
+    padding: 10,
+    borderRadius: 10,
+    marginInline: "1.5%",
+    width: "97%",
   },
 }));
 

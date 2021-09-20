@@ -12,57 +12,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "calc(1.25rem + 1vmin)",
     marginBottom: "-1em",
   },
-  form: {
-    background: "#292929",
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: 10,
-    borderRadius: 10,
-    overflowY: "auto",
-    marginInline: "10%",
-    maxHeight: "77%",
-  },
-  textField: {
-    width: "75%",
-    maxWidth: 500,
-    minWidth: 100,
-    marginBottom: "2%",
-    overflow: "hidden",
-    color: "white",
-    "& .MuiInputBase-input": {
-      color: "white",
-      fontSize: "calc(.33rem + 2vmin)",
-    },
-    "& label": {
-      color: "white",
-      fontSize: "calc(1rem + .5vmin)",
-    },
-    "& .MuiInput-underline:before": {
-      borderBottomColor: "white",
-    },
-    "& label.Mui-focused": {
-      color: "#D6D6D6",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#D6D6D6",
-    },
-  },
-  multiline: {
-    "& .MuiInputBase-input": {
-      fontSize: "calc(1rem + .5vmin)",
-    },
-  },
   iconButton: {
     height: 40,
     display: "flex",
-    marginLeft: "9%",
-  },
-  button: {
-    marginTop: 10,
-    background: "black",
-    color: "white",
+    marginLeft: "4%",
   },
 }));
 
@@ -100,11 +53,12 @@ export default function CommentsView({
         </Tooltip>
       ) : null}
 
-      {typeof currentUser?.user_id === "number" ? (
+      {typeof currentUser?.user_id === "number" &&
+      typeof ideaState.idea?.id === "number" ? (
         <PostComment
           retreieveIdea={retreieveIdea}
           user_id={currentUser?.user_id}
-          idea_id={ideaState.idea.id}
+          idea_id={ideaState.idea?.id}
           commentsState={commentsState}
           togglePostComment={togglePostComment}
         />
@@ -113,6 +67,7 @@ export default function CommentsView({
       {ideaState.idea?.comments.length > 0 ? (
         ideaState.idea?.comments.map((comment, index) => (
           <Comment
+            key={comment.id}
             currentUser={currentUser}
             retreieveIdea={retreieveIdea}
             comment={comment}

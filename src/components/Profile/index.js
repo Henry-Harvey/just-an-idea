@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ProfileView from "./view";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -17,23 +17,23 @@ export default function Profile({ currentUser, setCurrentUser }) {
     },
   });
 
-  let id = parseInt(useParams().userId);
+  let user_id = parseInt(useParams().userId);
   let isUsersProfile = false;
 
   if (currentUser) {
-    if (isNaN(id) || id === currentUser?.user_id) {
-      id = currentUser?.user_id;
+    if (isNaN(user_id) || user_id === currentUser?.user_id) {
+      user_id = currentUser?.user_id;
       isUsersProfile = true;
     }
   }
 
-  useEffect(() => {
-    if (typeof id !== "number") {
+  const retreieveProfile = useCallback(async () => {
+    if (typeof user_id !== "number") {
       return;
     }
-    console.log("Retrieve User with id", id);
+    console.log("Retrieve User with id", user_id);
     axios
-      .get(`http://localhost:8080/account/user/${id}`)
+      .get(`http://localhost:8080/account/user/${user_id}`)
       .then((userResponse) => {
         console.log("Retrieve User response", userResponse);
         if (userResponse.data === "") {
@@ -49,7 +49,11 @@ export default function Profile({ currentUser, setCurrentUser }) {
       .catch((error) => {
         console.log("Retrieve User error", error);
       });
-  }, [id]);
+  }, [user_id]);
+
+  useEffect(() => {
+    retreieveProfile();
+  }, [retreieveProfile]);
 
   const updateUser = (editUser) => {
     setProfileState((state) => ({
@@ -64,6 +68,7 @@ export default function Profile({ currentUser, setCurrentUser }) {
         profileState={profileState}
         isUsersProfile={isUsersProfile}
         setCurrentUser={setCurrentUser}
+        retreieveProfile={retreieveProfile}
         updateUser={updateUser}
       />
     </React.Fragment>

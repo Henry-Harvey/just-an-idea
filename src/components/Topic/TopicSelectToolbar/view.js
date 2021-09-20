@@ -19,14 +19,14 @@ export default function TopicSelectToolbarView({ selectedIdea }) {
   return (
     <React.Fragment>
       <div className={styles.toolbar}>
-        <Link to={"/idea/" + selectedIdea.id} className={styles.link}>
+        <Link to={"/idea/" + selectedIdea?.id} className={styles.link}>
           <Tooltip title="View Idea">
             <IconButton>
               <VisibilityIcon />
             </IconButton>
           </Tooltip>
         </Link>
-        <Link to={"/profile/" + selectedIdea.user.id} className={styles.link}>
+        <Link to={"/profile/" + selectedIdea?.user.id} className={styles.link}>
           <Tooltip title="View Author">
             <IconButton>
               <PersonIcon />
