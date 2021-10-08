@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import SearchView from "./view";
 import SearchSelectToolbar from "./SearchSelectToolbar";
 
+/**
+ * Displays a table containing all of the user's search results
+ */
 export default function Search() {
   let searchString = useParams().searchString;
 

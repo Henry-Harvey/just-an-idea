@@ -3,6 +3,10 @@ import history from "../../utils/history";
 import { LogOut } from "../../utils";
 import LogoutView from "./view";
 
+/**
+ * Displays a dialog for logout confirmation
+ * Allows a user to log out of the app
+ */
 export default function Logout({ setCurrentUser }) {
   const [dialog, setDialog] = useState(true);
 

@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import PostCommentView from "./view";
+import BadWordsFilter from "bad-words";
 
+/**
+ * Form for posting a new comment to an idea
+ */
 export default function PostComment({
+  currentUser,
   retreieveIdea,
   user_id,
   idea_id,
@@ -23,6 +28,10 @@ export default function PostComment({
   });
 
   const handleChange = (object, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setPostCommentState((state) => ({
       ...state,
       [object]: {
@@ -43,7 +52,8 @@ export default function PostComment({
     axios
       .post(
         `http://localhost:8080/content/postComment`,
-        postCommentState.comment
+        postCommentState.comment,
+        { auth: currentUser?.auth }
       )
       .then((commentResponse) => {
         console.log("Post Comment response", commentResponse);
@@ -61,7 +71,7 @@ export default function PostComment({
         console.log("Post Comment error", error);
         setPostCommentState((state) => ({
           ...state,
-          message: "Post Comment error",
+          message: error.message,
         }));
       });
   };

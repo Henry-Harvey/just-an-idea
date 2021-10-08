@@ -2,6 +2,10 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { IsLoggedIn } from "../..";
 
+/**
+ * Contains the route that is accessible for all users
+ * Contains resitricted routes that cannot be accessed by logged in users, will redirect them to logout
+ */
 export default function PublicRoute({
   component: Component,
   restricted,

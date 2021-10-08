@@ -4,6 +4,10 @@ import history from "../../utils/history";
 import { LogIn } from "../../utils";
 import LoginView from "./view";
 
+/**
+ * Displays a form for logging in
+ * Allows a user to log in to the app
+ */
 export default function Login({ setCurrentUser }) {
   const [loginState, setLoginState] = useState({
     credentials: {
@@ -38,14 +42,11 @@ export default function Login({ setCurrentUser }) {
   };
 
   const handleSubmit = () => {
-    console.log("Retrieve Credentials", loginState?.credentials);
+    console.log("Login Credentials", loginState?.credentials);
     axios
-      .post(
-        `http://localhost:8080/account/credentials`,
-        loginState?.credentials
-      )
+      .post(`http://localhost:8080/account/login`, loginState?.credentials)
       .then((credentialsResponse) => {
-        console.log("Retrieve Credentials response", credentialsResponse);
+        console.log("Login Credentials response", credentialsResponse);
         if (credentialsResponse?.data === "") {
           console.log("Credentials not found");
           setLoginState((state) => ({
@@ -54,7 +55,7 @@ export default function Login({ setCurrentUser }) {
           }));
           return;
         }
-        if (credentialsResponse?.data[0].suspended !== 0) {
+        if (credentialsResponse?.data.suspended !== 0) {
           console.log("Credentials have been suspended");
           setLoginState((state) => ({
             ...state,
@@ -63,18 +64,24 @@ export default function Login({ setCurrentUser }) {
           return;
         }
         const currentUser = {
-          user_id: credentialsResponse?.data[0].user.id,
-          role: credentialsResponse?.data[0].role,
+          user_id: credentialsResponse?.data.user.id,
+          role: credentialsResponse?.data.role,
+          suspended: credentialsResponse?.data.suspended,
+          auth: {
+            username: credentialsResponse?.data.username,
+            password: loginState?.credentials.password,
+          },
         };
+        console.log("Setting Current User", currentUser);
         setCurrentUser(currentUser);
         LogIn(currentUser);
-        history.push(`/home`);
+        history.push("/home");
       })
       .catch((error) => {
         console.log("Log in error", error);
         setLoginState((state) => ({
           ...state,
-          message: "Log in error",
+          message: error.message,
         }));
       });
   };

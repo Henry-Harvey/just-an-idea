@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import CommentView from "./view";
 
+/**
+ * Displays a single comment's information, such as content, author, and timestamp'
+ */
 export default function Comment({ currentUser, retreieveIdea, comment }) {
   const [commentState, setCommentState] = useState({
     isDeleteDialogOpen: false,
@@ -24,6 +27,7 @@ export default function Comment({ currentUser, retreieveIdea, comment }) {
   return (
     <React.Fragment>
       <CommentView
+        currentUser={currentUser}
         retreieveIdea={retreieveIdea}
         comment={comment}
         commentState={commentState}

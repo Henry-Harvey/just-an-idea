@@ -2,6 +2,10 @@ import React from "react";
 import axios from "axios";
 import DeleteUpvoteView from "./view";
 
+/**
+ * Displays a dialog for deletion confirmation
+ * Allows a user to delete an upvote from an idea
+ */
 export default function DeleteUpvote({
   selectedUpvote,
   currentUser,
@@ -17,7 +21,10 @@ export default function DeleteUpvote({
     );
     axios
       .delete(
-        `http://localhost:8080/content/upvote/${currentUser?.user_id}/${selectedUpvote.idea.id}`
+        `http://localhost:8080/content/upvote/${currentUser?.user_id}/${selectedUpvote.idea.id}`,
+        {
+          auth: currentUser?.auth,
+        }
       )
       .then((upvoteResponse) => {
         console.log("Delete Upvote response", upvoteResponse);

@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import IdeaView from "./view";
 
+/**
+ * Displays idea information, such as title, topic, description, author, and timestamp
+ * Displays the number of upvotes that belong to an idea
+ */
 export default function Idea({ currentUser, ideaId }) {
   let paramsIdeaId = useParams().ideaId;
   if (!isNaN(paramsIdeaId)) {
@@ -54,7 +58,7 @@ export default function Idea({ currentUser, ideaId }) {
           ...state,
           idea: i,
         }));
-        if (currentUser === null) {
+        if (isNaN(currentUser.user_id)) {
           return;
         }
         console.log(

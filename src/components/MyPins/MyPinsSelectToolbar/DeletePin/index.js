@@ -2,6 +2,10 @@ import React from "react";
 import axios from "axios";
 import DeletePinView from "./view";
 
+/**
+ * Displays a dialog for deletion confirmation
+ * Allows a user to delete a pin from a topic
+ */
 export default function DeletePin({
   currentUser,
   reloadPinsRef,
@@ -18,7 +22,10 @@ export default function DeletePin({
     );
     axios
       .delete(
-        `http://localhost:8080/content/pin/${currentUser?.user_id}/${selectedPin.topic.id}`
+        `http://localhost:8080/content/pin/${currentUser?.user_id}/${selectedPin.topic.id}`,
+        {
+          auth: currentUser?.auth,
+        }
       )
       .then((pinResponse) => {
         console.log("Delete Pin response", pinResponse);

@@ -3,6 +3,9 @@ import axios from "axios";
 import MyUpvotesView from "./view";
 import MyUpvotesSelectToolbar from "./MyUpvotesSelectToolbar";
 
+/**
+ * Displays a table of the ideas that have been upvoted by the user
+ */
 export default function MyUpvotes({ currentUser }) {
   const [myUpvotesState, setMyUpvotesState] = useState({
     upvotes: [],

@@ -1,6 +1,11 @@
 import React from "react";
 import { makeStyles, TextField, Tooltip, IconButton } from "@material-ui/core";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  PauseCircleOutline as SuspendIcon,
+  PauseCircleFilled as SuspendedIcon,
+} from "@material-ui/icons";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,16 +49,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserInfoView({
+  currentUser,
   profileState,
   isUsersProfile,
   toggleEditDialog,
   toggleDeleteDialog,
+  toggleSuspendDialog,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
       {!profileState.user ? (
+        <TextField
+          id="no user data"
+          value="No User Data"
+          className={styles.textField}
+          disabled
+        />
+      ) : null}
+      {!isUsersProfile &&
+      !profileState.user?.first_name &&
+      !profileState.user?.last_name &&
+      !profileState.user?.occupation &&
+      !profileState.user?.state &&
+      !profileState.user?.age &&
+      !profileState.user?.bio ? (
         <TextField
           id="no user data"
           value="No User Data"
@@ -155,6 +176,34 @@ export default function UserInfoView({
               onClick={toggleEditDialog}
             >
               <EditIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+      ) : null}
+      {!isUsersProfile &&
+      currentUser?.role === 1 &&
+      profileState.user?.credentials.suspended === 0 ? (
+        <div>
+          <Tooltip title="Admin Suspend">
+            <IconButton
+              className={styles.iconButton}
+              onClick={toggleSuspendDialog}
+            >
+              <SuspendIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+      ) : null}
+      {!isUsersProfile &&
+      currentUser?.role === 1 &&
+      profileState.user?.credentials.suspended === 1 ? (
+        <div>
+          <Tooltip title="Admin Unsuspend">
+            <IconButton
+              className={styles.iconButton}
+              onClick={toggleSuspendDialog}
+            >
+              <SuspendedIcon />
             </IconButton>
           </Tooltip>
         </div>

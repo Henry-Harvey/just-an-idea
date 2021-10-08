@@ -2,16 +2,23 @@ import React, { useState } from "react";
 import UserInfoView from "./view";
 import EditUser from "./EditUser";
 import DeleteUser from "./DeleteUser";
+import SuspendUser from "./SuspendUser";
+import BadWordsFilter from "bad-words";
 
+/**
+ * Displays a user's information if they have provided it, such as Display Name, First Name, Last Name, Occuptaion, State, Age, and Bio
+ */
 export default function UserInfo({
+  currentUser,
+  setCurrentUser,
   profileState,
   isUsersProfile,
-  setCurrentUser,
-  updateUser,
+  retreieveProfile,
 }) {
   const [userInfoState, setUserInfoState] = useState({
     isEditDialogOpen: false,
     isDeleteDialogOpen: false,
+    isSuspendDialogOpen: false,
     editUser: {},
     message: "",
   });
@@ -20,12 +27,25 @@ export default function UserInfo({
     setUserInfoState((state) => ({
       ...state,
       isEditDialogOpen: !state.isEditDialogOpen,
-      editUser: profileState.user,
+      editUser: {
+        id: profileState.user.id,
+        display_name: profileState.user.display_name,
+        first_name: profileState.user.first_name,
+        last_name: profileState.user.last_name,
+        occupation: profileState.user.occupation,
+        state: profileState.user.state,
+        age: profileState.user.age,
+        bio: profileState.user.bio,
+      },
       message: "",
     }));
   };
 
   const handleChange = (object, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setUserInfoState((state) => ({
       ...state,
       [object]: {
@@ -59,30 +79,48 @@ export default function UserInfo({
     }));
   };
 
+  const toggleSuspendDialog = () => {
+    setUserInfoState((state) => ({
+      ...state,
+      isSuspendDialogOpen: !state.isSuspendDialogOpen,
+    }));
+  };
+
   return (
     <React.Fragment>
       <UserInfoView
+        currentUser={currentUser}
         profileState={profileState}
         isUsersProfile={isUsersProfile}
         toggleEditDialog={toggleEditDialog}
         toggleDeleteDialog={toggleDeleteDialog}
+        toggleSuspendDialog={toggleSuspendDialog}
       />
       <EditUser
+        currentUser={currentUser}
         profileState={profileState}
         userInfoState={userInfoState}
         isUsersProfile={isUsersProfile}
-        updateUser={updateUser}
+        retreieveProfile={retreieveProfile}
         toggleEditDialog={toggleEditDialog}
         handleChange={handleChange}
         handleSelectState={handleSelectState}
         handleEditErrorMessage={handleEditErrorMessage}
       />
       <DeleteUser
+        currentUser={currentUser}
         profileState={profileState}
         userInfoState={userInfoState}
         setCurrentUser={setCurrentUser}
         isUsersProfile={isUsersProfile}
         toggleDeleteDialog={toggleDeleteDialog}
+      />
+      <SuspendUser
+        currentUser={currentUser}
+        profileState={profileState}
+        retreieveProfile={retreieveProfile}
+        userInfoState={userInfoState}
+        toggleSuspendDialog={toggleSuspendDialog}
       />
     </React.Fragment>
   );

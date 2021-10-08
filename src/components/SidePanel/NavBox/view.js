@@ -75,7 +75,11 @@ export default function NavBoxView({ currentUser }) {
           </Link>
           {currentUser ? (
             <Link to="/profile">
-              <Tooltip title="My Profile">
+              <Tooltip
+                title={
+                  currentUser.role === 1 ? "My Profile [Admin]" : "My Profile"
+                }
+              >
                 <IconButton className={styles.iconButton} onClick={null}>
                   <AccountIcon />
                 </IconButton>

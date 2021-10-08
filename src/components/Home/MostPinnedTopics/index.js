@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import MostPinnedTopicsView from "./view";
 
+/**
+ * Displays cards containing the topics with the most pins
+ */
 export default function MostPinnedTopics({ homeState }) {
   const [mostPinnedTopicsState, setMostPinnedTopicsState] = useState({
     topics: [],

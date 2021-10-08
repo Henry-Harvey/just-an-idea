@@ -3,6 +3,9 @@ import ProfileView from "./view";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+/**
+ * Contains the user's info and the user's ideas components
+ */
 export default function Profile({ currentUser, setCurrentUser }) {
   const [profileState, setProfileState] = useState({
     user: {
@@ -14,6 +17,9 @@ export default function Profile({ currentUser, setCurrentUser }) {
       age: "",
       bio: "",
       ideas: [],
+      credentials: {
+        suspended: 0,
+      },
     },
   });
 
@@ -55,21 +61,14 @@ export default function Profile({ currentUser, setCurrentUser }) {
     retreieveProfile();
   }, [retreieveProfile]);
 
-  const updateUser = (editUser) => {
-    setProfileState((state) => ({
-      ...state,
-      user: editUser,
-    }));
-  };
-
   return (
     <React.Fragment>
       <ProfileView
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
         profileState={profileState}
         isUsersProfile={isUsersProfile}
-        setCurrentUser={setCurrentUser}
         retreieveProfile={retreieveProfile}
-        updateUser={updateUser}
       />
     </React.Fragment>
   );

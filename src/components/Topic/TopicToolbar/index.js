@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import TopicToolbarView from "./view";
+import DeleteTopic from "./DeleteTopic";
 
+/**
+ * Allows a user to pin or unpin the topic
+ */
 export default function TopicToolbar({
   currentUser,
   reloadPinsRef,
   topicState,
   retreieveTopic,
 }) {
+  const [topicToolbarState, setTopicToolbarState] = useState({
+    isDeleteDialogOpen: false,
+  });
+
+  const toggleDeleteDialog = () => {
+    setTopicToolbarState((state) => ({
+      ...state,
+      isDeleteDialogOpen: !state.isDeleteDialogOpen,
+    }));
+  };
+
   const togglePin = () => {
     if (topicState.isPinned) {
       console.log(
@@ -17,7 +32,8 @@ export default function TopicToolbar({
       );
       axios
         .delete(
-          `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicState.topic.id}`
+          `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicState.topic.id}`,
+          { auth: currentUser?.auth }
         )
         .then((pinResponse) => {
           console.log("Delete Pin response", pinResponse);
@@ -35,12 +51,18 @@ export default function TopicToolbar({
         topicState.topic.id
       );
       axios
-        .post(`http://localhost:8080/content/pin`, {
-          pin_id: {
-            user_id: currentUser?.user_id,
-            topic_id: topicState.topic.id,
+        .post(
+          `http://localhost:8080/content/pin`,
+          {
+            pin_id: {
+              user_id: currentUser?.user_id,
+              topic_id: topicState.topic.id,
+            },
           },
-        })
+          {
+            auth: currentUser?.auth,
+          }
+        )
         .then((pinResponse) => {
           console.log("Create Pin response", pinResponse);
           // window.location.reload();
@@ -55,7 +77,18 @@ export default function TopicToolbar({
 
   return (
     <React.Fragment>
-      <TopicToolbarView topicState={topicState} togglePin={togglePin} />
+      <TopicToolbarView
+        currentUser={currentUser}
+        topicState={topicState}
+        togglePin={togglePin}
+        toggleDeleteDialog={toggleDeleteDialog}
+      />
+      <DeleteTopic
+        currentUser={currentUser}
+        topicState={topicState}
+        topicToolbarState={topicToolbarState}
+        toggleDeleteDialog={toggleDeleteDialog}
+      />
     </React.Fragment>
   );
 }

@@ -2,7 +2,11 @@ import React, { useState, useCallback, useEffect } from "react";
 import UserIdeasView from "./view";
 import UserIdeasSelectToolbar from "./UserIdeasSelectToolbar";
 
+/**
+ * Displays a table containing all of the user's ideas
+ */
 export default function UserIdeas({
+  currentUser,
   profileState,
   isUsersProfile,
   retreieveProfile,
@@ -54,6 +58,7 @@ export default function UserIdeas({
             customToolbarSelect: (selectedRows) => {
               return (
                 <UserIdeasSelectToolbar
+                  currentUser={currentUser}
                   isUsersProfile={isUsersProfile}
                   retreieveProfile={retreieveProfile}
                   setUserIdeasSelectToolbar={setUserIdeasSelectToolbar}
@@ -67,7 +72,7 @@ export default function UserIdeas({
         },
       }));
     }, 200);
-  }, [isUsersProfile, profileState.user, retreieveProfile]);
+  }, [currentUser, isUsersProfile, profileState.user.ideas, retreieveProfile]);
 
   useEffect(() => {
     setUserIdeasSelectToolbar();

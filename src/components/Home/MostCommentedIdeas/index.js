@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import MostCommentedIdeasView from "./view";
 
+/**
+ * Displays cards containing the ideas with the most comments
+ */
 export default function MostCommentedIdeas({ homeState }) {
   const [mostCommentedIdeasState, setMostCommentedIdeasState] = useState({
     ideas: [],

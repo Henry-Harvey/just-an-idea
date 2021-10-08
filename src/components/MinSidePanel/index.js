@@ -1,14 +1,14 @@
 import React from "react";
-import NavBoxView from "./view";
+import MinSidePanelView from "./view";
 
 /**
  * Allows a user to log out or navigate to Home, About, My Profile, My Upvotes, or Post if logged in
  * Allows a user to navigate to Home, About, Registration, or Login if logged out
  */
-export default function NavBox({ currentUser }) {
+export default function MinSidePanel({ currentUser }) {
   return (
     <React.Fragment>
-      <NavBoxView currentUser={currentUser} />
+      <MinSidePanelView currentUser={currentUser} />
     </React.Fragment>
   );
 }

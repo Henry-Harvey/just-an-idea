@@ -1,6 +1,9 @@
 import React from "react";
 import StatePickerView from "./view";
 
+/**
+ * Displays a list of U.S. states to choose from
+ */
 export default function StatePicker({ handleSelectState, value }) {
   const stateList = [
     { name: "", abbreviation: "" },

@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CommentView({
+  currentUser,
   retreieveIdea,
   comment,
   commentState,
@@ -120,8 +121,21 @@ export default function CommentView({
             </Tooltip>
           </div>
         ) : null}
+        {!isUsersComment && currentUser?.role === 1 ? (
+          <div>
+            <Tooltip title="Admin Delete Comment">
+              <IconButton
+                className={styles.iconButton}
+                onClick={toggleDeleteDialog}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        ) : null}
       </div>
       <DeleteComment
+        currentUser={currentUser}
         retreieveIdea={retreieveIdea}
         comment={comment}
         commentState={commentState}

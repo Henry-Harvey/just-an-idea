@@ -4,12 +4,15 @@ import axios from "axios";
 import TopicView from "./view";
 import TopicToolbar from "./TopicToolbar";
 
+/**
+ * Displays a table contatining all of the ideas that belong to the topic
+ * Allows a user to select an idea for it to be shown on the right side of the topic
+ */
 export default function Topic({ currentUser, reloadPinsRef }) {
   let topicId = useParams().topicId;
 
   const [topicState, setTopicState] = useState({
     topic: {
-      id: topicId,
       title: "",
       timestamp: "",
       ideas: [],
@@ -74,36 +77,36 @@ export default function Topic({ currentUser, reloadPinsRef }) {
         console.log("Retrieve Topic error", error);
       });
 
-    if (typeof currentUser?.user_id !== "number") {
-      return;
+    if (!isNaN(currentUser?.user_id)) {
+      console.log(
+        "Retrieve Pin with user_id & topic_id",
+        currentUser?.user_id,
+        topicId
+      );
+      axios
+        .get(
+          `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicId}`
+        )
+        .then((pinResponse) => {
+          console.log("Retrieve Pin response", pinResponse);
+          if (pinResponse?.data === "") {
+            console.log("Pin not found");
+            setTopicState((state) => ({
+              ...state,
+              isPinned: false,
+            }));
+            return;
+          } else {
+            setTopicState((state) => ({
+              ...state,
+              isPinned: true,
+            }));
+          }
+        })
+        .catch((error) => {
+          console.log("Retrieve Pin error", error);
+        });
     }
-    console.log(
-      "Retrieve Pin with user_id & topic_id",
-      currentUser?.user_id,
-      topicId
-    );
-    axios
-      .get(
-        `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicId}`
-      )
-      .then((pinResponse) => {
-        console.log("Retrieve Pin response", pinResponse);
-        if (pinResponse?.data === "") {
-          console.log("Pin not found");
-          setTopicState((state) => ({
-            ...state,
-            isPinned: false,
-          }));
-          return;
-        }
-        setTopicState((state) => ({
-          ...state,
-          isPinned: true,
-        }));
-      })
-      .catch((error) => {
-        console.log("Retrieve Pin error", error);
-      });
 
     setTimeout(() => {
       setTopicState((state) => ({

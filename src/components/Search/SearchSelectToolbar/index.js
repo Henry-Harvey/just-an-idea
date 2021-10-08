@@ -2,6 +2,9 @@ import React from "react";
 import SearchSelectToolbarView from "./view";
 import history from "../../../utils/history";
 
+/**
+ * Allows a user to navigate to the search result's page
+ */
 export default function SearchSelectToolbar({ selectedResult }) {
   const handleNavigateToItem = () => {
     if (selectedResult.type === "Idea") {

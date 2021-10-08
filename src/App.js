@@ -5,9 +5,15 @@ import ResizePanel from "react-resize-panel";
 import style from "./App.css";
 import { Router, Switch } from "react-router-dom";
 import history from "./utils/history";
-import { IsLoggedIn, getCurrentUser } from "./utils";
+import {
+  IsLoggedIn,
+  GetCurrentUser,
+  SaveSidePanel,
+  GetSidePanel,
+} from "./utils";
 
 import SidePanel from "./components/SidePanel";
+import MinSidePanel from "./components/MinSidePanel";
 import SearchBar from "./components/SearchBar";
 import Home from "./components/Home";
 import About from "./components/About";
@@ -103,30 +109,44 @@ const useStyles = makeStyles({
     borderTop: "1px solid #000000",
     color: "white",
   },
+  minSidePanel: {
+    width: 45,
+  },
 });
 
 document.title = "Just An Idea";
 
+/**
+ * The root of the application
+ * Contains the logged in user's state
+ * Handles the routes
+ */
 export default function App() {
   const styles = useStyles();
-  const [displaySidePanel, setDisplaySidePanel] = useState(true);
+  const [displaySidePanel, setDisplaySidePanel] = useState(
+    GetSidePanel !== null ? GetSidePanel : true
+  );
   const [currentUser, setCurrentUser] = useState();
 
   const reloadPinsRef = useRef();
 
   useEffect(() => {
     if (IsLoggedIn()) {
-      const user = getCurrentUser();
+      const user = GetCurrentUser();
       setCurrentUser({
         user_id: user.user_id,
-        credentials_id: user.credentials_id,
+        auth: {
+          username: user.auth.username,
+          password: user.auth.password,
+        },
         role: user.role,
-        username: user.username,
+        suspended: user.suspended,
       });
     }
   }, []);
 
   const toggleSidePanel = () => {
+    SaveSidePanel(!displaySidePanel);
     setDisplaySidePanel(!displaySidePanel);
   };
 
@@ -134,23 +154,28 @@ export default function App() {
     <div className={styles.body}>
       <Router history={history}>
         <div className={styles.container}>
-          <ResizePanel
-            direction="e"
-            handleClass={styles.resizeHandle}
-            borderClass={styles.resizeBorder}
-            style={{
-              display: displaySidePanel ? "flex" : "none",
-              width: "13%",
-              height: "100%",
-            }}
-          >
-            <div className={styles.sidePanel}>
-              <SidePanel
-                currentUser={currentUser}
-                reloadPinsRef={reloadPinsRef}
-              />
+          {displaySidePanel ? (
+            <ResizePanel
+              direction="e"
+              handleClass={styles.resizeHandle}
+              borderClass={styles.resizeBorder}
+              style={{
+                width: "13%",
+                height: "100%",
+              }}
+            >
+              <div className={styles.sidePanel}>
+                <SidePanel
+                  currentUser={currentUser}
+                  reloadPinsRef={reloadPinsRef}
+                />
+              </div>
+            </ResizePanel>
+          ) : (
+            <div className={styles.minSidePanel}>
+              <MinSidePanel currentUser={currentUser} />
             </div>
-          </ResizePanel>
+          )}
 
           <div className={styles.content}>
             <SearchBar toggleSidePanel={toggleSidePanel} />

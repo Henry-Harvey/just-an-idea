@@ -2,6 +2,9 @@ import React from "react";
 import axios from "axios";
 import UpvoteView from "./view";
 
+/**
+ * Allows a user to upvote the idea
+ */
 export default function Upvote({
   currentUser,
   ideaState,
@@ -17,7 +20,8 @@ export default function Upvote({
       );
       axios
         .delete(
-          `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaState.idea.id}`
+          `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaState.idea.id}`,
+          { auth: currentUser?.auth }
         )
         .then((upvoteResponse) => {
           console.log("Delete Upvote response", upvoteResponse);
@@ -33,12 +37,16 @@ export default function Upvote({
         ideaState.idea.id
       );
       axios
-        .post(`http://localhost:8080/content/upvote`, {
-          upvote_id: {
-            user_id: currentUser?.user_id,
-            idea_id: ideaState.idea.id,
+        .post(
+          `http://localhost:8080/content/upvote`,
+          {
+            upvote_id: {
+              user_id: currentUser?.user_id,
+              idea_id: ideaState.idea.id,
+            },
           },
-        })
+          { auth: currentUser?.auth }
+        )
         .then((upvoteResponse) => {
           console.log("Create Upvote response", upvoteResponse);
           retreieveIdea();

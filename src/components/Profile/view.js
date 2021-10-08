@@ -26,38 +26,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileView({
+  currentUser,
+  setCurrentUser,
   profileState,
   isUsersProfile,
-  setCurrentUser,
   retreieveProfile,
-  updateUser,
 }) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      <Typography className={styles.title}>
-        {isUsersProfile
-          ? "My Profile"
-          : profileState.user.display_name + `'s Profile`}
-      </Typography>
-      <div className={styles.container}>
-        <div className={styles.item}>
-          <UserInfo
-            profileState={profileState}
-            isUsersProfile={isUsersProfile}
-            setCurrentUser={setCurrentUser}
-            updateUser={updateUser}
-          />
+      {isNaN(profileState.user.id) ? (
+        <Typography className={styles.title}>
+          Sorry, this profile does not exist {profileState.user.display_name}
+        </Typography>
+      ) : (
+        <div>
+          <Typography className={styles.title}>
+            {isUsersProfile
+              ? "My Profile"
+              : profileState.user.display_name + `'s Profile`}
+            {isUsersProfile && currentUser.role === 1 ? " [Admin]" : null}
+          </Typography>
+          <div className={styles.container}>
+            <div className={styles.item}>
+              <UserInfo
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+                profileState={profileState}
+                isUsersProfile={isUsersProfile}
+                retreieveProfile={retreieveProfile}
+              />
+            </div>
+            <div className={styles.item}>
+              <UserIdeas
+                currentUser={currentUser}
+                profileState={profileState}
+                isUsersProfile={isUsersProfile}
+                retreieveProfile={retreieveProfile}
+              />
+            </div>
+          </div>
         </div>
-        <div className={styles.item}>
-          <UserIdeas
-            profileState={profileState}
-            isUsersProfile={isUsersProfile}
-            retreieveProfile={retreieveProfile}
-          />
-        </div>
-      </div>
+      )}
     </React.Fragment>
   );
 }

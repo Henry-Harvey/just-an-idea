@@ -56,6 +56,7 @@ export default function CommentsView({
       {typeof currentUser?.user_id === "number" &&
       typeof ideaState.idea?.id === "number" ? (
         <PostComment
+          currentUser={currentUser}
           retreieveIdea={retreieveIdea}
           user_id={currentUser?.user_id}
           idea_id={ideaState.idea?.id}
@@ -63,7 +64,7 @@ export default function CommentsView({
           togglePostComment={togglePostComment}
         />
       ) : null}
-
+      <br />
       {ideaState.idea?.comments.length > 0 ? (
         ideaState.idea?.comments.map((comment, index) => (
           <Comment

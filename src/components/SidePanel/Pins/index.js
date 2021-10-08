@@ -2,13 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PinsView from "./view";
 
+/**
+ * Displays a list of the user's pinned topics
+ * Allows a user to navigate to a pinned topic
+ */
 export default function Pins({ currentUser, reloadPinsRef }) {
   const [pinsState, setPinsState] = useState({
     pins: [],
     selectedIndex: -1,
   });
 
-  //const retreievePins = useCallback(async () => {
   const retreievePins = useCallback(() => {
     if (typeof currentUser?.user_id !== "number") {
       setPinsState((state) => ({

@@ -3,11 +3,21 @@ import axios from "axios";
 import history from "../../../utils/history";
 import DeleteIdeaView from "./view";
 
-export default function DeleteIdea({ ideaState, toggleDeleteDialog }) {
+/**
+ * Displays a dialog for deletion confirmation
+ * Allows a user to delete an idea
+ */
+export default function DeleteIdea({
+  currentUser,
+  ideaState,
+  toggleDeleteDialog,
+}) {
   const handleSubmitDelete = () => {
     console.log("Delete Idea with id", ideaState.idea.id);
     axios
-      .delete(`http://localhost:8080/content/idea/${ideaState.idea.id}`)
+      .delete(`http://localhost:8080/content/idea/${ideaState.idea.id}`, {
+        auth: currentUser?.auth,
+      })
       .then((ideaResponse) => {
         console.log("Delete Idea response", ideaResponse);
         toggleDeleteDialog();

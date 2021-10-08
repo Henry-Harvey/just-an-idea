@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import HomeView from "./view";
 
+/**
+ * Displays cards that feature ideas and topics for users to browse (Most Commented Ideas, Most Upvoted Ideas, Most Idea Topics, Most Pinned Topics)
+ */
 export default function Home() {
   const [homeState, setHomeState] = useState({
     ideas: [],

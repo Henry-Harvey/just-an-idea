@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import history from "../../utils/history";
 import RegistrationView from "./view";
+import BadWordsFilter from "bad-words";
 
+/**
+ * Displays a form for registering
+ * Allows a user to register
+ */
 export default function Registration() {
   const [registrationState, setRegistrationState] = useState({
     credentials: {
@@ -30,6 +35,10 @@ export default function Registration() {
   };
 
   const handleChange = (object, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setRegistrationState((state) => ({
       ...state,
       [object]: {
@@ -40,6 +49,10 @@ export default function Registration() {
   };
 
   const handleChangeNested = (parent, child, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setRegistrationState((state) => ({
       ...state,
       [parent]: {
@@ -55,9 +68,12 @@ export default function Registration() {
   const handleSelectState = (stateAbbreviation) => {
     setRegistrationState((state) => ({
       ...state,
-      user: {
-        ...state?.user,
-        state: stateAbbreviation,
+      credentials: {
+        ...state?.credentials,
+        user: {
+          ...state?.credentials.user,
+          state: stateAbbreviation,
+        },
       },
     }));
   };
@@ -94,7 +110,7 @@ export default function Registration() {
         console.log("Register error", error);
         setRegistrationState((state) => ({
           ...state,
-          message: "Register error",
+          message: error.message,
         }));
       });
   };

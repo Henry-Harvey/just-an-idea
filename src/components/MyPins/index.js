@@ -3,6 +3,9 @@ import axios from "axios";
 import MyPinsView from "./view";
 import MyPinsSelectToolbar from "./MyPinsSelectToolbar";
 
+/**
+ * Displays a table of the topics that have been pinned by the user
+ */
 export default function MyPins({ currentUser, reloadPinsRef }) {
   const [myPinsState, setMyPinsState] = useState({
     pins: [],

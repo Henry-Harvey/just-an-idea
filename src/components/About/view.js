@@ -4,6 +4,7 @@ import {
   Typography,
   ImageList,
   ImageListItem,
+  Tooltip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,9 +90,11 @@ export default function AboutView() {
       <div className={styles.pics}>
         <ImageList rowHeight={160} className={styles.imageList} cols={3}>
           {pics.map((pic) => (
-            <ImageListItem key={pic.img} cols={pic.cols || 1}>
-              <img src={pic.img} alt={pic.title} />
-            </ImageListItem>
+            <Tooltip title={pic.title} key={pic.img} cols={pic.cols || 1}>
+              <ImageListItem>
+                <img src={pic.img} alt={pic.title} />
+              </ImageListItem>
+            </Tooltip>
           ))}
         </ImageList>
       </div>

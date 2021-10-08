@@ -2,11 +2,16 @@ import React from "react";
 import axios from "axios";
 import EditUserView from "./view";
 
+/**
+ * Displays a dialog for editing their account info
+ * Allows a user to edit the account info
+ */
 export default function EditUser({
+  currentUser,
   profileState,
   userInfoState,
   isUsersProfile,
-  updateUser,
+  retreieveProfile,
   toggleEditDialog,
   handleChange,
   handleSelectState,
@@ -19,10 +24,12 @@ export default function EditUser({
       return;
     }
     axios
-      .patch(`http://localhost:8080/account/user`, userInfoState?.editUser)
+      .patch(`http://localhost:8080/account/user`, userInfoState?.editUser, {
+        auth: currentUser?.auth,
+      })
       .then((userResponse) => {
         console.log("Edit User response", userResponse);
-        updateUser(userInfoState?.editUser);
+        retreieveProfile();
         toggleEditDialog();
       })
       .catch((error) => {

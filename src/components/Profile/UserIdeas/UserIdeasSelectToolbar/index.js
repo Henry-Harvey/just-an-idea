@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import UserIdeasSelectToolbarView from "./view";
 import DeleteIdea from "./DeleteIdea";
 
+/**
+ * Allows a user to navigate to an idea
+ * Allows a user to navigate to an idea's topic
+ * Allows a user to open the delete dialog for an idea
+ */
 export default function UserIdeasSelectToolbar({
+  currentUser,
   isUsersProfile,
   retreieveProfile,
   setUserIdeasSelectToolbar,
@@ -28,8 +34,9 @@ export default function UserIdeasSelectToolbar({
         toggleDeleteDialog={toggleDeleteDialog}
       />
       <DeleteIdea
+        currentUser={currentUser}
         retreieveProfile={retreieveProfile}
-        setUserIdeasSelectToolbar={setUserIdeasSelectToolbar}
+        // setUserIdeasSelectToolbar={setUserIdeasSelectToolbar}
         selectedIdea={selectedIdea}
         userIdeasSelectToolbarState={userIdeasSelectToolbarState}
         toggleDeleteDialog={toggleDeleteDialog}

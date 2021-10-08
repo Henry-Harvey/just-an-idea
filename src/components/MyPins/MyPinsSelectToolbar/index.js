@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import MyPinsSelectToolbarView from "./view";
 
+/**
+ * Allows a user to navigate to a pinned topic
+ * Allows a user to open the delete dialog for a pin
+ */
 export default function MyPinsSelectToolbar({
   currentUser,
   reloadPinsRef,

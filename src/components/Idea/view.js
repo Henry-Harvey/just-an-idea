@@ -90,92 +90,117 @@ export default function IdeaView({
 
   return (
     <React.Fragment>
-      <div className={styles.form}>
-        <Typography className={styles.title}>{ideaState.idea.title}</Typography>
-        <div className={styles.upvote}>
-          <Tooltip title="Upvotes">
+      {isNaN(ideaState.idea.id) ? (
+        <Typography className={styles.title}>
+          Sorry, this idea does not exist
+        </Typography>
+      ) : (
+        <div>
+          <div className={styles.form}>
             <Typography className={styles.title}>
-              {ideaState.idea.upvotes.length}
+              {ideaState.idea.title}
             </Typography>
-          </Tooltip>
-          {currentUser?.user_id === ideaState.idea.user.id ? null : (
-            <Upvote
+            <div className={styles.upvote}>
+              <Tooltip title="Upvotes">
+                <Typography className={styles.title}>
+                  {ideaState.idea.upvotes.length}
+                </Typography>
+              </Tooltip>
+              {currentUser?.user_id === ideaState.idea.user.id ||
+              isNaN(currentUser?.user_id) ? null : (
+                <Upvote
+                  currentUser={currentUser}
+                  ideaState={ideaState}
+                  retreieveIdea={retreieveIdea}
+                />
+              )}
+            </div>
+            <div>
+              <TextField
+                id="idea_description"
+                label="Description"
+                value={ideaState.idea.description}
+                className={clsx(styles.textField, styles.multiline)}
+                multiline
+                disabled
+                maxRows={15}
+              />
+              <div className={styles.linkSize}>
+                <Link
+                  to={"/topic/" + ideaState.idea.topic.id}
+                  className={styles.link}
+                >
+                  <TextField
+                    id="idea_topic"
+                    label="Topic"
+                    value={ideaState.idea.topic.title}
+                    className={styles.textField}
+                    disabled
+                  />
+                </Link>
+              </div>
+              <div className={styles.linkSize}>
+                <Link
+                  to={"/profile/" + ideaState.idea.user.id}
+                  className={styles.link}
+                >
+                  <TextField
+                    id="idea_author"
+                    label="Author"
+                    value={ideaState.idea.user.display_name}
+                    className={styles.textField}
+                    disabled
+                  />
+                </Link>
+              </div>
+              <TextField
+                id="idea_timestamp"
+                label="Posted on"
+                value={ideaState.idea.timestamp}
+                className={styles.textField}
+                disabled
+              />
+            </div>
+            {ideaState.idea.user.id === currentUser?.user_id ? (
+              <div>
+                <Tooltip title="Delete Idea">
+                  <IconButton
+                    className={styles.iconButton}
+                    onClick={toggleDeleteDialog}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            ) : null}
+            {ideaState.idea.user.id !== currentUser?.user_id &&
+            currentUser?.role === 1 ? (
+              <div>
+                <Tooltip title="Admin Delete Idea">
+                  <IconButton
+                    className={styles.iconButton}
+                    onClick={toggleDeleteDialog}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <Comments
               currentUser={currentUser}
               ideaState={ideaState}
               retreieveIdea={retreieveIdea}
             />
-          )}
-        </div>
-        <div>
-          <TextField
-            id="idea_description"
-            label="Description"
-            value={ideaState.idea.description}
-            className={clsx(styles.textField, styles.multiline)}
-            multiline
-            disabled
-            maxRows={15}
-          />
-          <div className={styles.linkSize}>
-            <Link
-              to={"/topic/" + ideaState.idea.topic.id}
-              className={styles.link}
-            >
-              <TextField
-                id="idea_topic"
-                label="Topic"
-                value={ideaState.idea.topic.title}
-                className={styles.textField}
-                disabled
-              />
-            </Link>
           </div>
-          <div className={styles.linkSize}>
-            <Link
-              to={"/profile/" + ideaState.idea.user.id}
-              className={styles.link}
-            >
-              <TextField
-                id="idea_author"
-                label="Author"
-                value={ideaState.idea.user.display_name}
-                className={styles.textField}
-                disabled
-              />
-            </Link>
-          </div>
-          <TextField
-            id="idea_timestamp"
-            label="Posted on"
-            value={ideaState.idea.timestamp}
-            className={styles.textField}
-            disabled
+          <DeleteIdea
+            currentUser={currentUser}
+            ideaState={ideaState}
+            toggleDeleteDialog={toggleDeleteDialog}
           />
         </div>
-        {ideaState.idea.user.id === currentUser?.user_id ? (
-          <div>
-            <Tooltip title="Delete Idea">
-              <IconButton
-                className={styles.iconButton}
-                onClick={toggleDeleteDialog}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-        ) : null}
-      </div>
-      <div>
-        <Comments
-          currentUser={currentUser}
-          ideaState={ideaState}
-          retreieveIdea={retreieveIdea}
-        />
-      </div>
-      <DeleteIdea
-        ideaState={ideaState}
-        toggleDeleteDialog={toggleDeleteDialog}
-      />
+      )}
     </React.Fragment>
   );
 }

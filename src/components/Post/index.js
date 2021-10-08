@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import history from "../../utils/history";
 import PostView from "./view";
+import BadWordsFilter from "bad-words";
 
+/**
+ * Displays a form for creating a new idea
+ * Allows a user to post the idea
+ */
 export default function Post({ currentUser }) {
   const [postState, setPostState] = useState({
     idea: {
@@ -19,6 +24,10 @@ export default function Post({ currentUser }) {
   });
 
   const handleChange = (object, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setPostState((state) => ({
       ...state,
       [object]: {
@@ -29,6 +38,10 @@ export default function Post({ currentUser }) {
   };
 
   const handleChangeNested = (parent, child, prop) => (event) => {
+    if (/[a-zA-Z]/.test(event.target.value)) {
+      event.target.value = new BadWordsFilter().clean(event.target.value);
+    }
+
     setPostState((state) => ({
       ...state,
       [parent]: {
@@ -50,7 +63,9 @@ export default function Post({ currentUser }) {
   const handleSubmit = () => {
     console.log("Post with Idea", postState.idea);
     axios
-      .post(`http://localhost:8080/content/post`, postState.idea)
+      .post(`http://localhost:8080/content/post`, postState.idea, {
+        auth: currentUser?.auth,
+      })
       .then((ideaResponse) => {
         console.log("Post response", ideaResponse);
         history.push(`/idea/${ideaResponse.data.id}`);
@@ -59,7 +74,7 @@ export default function Post({ currentUser }) {
         console.log("Post error", error);
         setPostState((state) => ({
           ...state,
-          message: "Post error",
+          message: error.message,
         }));
       });
   };

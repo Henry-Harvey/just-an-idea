@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import MyUpvotesSelectToolbarView from "./view";
 
+/**
+ * Allows a user to navigate to an upvoted idea
+ * Allows a user to navigate to an upvoted idea's topic
+ * Allows a user to navigate to an upvoted idea's author
+ * Allows a user to open the delete dialog for an upvote
+ */
 export default function MyUpvotesSelectToolbar({
   selectedUpvote,
   currentUser,
