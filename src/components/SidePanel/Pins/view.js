@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles({
   link: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PinsView({ pinsState, handleClick }) {
+export default function PinsView({ pinsState }) {
   const styles = useStyles();
 
   return (
@@ -35,29 +36,35 @@ export default function PinsView({ pinsState, handleClick }) {
         <Typography className={styles.title}>Pins</Typography>
       </Link>
 
-      <List component="nav" className={styles.list}>
-        {pinsState.pins?.length > 0 ? (
-          pinsState.pins?.map((pin, index) => (
-            <Link
-              to={"/topic/" + pin.topic.id}
-              className={styles.link}
-              key={pin.pin_id.topic_id}
-            >
-              <ListItem
-                button
-                selected={pinsState.selectedIndex === index}
-                onClick={(event) => handleClick(event, index)}
+      {pinsState?.isLoading ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 60%"
+          }
+          size={20}
+        />
+      ) : (
+        <List component="nav" className={styles.list}>
+          {pinsState.pins?.length > 0 ? (
+            pinsState.pins?.map((pin, index) => (
+              <Link
+                to={"/topic/" + pin.topic.id}
+                className={styles.link}
+                key={pin.pin_id.topic_id}
               >
-                <ListItemText primary={pin.topic.title} />
-              </ListItem>
-            </Link>
-          ))
-        ) : (
-          <ListItem>
-            <ListItemText primary={<i>Pin a topic to save it here!</i>} />
-          </ListItem>
-        )}
-      </List>
+                <ListItem button>
+                  <ListItemText primary={pin.topic.title} />
+                </ListItem>
+              </Link>
+            ))
+          ) : (
+            <ListItem>
+              <ListItemText primary={<i>Pin a topic to save it here!</i>} />
+            </ListItem>
+          )}
+        </List>
+      )}
     </React.Fragment>
   );
 }

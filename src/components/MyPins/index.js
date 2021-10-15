@@ -38,6 +38,7 @@ export default function MyPins({ currentUser, reloadPinsRef }) {
         },
       ],
     },
+    isLoading: true,
   });
 
   const retreieveMyPins = useCallback(async () => {
@@ -60,6 +61,7 @@ export default function MyPins({ currentUser, reloadPinsRef }) {
         setMyPinsState((state) => ({
           ...state,
           pins: pinResponse.data,
+          isLoading: false,
         }));
       })
       .catch((error) => {

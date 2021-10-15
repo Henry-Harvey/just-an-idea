@@ -41,6 +41,16 @@ export default function Idea({ currentUser, ideaId }) {
   };
 
   const retreieveIdea = useCallback(async () => {
+    if (typeof parseInt(ideaId) !== "number") {
+      setIdeaState((state) => ({
+        ...state,
+        idea: {
+          ...state.idea,
+          id: -1,
+        },
+      }));
+      return;
+    }
     console.log("Retrieve Idea with id", ideaId);
     axios
       .get(`http://localhost:8080/content/idea/${ideaId}`)
@@ -48,6 +58,13 @@ export default function Idea({ currentUser, ideaId }) {
         console.log("Retrieve Idea response", ideaResponse);
         if (ideaResponse?.data === "") {
           console.log("Idea not found");
+          setIdeaState((state) => ({
+            ...state,
+            idea: {
+              ...state.idea,
+              id: -1,
+            },
+          }));
           return;
         }
         let i = ideaResponse?.data;

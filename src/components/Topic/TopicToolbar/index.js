@@ -37,7 +37,6 @@ export default function TopicToolbar({
         )
         .then((pinResponse) => {
           console.log("Delete Pin response", pinResponse);
-          // window.location.reload();
           retreieveTopic();
           reloadPinsRef.current();
         })
@@ -65,7 +64,6 @@ export default function TopicToolbar({
         )
         .then((pinResponse) => {
           console.log("Create Pin response", pinResponse);
-          // window.location.reload();
           retreieveTopic();
           reloadPinsRef.current();
         })

@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import UserIdeas from "./UserIdeas";
 import UserInfo from "./UserInfo";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -23,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
     justifyContent: "space-between",
   },
+  spinner: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "88%",
+  },
 }));
 
 export default function ProfileView({
@@ -36,9 +43,17 @@ export default function ProfileView({
 
   return (
     <React.Fragment>
-      {isNaN(profileState.user.id) ? (
+      {isNaN(profileState?.user.id) ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 80%"
+          }
+          size={20}
+        />
+      ) : profileState?.user.id === -1 ? (
         <Typography className={styles.title}>
-          Sorry, this profile does not exist {profileState.user.display_name}
+          Sorry, this profile does not exist
         </Typography>
       ) : (
         <div>

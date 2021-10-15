@@ -24,7 +24,7 @@ import Post from "./components/Post";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 import Logout from "./components/Logout";
-import Search from "./components/Search";
+import SearchResults from "./components/SearchResults";
 import Topic from "./components/Topic";
 import Welcome from "./components/Welcome";
 import PublicRoute from "./utils/Routes/PublicRoute";
@@ -108,6 +108,8 @@ const useStyles = makeStyles({
     background: "#292929",
     borderTop: "1px solid #000000",
     color: "white",
+    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+    fontSize: "calc(.5rem + 1vmin)",
   },
   minSidePanel: {
     width: 45,
@@ -227,7 +229,10 @@ export default function App() {
               />
               <PublicRoute component={Home} path="/home" />
               <PublicRoute component={About} path="/about" />
-              <PublicRoute component={Search} path="/search/:searchString" />
+              <PublicRoute
+                component={SearchResults}
+                path="/search/:searchString"
+              />
               <PublicRoute
                 component={Topic}
                 path="/topic/:topicId"

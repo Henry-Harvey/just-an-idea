@@ -12,11 +12,11 @@ import clsx from "clsx";
 import Upvote from "./Upvote";
 import Comments from "./Comments";
 import DeleteIdea from "./DeleteIdea";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "calc(1.25rem + 1vmin)",
-    marginBottom: "-1em",
   },
   form: {
     background: "#292929",
@@ -91,6 +91,14 @@ export default function IdeaView({
   return (
     <React.Fragment>
       {isNaN(ideaState.idea.id) ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 80%"
+          }
+          size={20}
+        />
+      ) : ideaState?.idea.id === -1 ? (
         <Typography className={styles.title}>
           Sorry, this idea does not exist
         </Typography>

@@ -6,6 +6,7 @@ import {
 } from "@material-ui/icons";
 import PostComment from "./PostComment";
 import Comment from "./Comment";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -31,6 +32,7 @@ export default function CommentsView({
   return (
     <React.Fragment>
       <Typography className={styles.title}>Comments</Typography>
+
       {typeof currentUser?.user_id === "number" ? (
         <Tooltip
           title={
@@ -65,7 +67,15 @@ export default function CommentsView({
         />
       ) : null}
       <br />
-      {ideaState.idea?.comments.length > 0 ? (
+      {isNaN(ideaState.idea.id) ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 80%"
+          }
+          size={20}
+        />
+      ) : ideaState.idea?.comments.length > 0 ? (
         ideaState.idea?.comments.map((comment, index) => (
           <Comment
             key={comment.id}

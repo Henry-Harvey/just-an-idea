@@ -57,6 +57,13 @@ export default function Topic({ currentUser, reloadPinsRef }) {
 
   const retreieveTopic = useCallback(async () => {
     if (typeof parseInt(topicId) !== "number") {
+      setTopicState((state) => ({
+        ...state,
+        topic: {
+          ...state.topic,
+          id: -1,
+        },
+      }));
       return;
     }
     console.log("Retrieve Topic with id", topicId);
@@ -66,6 +73,13 @@ export default function Topic({ currentUser, reloadPinsRef }) {
         console.log("Retrieve Topic response", topicResponse);
         if (topicResponse?.data === "") {
           console.log("Topic not found");
+          setTopicState((state) => ({
+            ...state,
+            topic: {
+              ...state.topic,
+              id: -1,
+            },
+          }));
           return;
         }
         setTopicState((state) => ({

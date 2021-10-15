@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     smargin: 10,
   },
   logo: {
-    width: 30,
+    width: 27.5,
   },
 }));
 

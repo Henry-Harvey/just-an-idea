@@ -42,6 +42,7 @@ export default function MyUpvotes({ currentUser }) {
         },
       ],
     },
+    isLoading: true,
   });
 
   const retreieveMyUpvotes = useCallback(async () => {
@@ -64,6 +65,7 @@ export default function MyUpvotes({ currentUser }) {
         setMyUpvotesState((state) => ({
           ...state,
           upvotes: upvoteResponse.data,
+          isLoading: false,
         }));
       })
       .catch((error) => {

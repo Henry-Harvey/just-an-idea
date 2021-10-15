@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import SearchView from "./view";
+import SearchResultsView from "./view";
 import SearchSelectToolbar from "./SearchSelectToolbar";
 
 /**
  * Displays a table containing all of the user's search results
  */
-export default function Search() {
+export default function SearchResults() {
   let searchString = useParams().searchString;
 
-  const [searchState, setSearchState] = useState({
+  const [searchResultsState, setSearchResultsState] = useState({
     results: [],
     table: {
       options: {
@@ -39,10 +39,11 @@ export default function Search() {
         },
       ],
     },
+    isLoading: true,
   });
 
   useEffect(() => {
-    setSearchState((state) => ({
+    setSearchResultsState((state) => ({
       ...state,
       results: [],
     }));
@@ -123,12 +124,13 @@ export default function Search() {
       });
 
     setTimeout(() => {
-      setSearchState((state) => ({
+      setSearchResultsState((state) => ({
         ...state,
         results: resultsArray,
+        isLoading: false,
       }));
 
-      setSearchState((state) => ({
+      setSearchResultsState((state) => ({
         ...state,
         table: {
           ...state.table,
@@ -149,7 +151,10 @@ export default function Search() {
 
   return (
     <React.Fragment>
-      <SearchView searchString={searchString} searchState={searchState} />
+      <SearchResultsView
+        searchString={searchString}
+        searchResultsState={searchResultsState}
+      />
     </React.Fragment>
   );
 }

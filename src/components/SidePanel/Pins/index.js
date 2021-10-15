@@ -9,7 +9,7 @@ import PinsView from "./view";
 export default function Pins({ currentUser, reloadPinsRef }) {
   const [pinsState, setPinsState] = useState({
     pins: [],
-    selectedIndex: -1,
+    isLoading: true,
   });
 
   const retreievePins = useCallback(() => {
@@ -17,13 +17,10 @@ export default function Pins({ currentUser, reloadPinsRef }) {
       setPinsState((state) => ({
         ...state,
         pins: [],
+        isLoading: false,
       }));
       return;
     }
-    setPinsState((state) => ({
-      ...state,
-      selectedIndex: -1,
-    }));
     console.log("Retrieve All Pins with user_id", currentUser?.user_id);
     axios
       .post(`http://localhost:8080/content/pins`, {
@@ -35,6 +32,10 @@ export default function Pins({ currentUser, reloadPinsRef }) {
         console.log("Retrieve All Pins response", pinResponse);
         if (pinResponse?.data === "") {
           console.log("Pins not found");
+          setPinsState((state) => ({
+            ...state,
+            isLoading: false,
+          }));
           return;
         }
         let p = pinResponse.data.sort((a, b) =>
@@ -43,6 +44,7 @@ export default function Pins({ currentUser, reloadPinsRef }) {
         setPinsState((state) => ({
           ...state,
           pins: p,
+          isLoading: false,
         }));
       })
       .catch((error) => {
@@ -55,16 +57,9 @@ export default function Pins({ currentUser, reloadPinsRef }) {
     reloadPinsRef.current = retreievePins;
   }, [retreievePins, reloadPinsRef]);
 
-  const handleClick = (event, index) => {
-    setPinsState((state) => ({
-      ...state,
-      selectedIndex: index,
-    }));
-  };
-
   return (
     <React.Fragment>
-      <PinsView pinsState={pinsState} handleClick={handleClick} />
+      <PinsView pinsState={pinsState} />
     </React.Fragment>
   );
 }

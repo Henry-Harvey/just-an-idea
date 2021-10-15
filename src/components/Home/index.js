@@ -7,6 +7,7 @@ import HomeView from "./view";
  */
 export default function Home() {
   const [homeState, setHomeState] = useState({
+    isLoading: true,
     ideas: [],
     topics: [],
   });
@@ -24,6 +25,7 @@ export default function Home() {
         setHomeState((state) => ({
           ...state,
           ideas: ideaResponse.data,
+          isLoading: false,
         }));
       })
       .catch((error) => {
@@ -44,6 +46,7 @@ export default function Home() {
         setHomeState((state) => ({
           ...state,
           topics: topicResponse.data,
+          isLoading: false,
         }));
       })
       .catch((error) => {

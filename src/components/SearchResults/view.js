@@ -15,12 +15,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MyUpvotesView({ myUpvotesState }) {
+export default function SearchResultsView({
+  searchString,
+  searchResultsState,
+}) {
   const styles = useStyles();
 
   return (
     <React.Fragment>
-      {myUpvotesState?.isLoading ? (
+      {searchResultsState?.isLoading ? (
         <BeatLoader
           color={"#fff"}
           css={
@@ -30,10 +33,10 @@ export default function MyUpvotesView({ myUpvotesState }) {
         />
       ) : (
         <MUIDataTable
-          title={"My Upvoted Ideas"}
-          data={myUpvotesState.upvotes}
-          columns={myUpvotesState.table.columns}
-          options={myUpvotesState.table.options}
+          title={`Search Results for '${searchString}'`}
+          data={searchResultsState.results}
+          columns={searchResultsState.table.columns}
+          options={searchResultsState.table.options}
           className={styles.table}
         />
       )}

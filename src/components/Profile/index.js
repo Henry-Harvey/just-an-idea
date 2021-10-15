@@ -35,6 +35,13 @@ export default function Profile({ currentUser, setCurrentUser }) {
 
   const retreieveProfile = useCallback(async () => {
     if (typeof user_id !== "number") {
+      setProfileState((state) => ({
+        ...state,
+        user: {
+          ...state.user,
+          id: -1,
+        },
+      }));
       return;
     }
     console.log("Retrieve User with id", user_id);
@@ -44,6 +51,13 @@ export default function Profile({ currentUser, setCurrentUser }) {
         console.log("Retrieve User response", userResponse);
         if (userResponse.data === "") {
           console.log("User not found");
+          setProfileState((state) => ({
+            ...state,
+            user: {
+              ...state.user,
+              id: -1,
+            },
+          }));
           return;
         } else {
           setProfileState((state) => ({

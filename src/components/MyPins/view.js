@@ -1,6 +1,7 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from "@material-ui/core";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -19,13 +20,23 @@ export default function MyPinsView({ myPinsState }) {
 
   return (
     <React.Fragment>
-      <MUIDataTable
-        title={"My Pinned Topics"}
-        data={myPinsState.pins}
-        columns={myPinsState.table.columns}
-        options={myPinsState.table.options}
-        className={styles.table}
-      />
+      {myPinsState?.isLoading ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 80%"
+          }
+          size={20}
+        />
+      ) : (
+        <MUIDataTable
+          title={"My Pinned Topics"}
+          data={myPinsState.pins}
+          columns={myPinsState.table.columns}
+          options={myPinsState.table.options}
+          className={styles.table}
+        />
+      )}
     </React.Fragment>
   );
 }

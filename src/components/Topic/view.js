@@ -2,6 +2,7 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 import { makeStyles, Typography } from "@material-ui/core";
 import Idea from "../Idea";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -32,6 +33,14 @@ export default function TopicView({ currentUser, topicState }) {
   return (
     <React.Fragment>
       {isNaN(topicState.topic.id) ? (
+        <BeatLoader
+          color={"#fff"}
+          css={
+            "display: flex; justify-content: center; align-items: center; height: 80%"
+          }
+          size={20}
+        />
+      ) : topicState.topic.id === -1 ? (
         <Typography className={styles.title}>
           Sorry, this topic does not exist
         </Typography>
