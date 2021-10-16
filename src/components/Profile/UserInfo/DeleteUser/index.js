@@ -1,6 +1,5 @@
 import React from "react";
-import axios from "axios";
-import { LogOut } from "../../../../utils";
+import { authAxios, LogOut } from "../../../../utils";
 import history from "../../../../utils/history";
 import DeleteUserView from "./view";
 
@@ -18,10 +17,8 @@ export default function DeleteUser({
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete User with id", profileState?.user.id);
-    axios
-      .delete(`http://localhost:8080/account/user/${profileState?.user.id}`, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .delete(`/account/user/${profileState?.user.id}`)
       .then((userResponse) => {
         console.log("Delete response", userResponse);
         toggleDeleteDialog();

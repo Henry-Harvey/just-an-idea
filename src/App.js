@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { publicAxios } from "./utils";
 import { makeStyles } from "@material-ui/core";
 import ResizePanel from "react-resize-panel";
 // eslint-disable-next-line no-unused-vars
@@ -8,6 +9,7 @@ import history from "./utils/history";
 import {
   IsLoggedIn,
   GetCurrentUser,
+  LogOut,
   SaveSidePanel,
   GetSidePanel,
 } from "./utils";
@@ -132,20 +134,45 @@ export default function App() {
 
   const reloadPinsRef = useRef();
 
-  useEffect(() => {
+  const retreieveStoredUser = useCallback(() => {
     if (IsLoggedIn()) {
       const user = GetCurrentUser();
-      setCurrentUser({
-        user_id: user.user_id,
-        auth: {
-          username: user.auth.username,
-          password: user.auth.password,
-        },
-        role: user.role,
-        suspended: user.suspended,
-      });
+      console.log("Retrieving Stored User with id", user.user_id);
+      publicAxios
+        .get(`/account/user/${user.user_id}`)
+        .then((credentialsResponse) => {
+          console.log("Stored User response", credentialsResponse);
+          if (credentialsResponse?.data === "") {
+            console.log("Stored User not found");
+            LogOut();
+            history.push(`/login`);
+            return;
+          }
+          if (credentialsResponse?.data.credentials.suspended !== 0) {
+            console.log("Stored User has been suspended");
+            LogOut();
+            history.push(`/login`);
+            return;
+          }
+          console.log("Setting Current User from local storage", user);
+          setCurrentUser({
+            user_id: user.user_id,
+            tokens: {
+              access_token: user.tokens.access_token,
+              refresh_token: user.tokens.refresh_token,
+            },
+            role: user.role,
+          });
+        })
+        .catch((error) => {
+          console.log("Log in error", error);
+        });
     }
   }, []);
+
+  useEffect(() => {
+    retreieveStoredUser();
+  }, [retreieveStoredUser]);
 
   const toggleSidePanel = () => {
     SaveSidePanel(!displaySidePanel);

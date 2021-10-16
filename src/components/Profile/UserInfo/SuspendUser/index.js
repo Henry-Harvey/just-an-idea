@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { authAxios } from "../../../../utils";
 import SuspendUserView from "./view";
 
 /**
@@ -35,19 +36,15 @@ export default function SuspendUser({
         console.log("Retrieve Credentials for Suspend error", error);
       })
       .then(() => {
-        axios
-          .patch(
-            `http://localhost:8080/account/credentials`,
-            {
-              id: credentials.id,
-              username: credentials.username,
-              password: credentials.password,
-              email: credentials.email,
-              role: credentials.role,
-              suspended: credentials.suspended,
-            },
-            { auth: currentUser?.auth }
-          )
+        authAxios
+          .patch(`/account/credentials`, {
+            id: credentials.id,
+            username: credentials.username,
+            password: credentials.password,
+            email: credentials.email,
+            role: credentials.role,
+            suspended: credentials.suspended,
+          })
           .then((credentialsResponse) => {
             console.log(
               "Toggle Suspend Credentials response",

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../../utils";
 import DeleteCommentView from "./view";
 
 /**
@@ -15,10 +15,8 @@ export default function DeleteComment({
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete Comment with id", comment.id);
-    axios
-      .delete(`http://localhost:8080/content/comment/${comment.id}`, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .delete(`/content/comment/${comment.id}`)
       .then((commentResponse) => {
         console.log("Delete Comment response", commentResponse);
         toggleDeleteDialog();

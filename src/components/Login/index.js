@@ -3,6 +3,7 @@ import axios from "axios";
 import history from "../../utils/history";
 import { LogIn } from "../../utils";
 import LoginView from "./view";
+import querystring from "query-string";
 
 /**
  * Displays a form for logging in
@@ -42,43 +43,67 @@ export default function Login({ setCurrentUser }) {
   };
 
   const handleSubmit = () => {
-    console.log("Login Credentials", loginState?.credentials);
+    console.log("Login Authentication Credentials", loginState?.credentials);
     axios
-      .post(`http://localhost:8080/account/login`, loginState?.credentials)
-      .then((credentialsResponse) => {
-        console.log("Login Credentials response", credentialsResponse);
-        if (credentialsResponse?.data === "") {
-          console.log("Credentials not found");
+      // .post(`http://localhost:8080/account/login`, loginState?.credentials)
+      .post(
+        `http://localhost:8080/account/authenticate`,
+        querystring.stringify(loginState?.credentials)
+      )
+      .then((authenticationResponse) => {
+        console.log("Login Authentication response", authenticationResponse);
+        if (authenticationResponse?.data === "") {
+          console.log("Authentication was unsuccessful");
           setLoginState((state) => ({
             ...state,
-            message: "Credentials not found",
+            message: "Authentication was unsuccessful",
           }));
           return;
         }
-        if (credentialsResponse?.data.suspended !== 0) {
-          console.log("Credentials have been suspended");
-          setLoginState((state) => ({
-            ...state,
-            message: "Credentials have been suspended",
-          }));
-          return;
-        }
-        const currentUser = {
-          user_id: credentialsResponse?.data.user.id,
-          role: credentialsResponse?.data.role,
-          suspended: credentialsResponse?.data.suspended,
-          auth: {
-            username: credentialsResponse?.data.username,
-            password: loginState?.credentials.password,
-          },
+        const tokens = {
+          access_token: authenticationResponse?.data.access_token,
+          refresh_token: authenticationResponse?.data.refresh_token,
         };
-        console.log("Setting Current User", currentUser);
-        setCurrentUser(currentUser);
-        LogIn(currentUser);
-        history.push("/home");
+        axios
+          .post(`http://localhost:8080/account/login`, loginState?.credentials)
+          .then((credentialsResponse) => {
+            console.log("Login Credentials response", credentialsResponse);
+            if (credentialsResponse?.data === "") {
+              console.log("Credentials not found");
+              setLoginState((state) => ({
+                ...state,
+                message: "Credentials not found",
+              }));
+              return;
+            }
+            if (credentialsResponse?.data.suspended !== 0) {
+              console.log("Credentials have been suspended");
+              setLoginState((state) => ({
+                ...state,
+                message: "Credentials have been suspended",
+              }));
+              return;
+            }
+            const currentUser = {
+              user_id: credentialsResponse?.data.user.id,
+              role: credentialsResponse?.data.role,
+              tokens,
+            };
+            console.log("Setting Current User", currentUser);
+            setCurrentUser(currentUser);
+            LogIn(currentUser);
+            history.push("/home");
+          })
+          .catch((error) => {
+            console.log("Log in error", error);
+            setLoginState((state) => ({
+              ...state,
+              message: error.message,
+            }));
+          });
       })
       .catch((error) => {
-        console.log("Log in error", error);
+        console.log("Authentication error", error);
         setLoginState((state) => ({
           ...state,
           message: error.message,

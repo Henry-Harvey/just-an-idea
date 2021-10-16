@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../utils";
 import DeleteUpvoteView from "./view";
 
 /**
@@ -19,12 +19,9 @@ export default function DeleteUpvote({
       currentUser?.user_id,
       selectedUpvote.idea.id
     );
-    axios
+    authAxios
       .delete(
-        `http://localhost:8080/content/upvote/${currentUser?.user_id}/${selectedUpvote.idea.id}`,
-        {
-          auth: currentUser?.auth,
-        }
+        `/content/upvote/${currentUser?.user_id}/${selectedUpvote.idea.id}`
       )
       .then((upvoteResponse) => {
         console.log("Delete Upvote response", upvoteResponse);

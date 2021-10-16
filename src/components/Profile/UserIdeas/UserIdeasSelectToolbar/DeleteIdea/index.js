@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../../utils";
 import DeleteIdeaView from "./view";
 
 /**
@@ -16,10 +16,8 @@ export default function DeleteIdea({
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete Idea with id", selectedIdea.id);
-    axios
-      .delete(`http://localhost:8080/content/idea/${selectedIdea.id}`, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .delete(`/content/idea/${selectedIdea.id}`)
       .then((ideaResponse) => {
         console.log("Delete Idea response", ideaResponse);
         toggleDeleteDialog();

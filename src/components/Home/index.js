@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import HomeView from "./view";
 
 /**
@@ -14,8 +14,8 @@ export default function Home() {
 
   const retreieveIdeas = useCallback(async () => {
     console.log("Retrieve all Ideas");
-    axios
-      .post(`http://localhost:8080/content/ideas`, {})
+    publicAxios
+      .post(`/content/ideas`, {})
       .then((ideaResponse) => {
         console.log("Retrieve all Ideas response", ideaResponse);
         if (ideaResponse?.data === "") {
@@ -35,8 +35,8 @@ export default function Home() {
 
   const retreieveTopics = useCallback(async () => {
     console.log("Retrieve all Topics");
-    axios
-      .post(`http://localhost:8080/content/topics`, {})
+    publicAxios
+      .post(`/content/topics`, {})
       .then((topicResponse) => {
         console.log("Retrieve all Topics response", topicResponse);
         if (topicResponse?.data === "") {

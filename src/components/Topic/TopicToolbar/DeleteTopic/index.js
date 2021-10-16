@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../utils";
 import history from "../../../../utils/history";
 import DeleteTopicView from "./view";
 
@@ -15,10 +15,8 @@ export default function DeleteTopic({
 }) {
   const handleSubmitDelete = () => {
     console.log("Delete Topic with id", topicState.topic.id);
-    axios
-      .delete(`http://localhost:8080/content/topic/${topicState.topic.id}`, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .delete(`/content/topic/${topicState.topic.id}`)
       .then((topicResponse) => {
         console.log("Delete Topic response", topicResponse);
         toggleDeleteDialog();

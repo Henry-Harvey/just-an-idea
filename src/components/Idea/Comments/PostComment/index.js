@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
-import PostCommentView from "./view";
+import { authAxios } from "../../../../utils";
 import BadWordsFilter from "bad-words";
+import PostCommentView from "./view";
 
 /**
  * Form for posting a new comment to an idea
@@ -49,12 +49,8 @@ export default function PostComment({
 
   const handleSubmit = () => {
     console.log("Post Comment", postCommentState.comment);
-    axios
-      .post(
-        `http://localhost:8080/content/postComment`,
-        postCommentState.comment,
-        { auth: currentUser?.auth }
-      )
+    authAxios
+      .post(`/content/postComment`, postCommentState.comment)
       .then((commentResponse) => {
         console.log("Post Comment response", commentResponse);
         retreieveIdea();

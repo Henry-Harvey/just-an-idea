@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { authAxios } from "../../../utils";
 import TopicToolbarView from "./view";
 import DeleteTopic from "./DeleteTopic";
 
@@ -30,11 +30,8 @@ export default function TopicToolbar({
         currentUser?.user_id,
         topicState.topic.id
       );
-      axios
-        .delete(
-          `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicState.topic.id}`,
-          { auth: currentUser?.auth }
-        )
+      authAxios
+        .delete(`/content/pin/${currentUser?.user_id}/${topicState.topic.id}`)
         .then((pinResponse) => {
           console.log("Delete Pin response", pinResponse);
           retreieveTopic();
@@ -49,19 +46,13 @@ export default function TopicToolbar({
         currentUser?.user_id,
         topicState.topic.id
       );
-      axios
-        .post(
-          `http://localhost:8080/content/pin`,
-          {
-            pin_id: {
-              user_id: currentUser?.user_id,
-              topic_id: topicState.topic.id,
-            },
+      authAxios
+        .post(`/content/pin`, {
+          pin_id: {
+            user_id: currentUser?.user_id,
+            topic_id: topicState.topic.id,
           },
-          {
-            auth: currentUser?.auth,
-          }
-        )
+        })
         .then((pinResponse) => {
           console.log("Create Pin response", pinResponse);
           retreieveTopic();

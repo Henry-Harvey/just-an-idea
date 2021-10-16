@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../utils";
 import DeletePinView from "./view";
 
 /**
@@ -20,13 +20,8 @@ export default function DeletePin({
       currentUser?.user_id,
       selectedPin.topic.id
     );
-    axios
-      .delete(
-        `http://localhost:8080/content/pin/${currentUser?.user_id}/${selectedPin.topic.id}`,
-        {
-          auth: currentUser?.auth,
-        }
-      )
+    authAxios
+      .delete(`/content/pin/${currentUser?.user_id}/${selectedPin.topic.id}`)
       .then((pinResponse) => {
         console.log("Delete Pin response", pinResponse);
         toggleDeleteDialog();

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { authAxios } from "../../utils";
 import history from "../../utils/history";
-import PostView from "./view";
 import BadWordsFilter from "bad-words";
+import PostView from "./view";
 
 /**
  * Displays a form for creating a new idea
@@ -62,10 +62,8 @@ export default function Post({ currentUser }) {
 
   const handleSubmit = () => {
     console.log("Post with Idea", postState.idea);
-    axios
-      .post(`http://localhost:8080/content/post`, postState.idea, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .post(`/content/post`, postState.idea)
       .then((ideaResponse) => {
         console.log("Post response", ideaResponse);
         history.push(`/idea/${ideaResponse.data.id}`);

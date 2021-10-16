@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../../utils";
 import EditUserView from "./view";
 
 /**
@@ -23,10 +23,8 @@ export default function EditUser({
       handleEditErrorMessage();
       return;
     }
-    axios
-      .patch(`http://localhost:8080/account/user`, userInfoState?.editUser, {
-        auth: currentUser?.auth,
-      })
+    authAxios
+      .patch(`/account/user`, userInfoState?.editUser)
       .then((userResponse) => {
         console.log("Edit User response", userResponse);
         retreieveProfile();

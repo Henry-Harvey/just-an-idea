@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { authAxios } from "../../../utils";
 import UpvoteView from "./view";
 
 /**
@@ -18,11 +18,8 @@ export default function Upvote({
         currentUser?.user_id,
         ideaState.idea.id
       );
-      axios
-        .delete(
-          `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaState.idea.id}`,
-          { auth: currentUser?.auth }
-        )
+      authAxios
+        .delete(`/content/upvote/${currentUser?.user_id}/${ideaState.idea.id}`)
         .then((upvoteResponse) => {
           console.log("Delete Upvote response", upvoteResponse);
           retreieveIdea();
@@ -36,17 +33,13 @@ export default function Upvote({
         currentUser?.user_id,
         ideaState.idea.id
       );
-      axios
-        .post(
-          `http://localhost:8080/content/upvote`,
-          {
-            upvote_id: {
-              user_id: currentUser?.user_id,
-              idea_id: ideaState.idea.id,
-            },
+      authAxios
+        .post(`/content/upvote`, {
+          upvote_id: {
+            user_id: currentUser?.user_id,
+            idea_id: ideaState.idea.id,
           },
-          { auth: currentUser?.auth }
-        )
+        })
         .then((upvoteResponse) => {
           console.log("Create Upvote response", upvoteResponse);
           retreieveIdea();
