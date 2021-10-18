@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import MyUpvotesView from "./view";
 import MyUpvotesSelectToolbar from "./MyUpvotesSelectToolbar";
 
@@ -50,8 +50,8 @@ export default function MyUpvotes({ currentUser }) {
       return;
     }
     console.log("Retrieve Upvotes with user_id", currentUser?.user_id);
-    axios
-      .post(`http://localhost:8080/content/upvotes`, {
+    publicAxios
+      .post(`/content/upvotes`, {
         upvote_id: {
           user_id: currentUser?.user_id,
         },

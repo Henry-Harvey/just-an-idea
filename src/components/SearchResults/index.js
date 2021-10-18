@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import { publicAxios } from "../../utils";
 import SearchResultsView from "./view";
 import SearchSelectToolbar from "./SearchSelectToolbar";
 
@@ -55,8 +55,8 @@ export default function SearchResults() {
     }
     var resultsArray = [];
     console.log("Search Ideas with title:", searchString);
-    axios
-      .post(`http://localhost:8080/content/ideas/search`, {
+    publicAxios
+      .post(`/content/ideas/search`, {
         title: searchString,
       })
       .then((ideasResponse) => {
@@ -78,8 +78,8 @@ export default function SearchResults() {
       });
 
     console.log("Search Topics with title", searchString);
-    axios
-      .post(`http://localhost:8080/content/topics/search`, {
+    publicAxios
+      .post(`/content/topics/search`, {
         title: searchString,
       })
       .then((topicsResponse) => {
@@ -101,8 +101,8 @@ export default function SearchResults() {
       });
 
     console.log("Search Users with display_name", searchString);
-    axios
-      .post(`http://localhost:8080/account/users/search`, {
+    publicAxios
+      .post(`/account/users/search`, {
         display_name: searchString,
       })
       .then((usersResponse) => {

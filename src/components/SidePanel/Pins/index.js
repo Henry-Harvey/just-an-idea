@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { publicAxios } from "../../../utils";
 import PinsView from "./view";
 
 /**
@@ -22,8 +22,8 @@ export default function Pins({ currentUser, reloadPinsRef }) {
       return;
     }
     console.log("Retrieve All Pins with user_id", currentUser?.user_id);
-    axios
-      .post(`http://localhost:8080/content/pins`, {
+    publicAxios
+      .post(`/content/pins`, {
         pin_id: {
           user_id: currentUser?.user_id,
         },

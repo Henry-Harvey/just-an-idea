@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import history from "../../utils/history";
-import RegistrationView from "./view";
 import BadWordsFilter from "bad-words";
+import RegistrationView from "./view";
 
 /**
  * Displays a form for registering
@@ -89,11 +89,8 @@ export default function Registration() {
       "Register Credentials with User",
       registrationState?.credentials
     );
-    axios
-      .post(
-        `http://localhost:8080/account/register`,
-        registrationState?.credentials
-      )
+    publicAxios
+      .post(`/account/register`, registrationState?.credentials)
       .then((credentialsResponse) => {
         console.log("Register response", credentialsResponse);
         if (credentialsResponse?.data === "") {

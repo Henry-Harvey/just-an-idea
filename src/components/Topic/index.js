@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import TopicView from "./view";
 import TopicToolbar from "./TopicToolbar";
 
@@ -67,8 +67,8 @@ export default function Topic({ currentUser, reloadPinsRef }) {
       return;
     }
     console.log("Retrieve Topic with id", topicId);
-    axios
-      .get(`http://localhost:8080/content/topic/${topicId}`)
+    publicAxios
+      .get(`/content/topic/${topicId}`)
       .then((topicResponse) => {
         console.log("Retrieve Topic response", topicResponse);
         if (topicResponse?.data === "") {
@@ -97,10 +97,8 @@ export default function Topic({ currentUser, reloadPinsRef }) {
         currentUser?.user_id,
         topicId
       );
-      axios
-        .get(
-          `http://localhost:8080/content/pin/${currentUser?.user_id}/${topicId}`
-        )
+      publicAxios
+        .get(`/content/pin/${currentUser?.user_id}/${topicId}`)
         .then((pinResponse) => {
           console.log("Retrieve Pin response", pinResponse);
           if (pinResponse?.data === "") {

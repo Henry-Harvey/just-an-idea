@@ -1,6 +1,5 @@
 import React from "react";
-import axios from "axios";
-import { authAxios } from "../../../../utils";
+import { publicAxios, authAxios } from "../../../../utils";
 import SuspendUserView from "./view";
 
 /**
@@ -20,10 +19,8 @@ export default function SuspendUser({
       profileState?.user.credentials.id
     );
     let credentials;
-    axios
-      .get(
-        `http://localhost:8080/account/credentials/${profileState?.user.credentials.id}`
-      )
+    publicAxios
+      .get(`/account/credentials/${profileState?.user.credentials.id}`)
       .then((credentialsResponse) => {
         console.log(
           "Retrieve Credentials for Suspend response",

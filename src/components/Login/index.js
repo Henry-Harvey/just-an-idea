@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import history from "../../utils/history";
 import { LogIn } from "../../utils";
 import LoginView from "./view";
@@ -44,10 +44,9 @@ export default function Login({ setCurrentUser }) {
 
   const handleSubmit = () => {
     console.log("Login Authentication Credentials", loginState?.credentials);
-    axios
-      // .post(`http://localhost:8080/account/login`, loginState?.credentials)
+    publicAxios
       .post(
-        `http://localhost:8080/account/authenticate`,
+        `/account/authenticate`,
         querystring.stringify(loginState?.credentials)
       )
       .then((authenticationResponse) => {
@@ -64,8 +63,8 @@ export default function Login({ setCurrentUser }) {
           access_token: authenticationResponse?.data.access_token,
           refresh_token: authenticationResponse?.data.refresh_token,
         };
-        axios
-          .post(`http://localhost:8080/account/login`, loginState?.credentials)
+        publicAxios
+          .post(`/account/login`, loginState?.credentials)
           .then((credentialsResponse) => {
             console.log("Login Credentials response", credentialsResponse);
             if (credentialsResponse?.data === "") {
