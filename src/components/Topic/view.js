@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     width: "50%",
     overflowY: "auto",
+    "&::-webkit-scrollbar": {
+      width: "0px",
+    },
+    height: "calc(100vh - 125px)",
+    overflow: "auto",
   },
   title: {
     fontSize: "calc(1.25rem + 1vmin)",

@@ -56,6 +56,15 @@ export default function Topic({ currentUser, reloadPinsRef }) {
   });
 
   const retreieveTopic = useCallback(async () => {
+    setTopicState((state) => ({
+      ...state,
+      table: {
+        ...state.table,
+        isIdeaDisplayed: false,
+      },
+    }));
+    console.log("DONE!!!!!!!!!!!!!!!!!!!!!!", topicState.table.isIdeaDisplayed);
+
     if (typeof parseInt(topicId) !== "number") {
       setTopicState((state) => ({
         ...state,
@@ -164,7 +173,7 @@ export default function Topic({ currentUser, reloadPinsRef }) {
         },
       }));
     }, 200);
-  }, [currentUser, reloadPinsRef, topicId]);
+  }, [currentUser, reloadPinsRef, topicId, topicState.table.isIdeaDisplayed]);
 
   useEffect(() => {
     retreieveTopic();

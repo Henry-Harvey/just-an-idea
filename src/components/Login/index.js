@@ -86,11 +86,15 @@ export default function Login({ setCurrentUser }) {
             const currentUser = {
               user_id: credentialsResponse?.data.user.id,
               role: credentialsResponse?.data.role,
+            };
+            setCurrentUser(currentUser);
+            console.log("Setting Current User", currentUser);
+            const storedUser = {
+              user_id: credentialsResponse?.data.user.id,
+              role: credentialsResponse?.data.role,
               tokens,
             };
-            console.log("Setting Current User", currentUser);
-            setCurrentUser(currentUser);
-            LogIn(currentUser);
+            LogIn(storedUser);
             history.push("/home");
           })
           .catch((error) => {

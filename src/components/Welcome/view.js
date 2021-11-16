@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: "url(/images/jai-logo-alt.jpg)",
     backgroundSize: 101.5,
     backgroundColor: "black",
-    height: "88%",
+    height: "calc(100vh - 125px)",
   },
   title: {
     fontSize: "calc(1.25rem + 1vmin)",

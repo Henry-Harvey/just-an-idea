@@ -77,7 +77,6 @@ export default function PostView({
   postState,
   handleChange,
   handleChangeNested,
-  handleKeyPress,
   handleSubmit,
 }) {
   const styles = useStyles();
@@ -105,7 +104,6 @@ export default function PostView({
           label="Description"
           value={postState?.idea.description}
           onChange={handleChange("idea", "description")}
-          onKeyPress={handleKeyPress()}
           className={clsx(styles.textField, styles.multiline)}
           multiline
           rows={10}

@@ -11,6 +11,7 @@ import PostView from "./view";
 export default function Post({ currentUser }) {
   const [postState, setPostState] = useState({
     idea: {
+      id: -1,
       title: "",
       description: "",
       user: {
@@ -54,12 +55,6 @@ export default function Post({ currentUser }) {
     }));
   };
 
-  const handleKeyPress = () => (event) => {
-    if (event?.charCode === 13) {
-      handleSubmit();
-    }
-  };
-
   const handleSubmit = () => {
     console.log("Post with Idea", postState.idea);
     authAxios
@@ -83,7 +78,6 @@ export default function Post({ currentUser }) {
         postState={postState}
         handleChange={handleChange}
         handleChangeNested={handleChangeNested}
-        handleKeyPress={handleKeyPress}
         handleSubmit={handleSubmit}
       />
     </React.Fragment>
