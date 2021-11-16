@@ -19,9 +19,10 @@ const useStyles = makeStyles((theme) => ({
     height: 200,
     display: "inline-block",
     margin: 10,
+    borderRadius: 20,
   },
   avatar: {
-    backgroundColor: "#504c4c",
+    backgroundColor: "#504C4C",
     height: 30,
     width: 30,
   },
@@ -35,6 +36,15 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-end",
     marginTop: "auto",
   },
+  cards: {
+    marginTop: 15,
+  },
+  title: {
+    backgroundColor: "#700000",
+    marginLeft: "3%",
+    marginRight: "3%",
+    borderRadius: 5,
+  },
 }));
 
 export default function MostCommentedIdeasView({ mostCommentedIdeasState }) {
@@ -42,38 +52,40 @@ export default function MostCommentedIdeasView({ mostCommentedIdeasState }) {
 
   return (
     <React.Fragment>
-      <Typography>Most Commented Ideas</Typography>
-      {mostCommentedIdeasState.ideas?.map((idea, index) => (
-        <Link to={"/idea/" + idea.id} className={styles.link} key={idea.id}>
-          <Card className={styles.card}>
-            <CardHeader
-              className={styles.cardHeader}
-              avatar={
-                <Avatar className={styles.avatar}>
-                  {idea.comments.length}
-                </Avatar>
-              }
-              title={idea.title}
-              subheader={"by " + idea.user.display_name}
-            />
-            <CardContent className={styles.cardContent}>
-              <Typography variant="body2" component="p">
-                {idea.description.length > 50
-                  ? idea.description.substring(0, 40) + "..."
-                  : idea.description}
-              </Typography>
-            </CardContent>
-            <CardContent className={styles.cardFooter}>
-              <Typography variant="body3" component="p">
-                {idea.topic.title}
-              </Typography>
-              <Typography variant="body3" component="p">
-                {idea.timestamp}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
+      <div className={styles.cards}>
+        <Typography className={styles.title}>Most Commented Ideas</Typography>
+        {mostCommentedIdeasState.ideas?.map((idea, index) => (
+          <Link to={"/idea/" + idea.id} className={styles.link} key={idea.id}>
+            <Card className={styles.card}>
+              <CardHeader
+                className={styles.cardHeader}
+                avatar={
+                  <Avatar className={styles.avatar}>
+                    {idea.comments.length}
+                  </Avatar>
+                }
+                title={idea.title}
+                subheader={"by " + idea.user.display_name}
+              />
+              <CardContent className={styles.cardContent}>
+                <Typography variant="body2" component="p">
+                  {idea.description.length > 50
+                    ? idea.description.substring(0, 40) + "..."
+                    : idea.description}
+                </Typography>
+              </CardContent>
+              <CardContent className={styles.cardFooter}>
+                <Typography variant="body3" component="p">
+                  {idea.topic.title}
+                </Typography>
+                <Typography variant="body3" component="p">
+                  {idea.timestamp}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </React.Fragment>
   );
 }

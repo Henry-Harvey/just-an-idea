@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
-import ProfileView from "./view";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { publicAxios } from "../../utils";
+import ProfileView from "./view";
 
 /**
  * Contains the user's info and the user's ideas components
@@ -45,8 +45,8 @@ export default function Profile({ currentUser, setCurrentUser }) {
       return;
     }
     console.log("Retrieve User with id", user_id);
-    axios
-      .get(`http://localhost:8080/account/user/${user_id}`)
+    publicAxios
+      .get(`/account/user/${user_id}`)
       .then((userResponse) => {
         console.log("Retrieve User response", userResponse);
         if (userResponse.data === "") {

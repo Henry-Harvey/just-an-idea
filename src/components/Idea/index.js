@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { publicAxios } from "../../utils";
 import IdeaView from "./view";
 
 /**
@@ -52,8 +52,8 @@ export default function Idea({ currentUser, ideaId }) {
       return;
     }
     console.log("Retrieve Idea with id", ideaId);
-    axios
-      .get(`http://localhost:8080/content/idea/${ideaId}`)
+    publicAxios
+      .get(`/content/idea/${ideaId}`)
       .then((ideaResponse) => {
         console.log("Retrieve Idea response", ideaResponse);
         if (ideaResponse?.data === "") {
@@ -75,7 +75,7 @@ export default function Idea({ currentUser, ideaId }) {
           ...state,
           idea: i,
         }));
-        if (isNaN(currentUser.user_id)) {
+        if (isNaN(currentUser?.user_id)) {
           return;
         }
         console.log(
@@ -83,9 +83,9 @@ export default function Idea({ currentUser, ideaId }) {
           currentUser?.user_id,
           ideaResponse.data.id
         );
-        axios
+        publicAxios
           .get(
-            `http://localhost:8080/content/upvote/${currentUser?.user_id}/${ideaResponse.data.id}`
+            `/content/upvote/${currentUser?.user_id}/${ideaResponse.data.id}`
           )
           .then((upvoteResponse) => {
             console.log("Retrieve Upvote response", upvoteResponse);

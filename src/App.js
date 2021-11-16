@@ -52,8 +52,8 @@ const useStyles = makeStyles({
   },
   resizeHandle: {
     cursor: "ew-resize",
-    width: "10px",
-    height: "200px",
+    width: "8px",
+    height: "30%",
     margin: "0px -5px",
     background: "#313131",
     border: "2px solid #292929",
@@ -66,12 +66,10 @@ const useStyles = makeStyles({
   },
   resizeBorder: {
     cursor: "ew-resize",
-    width: "5px",
+    width: "4px",
     background: "#292929",
     display: "flex",
-    zIndex: 99999,
     alignItems: "center",
-    alignContent: "center",
     justifyContent: "center",
     overflow: "visible",
   },
@@ -80,7 +78,7 @@ const useStyles = makeStyles({
     background: "#700000",
     color: "white",
     width: "100%",
-    height: "96%",
+    height: "calc(100vh - 30px)",
     display: "flex",
     flexFlow: "column nowrap",
     textAlign: "center",
@@ -106,7 +104,7 @@ const useStyles = makeStyles({
     flexFlow: "column nowrap",
     textAlign: "center",
     justifyContent: "center",
-    height: "4%",
+    height: 30,
     background: "#292929",
     borderTop: "1px solid #000000",
     color: "white",
@@ -157,10 +155,6 @@ export default function App() {
           console.log("Setting Current User from local storage", user);
           setCurrentUser({
             user_id: user.user_id,
-            tokens: {
-              access_token: user.tokens.access_token,
-              refresh_token: user.tokens.refresh_token,
-            },
             role: user.role,
           });
         })
