@@ -38,7 +38,8 @@ export const SaveSidePanel = (displaySidePanel) => {
 };
 
 export const publicAxios = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: 
+    "http://justanidea-env-1.eba-pb4a43tm.us-east-2.elasticbeanstalk.com",
   timeout: 5000,
 });
 
