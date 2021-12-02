@@ -40,7 +40,7 @@ export const SaveSidePanel = (displaySidePanel) => {
 export const publicAxios = axios.create({
   baseURL: 
     "//justanidea-env-1.eba-pb4a43tm.us-east-2.elasticbeanstalk.com",
-  timeout: 5000,
+  timeout: 30000,
 });
 
 export var authAxios = axios.create({
