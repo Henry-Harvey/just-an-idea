@@ -46,6 +46,7 @@ export default function SearchResults() {
     setSearchResultsState((state) => ({
       ...state,
       results: [],
+      isLoading: true,
     }));
     if (typeof searchString !== "string") {
       return;
@@ -146,7 +147,7 @@ export default function SearchResults() {
           },
         },
       }));
-    }, 200);
+    }, 2000);
   }, [searchString]);
 
   return (
